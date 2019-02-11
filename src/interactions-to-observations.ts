@@ -1,0 +1,7 @@
+class InteractionsToObservations {
+
+}
+
+export {
+  InteractionsToObservations
+}
