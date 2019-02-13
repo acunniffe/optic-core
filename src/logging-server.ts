@@ -1,11 +1,12 @@
 import * as express from 'express';
 import { Request, Response } from 'express';
+import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 import * as http from 'http';
-import { IApiInteraction, IRequestMetadata, IResponseMetadata, packageRequest, pathToMatcher } from './common';
+import { IApiInteraction, IRequestMetadata, IResponseMetadata, packageRequest } from './common';
 import * as EventEmitter from 'events';
 
-const idGeneratorFactory = function* () {
+export const idGeneratorFactory = function* () {
   let id = 0;
   while (true) {
     yield id;
@@ -18,7 +19,6 @@ export type RequestId = string;
 export interface ILoggingServerOptions {
   requestLoggingServerPort: number
   responseServerLoggingPort: number
-  paths: string[]
 }
 
 class LoggingServer extends EventEmitter {
@@ -33,16 +33,16 @@ class LoggingServer extends EventEmitter {
 
   private startRequestLogging(options: ILoggingServerOptions) {
     const idGenerator = idGeneratorFactory();
-    const pathMatchers = options.paths.map(pathToMatcher);
 
     const requestLoggingServer = express();
     requestLoggingServer.use(bodyParser.json());
     requestLoggingServer.use(bodyParser.urlencoded());
+    requestLoggingServer.use(cookieParser());
 
     requestLoggingServer.all('/', (req: Request, res: Response) => {
       const id = idGenerator.next().value.toString();
 
-      const request = packageRequest(req, pathMatchers);
+      const request = packageRequest(req);
       this.requests.set(id, request);
 
       res.send(id);

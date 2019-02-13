@@ -1,24 +1,31 @@
-// input is: ({Path}, AuthenticationSpec, [(Request, Response)])
-// output is: [Fact] => Graph
-// endpoints not in use
-// endpoints not recognized
-
-import { Counter, IApiInteraction } from './common';
-import { getKey, groupByKey, IOpticCliOptions } from './entry-points/optic-cli';
+import { Counter, IApiInteraction, pathToMatcher } from './common';
+import { IOpticCliOptions } from './entry-points/optic-cli';
+import {
+  InteractionsToObservations,
+  IObserverConfig,
+  IUnrecognizedUrlObserved,
+  Observation,
+} from './interactions-to-observations';
 
 class ReportBuilder {
   buildReport(options: IOpticCliOptions, samples: IApiInteraction[]) {
-    const pathsSeen = Counter.count<IApiInteraction>(samples, x => x.request.path || '');
-    const unrecognizedUrls = Counter.count<IApiInteraction>(samples.filter(x => !x.request.path), x => x.request.url);
-    console.log('Here are how many interactions I observed for each path:');
-    console.log(options.paths.map((path: string) => `${path}: ${pathsSeen.get(path) || 0}`).join('\n'));
+
+    const pathMatcherList = options.paths.map(pathToMatcher);
+    const config: IObserverConfig = {
+      pathMatcherList,
+      security: options.security
+    };
+
+    const observations = InteractionsToObservations.getObservations(samples, config);
+    const unrecognizedUrlObservations = observations.filter((x: Observation) => x.type === 'UnrecognizedUrlObserved');
+    const unrecognizedUrls = Counter.count<Observation>(unrecognizedUrlObservations, (x: IUnrecognizedUrlObserved) => x.url);
     if (unrecognizedUrls.size > 0) {
-      console.log(`I also observed ${unrecognizedUrls.size} interactions with paths I did not recognize:`);
+      console.log(`I observed ${unrecognizedUrls.size} interactions with paths I did not recognize:`);
       console.log([...unrecognizedUrls.entries()].map(([url, count]) => `${url}: ${count}`).join('\n'));
     }
+    console.log(JSON.stringify(observations, null, 2));
 
-    const samplesByKey = samples.reduce(groupByKey(getKey), new Map());
-    console.log([...samplesByKey.keys()].join('\n'));
+    return observations;
   }
 }
 

@@ -1,8 +1,14 @@
 import { Request } from 'express';
 import * as pathToRegexp from 'path-to-regexp';
 
+export interface IPathMatcherKey {
+  name: string
+  optional: boolean
+}
+
 export interface IPathMatcher {
-  path: string,
+  path: string
+  keys: IPathMatcherKey[]
   regexp: RegExp
 }
 
@@ -46,22 +52,20 @@ export function passThrough<T>(callback: Function) {
   };
 }
 
-export function packageRequest(req: Request, pathMatcherList: IPathMatcher[]) {
-  const url = req.path;
+export function getMatchingPath(url: string, pathMatcherList: IPathMatcher[]) {
   const matchedPath = pathMatcherList.find((pathMatcher: IPathMatcher) => pathMatcher.regexp.test(url));
-  const path = matchedPath ? matchedPath.path : null;
-  if (!matchedPath) {
-    console.warn(`did not find a path matching ${url}. please add it to your optic.yml`);
-  }
+  return matchedPath || null;
+}
 
+export function packageRequest(req: Request) {
+  const url = req.path;
   const request: IRequestMetadata = {
-    pathParameters: req.params,
     queryParameters: req.query,
     body: req.body,
     headers: req.headers,
+    cookies: req.cookies,
     method: req.method,
     url,
-    path,
   };
 
   return request;
@@ -77,11 +81,10 @@ export interface IParameterMapping {
 
 export interface IRequestMetadata {
   url: string,
-  path: string,
   method: string
   headers: IHeaders
+  cookies: IParameterMapping
   queryParameters: IParameterMapping
-  pathParameters: IParameterMapping
   body?: object
 }
 
@@ -95,4 +98,14 @@ export interface IResponseMetadata {
 export interface IApiInteraction {
   request: IRequestMetadata
   response: IResponseMetadata
+}
+
+
+export function groupByKey<T>(keyFn: (item: T) => string) {
+  return (acc: Map<string, T[]>, value: T) => {
+    const key = keyFn(value);
+    acc.set(key, [...(acc.get(key) || []), value]);
+
+    return acc;
+  };
 }

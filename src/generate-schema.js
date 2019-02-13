@@ -296,4 +296,5 @@ function generateSchema(object) {
 
 module.exports = {
   generateSchema,
+  stringType
 };

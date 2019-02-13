@@ -9,14 +9,51 @@
 
 
 import { exec, ExecOptions } from 'child_process';
-import { IApiInteraction, IRequestMetadata, IResponseMetadata, passThrough } from '../common';
+import * as util from 'util';
+import { IApiInteraction, passThrough } from '../common';
+import { Observation } from '../interactions-to-observations';
 import { LoggingServer } from '../logging-server';
+import { ObservationsToGraph } from '../observations-to-graph';
 import { ProxyServer } from '../proxy-server';
 import { ReportBuilder } from '../report-builder';
 
+export interface IBaseSecurity {
+  type: string
+}
+
+export interface IBasicAuthSecurity extends IBaseSecurity {
+  type: 'basic'
+}
+
+export interface IBearerTokenSecurity extends IBaseSecurity {
+  type: 'bearer'
+}
+
+export interface IApiKeySecurity extends IBaseSecurity {
+  type: 'apiKey';
+  in: 'header' | 'cookie' | 'query';
+  name: string;
+}
+
+export type ISecurityConfig = IBasicAuthSecurity | IBearerTokenSecurity | IApiKeySecurity
+
+export interface IProxyDocumentationConfig {
+  type: 'proxy'
+  targetHost: string
+  targetPort: number
+}
+
+export interface ILoggingDocumentationConfig {
+  type: 'logging'
+}
+
+export type IDocumentationConfig = IProxyDocumentationConfig | ILoggingDocumentationConfig
+
 export interface IOpticCliOptions {
+  documentationStrategy: IDocumentationConfig;
   paths: string[]
   commandToRun: string
+  security?: ISecurityConfig
 }
 
 class OpticCli {
@@ -33,15 +70,15 @@ class OpticCli {
     this.samples.push(sample);
   }
 
-  public useProxyServer() {
+  public useProxyServer(config: IProxyDocumentationConfig) {
     const proxy = new ProxyServer();
     proxy.on('sample', this.handleSample.bind(this));
 
+    const { targetHost, targetPort } = config;
     proxy.start({
-      paths: this.options.paths,
       proxyPort: 30333,
-      targetHost: 'localhost',
-      targetPort: 9000,
+      targetHost,
+      targetPort,
     });
 
     return this
@@ -64,10 +101,10 @@ class OpticCli {
     const task = new Promise<boolean>((resolve) => {
       console.log(`running $${command}`);
       exec(command, taskOptions, (err, stdout, stderr) => {
-        console.log(stdout);
+        console.log({ stdout });
         if (err) {
           console.error(err);
-          console.error(stderr);
+          console.error({ stderr });
           resolve(false);
         } else {
           resolve(true);
@@ -82,7 +119,6 @@ class OpticCli {
     const loggingServer = new LoggingServer();
     loggingServer.on('sample', this.handleSample.bind(this));
     loggingServer.start({
-      paths: this.options.paths,
       requestLoggingServerPort: 30334,
       responseServerLoggingPort: 30335,
     });
@@ -93,79 +129,56 @@ class OpticCli {
         loggingServer.stop();
       }));
   }
+
+  public run() {
+    const { documentationStrategy } = this.options;
+    if (documentationStrategy.type === 'logging') {
+      return this.useLoggingServer();
+    } else if (documentationStrategy.type === 'proxy') {
+      return this.useProxyServer(documentationStrategy);
+    }
+    throw new Error(`unknown documentationStrategy ${documentationStrategy}`);
+  }
 }
 
-const cliOptions = {
+const cliOptions: IOpticCliOptions = {
   paths: [
     '/users',
     '/users/:userId',
     '/users/:userId/profile',
     '/users/:userId/preferences',
+    '/users/:userId/followers/:followerId',
   ],
+  security: {
+    type: 'apiKey',
+    in: 'header',
+    name: 'Token',
+  },
+  documentationStrategy: {
+    type: 'proxy',
+    targetPort: 9000,
+    targetHost: 'localhost',
+  },
   commandToRun: '"./httpie-examples.sh"',
 };
 const cli = new OpticCli(cliOptions);
 cli
-  .useProxyServer()
+  .run()
   .then((successful: boolean) => {
     console.log(`I observed ${cli.samples.length} API interactions!`);
     if (successful) {
       console.log('generating API spec...');
 
-      return new ReportBuilder().buildReport(cliOptions, cli.samples);
+      const observations = new ReportBuilder().buildReport(cliOptions, cli.samples);
+
+      return observations;
     } else {
-      console.log('tests failed :(');
+      throw new Error(`The command was not successful :(`);
     }
+  })
+  .then((observations: Observation[]) => {
+    const observationsToGraph = new ObservationsToGraph();
+    observationsToGraph.interpretObservations(observations);
+    console.log(util.inspect(observationsToGraph.graph, {depth: 5, compact: false, colors: true}));
   });
 
-export function groupByKey<T>(keyFn: (T) => string) {
-  return (acc: Map<string, T[]>, value: T) => {
-    const key = keyFn(value);
-    acc.set(key, [...(acc.get(key) || []), value]);
-
-    return acc;
-  };
-}
-
-export function getKey(interaction: IApiInteraction) {
-  const { method, path } = interaction.request;
-  const { statusCode, headers } = interaction.response;
-
-  return `${method}|${path}|${statusCode}|${headers['content-type']}`;
-}
-
-/*
-function recordSchemas(request: IRequestMetadata, response: IResponseMetadata) {
-  const key = getKey(request, response);
-  keys.add(key);
-  // set or merge
-  const requestSchemaComponents = {
-    headers: request.headers,
-    body: request.body,
-    pathParameters: request.pathParameters,
-    queryParameters: request.queryParameters,
-  };
-  const responseSchemaComponents = {
-    headers: response.headers,
-    body: response.body,
-  };
-
-  saveSample(requestSchemas, key, generateSchema(requestSchemaComponents));
-  saveSample(responseSchemas, key, generateSchema(responseSchemaComponents));
-  //console.log(util.inspect(requestSchemas, options));
-  //console.log(util.inspect(responseSchemas, options));
-}
-
-function addSample(sample: IApiInteraction) {
-  samples.push(sample);
-  //console.log(util.inspect(sample, options));
-  recordSchemas(sample.request, sample.response);
-}
-
-
-function onComplete() {
-  for (const key of keys) {
-    const inferredRequestSchema = DefaultSchemaMerger.getMergedSchema(...requestSchemas.get(key));
-    console.log(util.inspect(inferredRequestSchema, options));
-  }
-}*/
