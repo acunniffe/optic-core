@@ -27,7 +27,13 @@ class ProxyServer extends EventEmitter {
 
     const proxyMiddleware = expressHttpProxy(target, {
       userResDecorator: (proxyRes: any, proxyResData: Buffer, userReq: Request) => {
-        const responseBody = JSON.parse(proxyResData.toString('utf8'));
+        console.log(proxyRes.headers);
+        let responseBody = proxyResData.toString('utf8');
+        try {
+          responseBody = JSON.parse(responseBody);
+        } catch(e){
+
+        }
 
         const request = packageRequest(userReq);
 

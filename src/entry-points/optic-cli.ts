@@ -1,4 +1,4 @@
-import { exec, ExecOptions } from 'child_process';
+import { spawn, SpawnOptions } from 'child_process';
 import * as fs from 'fs';
 import * as util from 'util';
 import { IApiInteraction, passThrough } from '../common';
@@ -80,26 +80,30 @@ class OpticCli {
   }
 
   private runCommand(command: string) {
-    const taskOptions: ExecOptions = {
+    const taskOptions: SpawnOptions = {
       env: {
         ...process.env,
-        OPTIC_SERVER: 'listening',
+        'OPTIC_SERVER_LISTENING': 'yes',
       },
+      shell: true,
       cwd: process.cwd(),
-      timeout: 60 * 1000,
     };
 
     const task = new Promise<boolean>((resolve) => {
-      console.log(`running $${command}`);
-      exec(command, taskOptions, (err, stdout, stderr) => {
-        console.log({ stdout });
-        if (err) {
-          console.error(err);
-          console.error({ stderr });
-          resolve(false);
-        } else {
-          resolve(true);
-        }
+      console.log(`running $ ${command}`);
+      console.log(taskOptions);
+      const child = spawn(command, taskOptions);
+      child.stdout.on('data', function(data) {
+        console.log(data.toString());
+      });
+
+      child.stderr.on('data', function(data) {
+        console.error(data.toString());
+      });
+
+      child.on('exit', function(code) {
+        console.log(`child process exited with code ${code.toString()}`);
+        resolve(code === 0);
       });
     });
 
@@ -132,27 +136,34 @@ class OpticCli {
   }
 }
 
-const cliOptions: IOpticCliOptions = {
+const cliOptionsForProxy: IOpticCliOptions = {
   paths: [
     '/users',
-    '/users/:userId',
-    '/users/:userId/profile',
-    '/users/:userId/preferences',
-    '/users/:userId/followers/:followerId',
+    '/users/login',
+    '/users/:userId/followers',
   ],
   security: {
-    type: 'apiKey',
-    in: 'header',
-    name: 'Token',
+    type: 'bearer',
   },
   documentationStrategy: {
     type: 'proxy',
-    targetPort: 9000,
+    targetPort: 3005,
     targetHost: 'localhost',
   },
-  commandToRun: '"./httpie-examples.sh"',
+  commandToRun: 'npm run test',
 };
-const cli = new OpticCli(cliOptions);
+const cliOptionsForLogging: IOpticCliOptions = {
+  paths: [],
+  security: {
+    type: 'bearer',
+  },
+  documentationStrategy: {
+    type: 'logging',
+  },
+  commandToRun: 'sbt test',
+};
+const options = cliOptionsForProxy;
+const cli = new OpticCli(options);
 cli
   .run()
   .then((successful: boolean) => {
@@ -160,7 +171,7 @@ cli
     if (successful) {
       console.log('generating API spec...');
 
-      const observations = new ReportBuilder().buildReport(cliOptions, cli.samples);
+      const observations = new ReportBuilder().buildReport(options, cli.samples);
 
       return observations;
     } else {

@@ -22,7 +22,7 @@ export interface ILoggingServerOptions {
 }
 
 class LoggingServer extends EventEmitter {
-  private httpInstances: http.Server[];
+  private httpInstances: http.Server[] = [];
   private requests: Map<RequestId, IRequestMetadata> = new Map();
   private responses: Map<RequestId, IResponseMetadata> = new Map();
 
@@ -38,7 +38,11 @@ class LoggingServer extends EventEmitter {
     requestLoggingServer.use(bodyParser.json());
     requestLoggingServer.use(bodyParser.urlencoded());
     requestLoggingServer.use(cookieParser());
-
+    requestLoggingServer.use((_req, _res, next) => {
+      console.log('request logger');
+      console.log(_req);
+      next();
+    });
     requestLoggingServer.all('/', (req: Request, res: Response) => {
       const id = idGenerator.next().value.toString();
 
@@ -56,7 +60,11 @@ class LoggingServer extends EventEmitter {
     const responseLoggingServer = express();
     responseLoggingServer.use(bodyParser.json());
     responseLoggingServer.use(bodyParser.urlencoded());
-
+    responseLoggingServer.use((_req, _res, next) => {
+      console.log('response logger');
+      console.log(_req);
+      next();
+    });
     responseLoggingServer.post('/request/:requestId/status/:statusCode', (req: Request, res: Response) => {
       const id = req.params.requestId;
       if (!this.requests.has(id)) {

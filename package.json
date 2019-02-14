@@ -1,6 +1,5 @@
 {
-  "name": "cli",
-  "scope": "@useoptic",
+  "name": "@useoptic/cli",
   "version": "0.1.0-alpha",
   "description": "Optic CLI",
   "engines": {

@@ -58,14 +58,13 @@ export function getMatchingPath(url: string, pathMatcherList: IPathMatcher[]) {
 }
 
 export function packageRequest(req: Request) {
-  const url = req.path;
   const request: IRequestMetadata = {
     queryParameters: req.query,
     body: req.body,
     headers: req.headers,
     cookies: req.cookies,
     method: req.method,
-    url,
+    url: req.path
   };
 
   return request;
