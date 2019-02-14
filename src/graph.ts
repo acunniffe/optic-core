@@ -53,6 +53,16 @@ class Graph {
   }
 
   public addEdge(sourceNodeId: NodeId, destinationNodeId: NodeId) {
+    if (sourceNodeId === destinationNodeId) {
+      throw new Error(`can't add an edge from node ${sourceNodeId} to itself`);
+    }
+    if (!this.nodes.has(sourceNodeId)) {
+      throw new Error(`source node ${sourceNodeId} must exist`);
+    }
+    if (!this.nodes.has(destinationNodeId)) {
+      throw new Error(`destination node ${destinationNodeId} must exist`);
+    }
+
     const id: EdgeId = this.edgeIdGenerator.next().value.toString();
     const edgesFromSource = this.edges.get(sourceNodeId) || new Map<NodeId, Set<EdgeId>>();
     const edgesFromSourceToDestination = edgesFromSource.get(destinationNodeId) || new Set();
@@ -74,7 +84,24 @@ class Graph {
     }
   }
 
+  public toGraphViz() {
+    const output = [];
+    for (const [nodeId, node] of this.nodes.entries()) {
+      output.push(`"${nodeId}" [label="${node.type}"]`)
+    }
+    for (const [sourceNodeId, destinationNodeIds] of this.edges.entries()) {
+      for (const destinationNodeId of destinationNodeIds.keys()) {
+        output.push(`"${sourceNodeId}" -> "${destinationNodeId}"`);
+      }
+    }
 
+
+    return `
+digraph G {
+rankdir=BT
+${output.join('\n')}
+}`;
+  }
 }
 
 export {

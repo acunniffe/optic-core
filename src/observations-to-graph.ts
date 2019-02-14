@@ -101,7 +101,6 @@ function SchemaRootNode(parentNodeId: NodeId) {
   };
 }
 
-/*
 function BodyNode(parentNodeId: NodeId, contentType: string) {
   const type = 'body';
 
@@ -112,7 +111,7 @@ function BodyNode(parentNodeId: NodeId, contentType: string) {
       count: 1,
     },
   };
-}*/
+}
 
 function SchemaParentNode(parentNodeId: NodeId, jsonSchemaType: string) {
   const type = 'schemaParent';
@@ -146,7 +145,30 @@ function SchemaLeafNode(parentNodeId: NodeId, jsonSchemaType: string) {
     id: `(${parentNodeId})|(${type}:${jsonSchemaType})`,
     data: {
       jsonSchemaType,
+      count: 1,
+    },
+  };
+}
 
+function ResponseHeaderNode(parentNodeId: string, name: string) {
+  const type = 'responseHeader';
+  return {
+    type,
+    id: `(${parentNodeId}|(${type}:${name})`,
+    data: {
+      name,
+      count: 1,
+    },
+  };
+}
+
+function ResponseCookieNode(parentNodeId: string, name: string) {
+  const type = 'responseCookie';
+  return {
+    type,
+    id: `(${parentNodeId}|(${type}:${name})`,
+    data: {
+      name,
       count: 1,
     },
   };
@@ -182,8 +204,10 @@ class ObservationsToGraph {
           const parentMethodId = MethodNode(path, method).id;
           this.graph.addEdge(node.id, parentMethodId);
           const requestNode = RequestNode(path, method, statusCode);
+          this.graph.addNode(requestNode.id, requestNode.type, requestNode.data);
           this.graph.addEdge(requestNode.id, node.id);
           const responseNode = ResponseNode(path, method, statusCode);
+          this.graph.addNode(responseNode.id, responseNode.type, responseNode.data);
           this.graph.addEdge(responseNode.id, node.id);
         }
       } else if (observation.type === 'SecurityObserved') {
@@ -203,25 +227,66 @@ class ObservationsToGraph {
           this.graph.addEdge(node.id, requestNode.id);
 
           this.graph.addNode(schemaRootNode.id, schemaRootNode.type, schemaRootNode.data);
-          console.log('\n');
-          console.log({ name, value });
+          this.graph.addEdge(schemaRootNode.id, node.id);
         }
         this.mergeSchema(schemaRootNode, value);
-        console.log('\nCHECKPOINT\n\n\n\n');
+      } else if (observation.type === 'RequestBodyObserved') {
+        const { path, method, statusCode, contentType, body } = observation;
+        const requestNode = RequestNode(path, method, statusCode);
+        const node = BodyNode(requestNode.id, contentType);
+        const schemaRootNode = SchemaRootNode(node.id);
+        if (this.graph.tryAddNode(node.id, node.type, node.data)) {
+          this.graph.addEdge(node.id, requestNode.id);
+
+          this.graph.addNode(schemaRootNode.id, schemaRootNode.type, schemaRootNode.data);
+          this.graph.addEdge(schemaRootNode.id, node.id);
+        }
+        this.mergeSchema(schemaRootNode, body);
+      } else if (observation.type === 'ResponseBodyObserved') {
+        const { path, method, statusCode, contentType, body } = observation;
+        const responseNode = ResponseNode(path, method, statusCode);
+        const node = BodyNode(responseNode.id, contentType);
+        const schemaRootNode = SchemaRootNode(node.id);
+        if (this.graph.tryAddNode(node.id, node.type, node.data)) {
+          this.graph.addEdge(node.id, responseNode.id);
+
+          this.graph.addNode(schemaRootNode.id, schemaRootNode.type, schemaRootNode.data);
+          this.graph.addEdge(schemaRootNode.id, node.id);
+        }
+        this.mergeSchema(schemaRootNode, body);
+      } else if (observation.type === 'ResponseHeaderObserved') {
+        const { path, method, statusCode, name, value } = observation;
+        const responseNode = ResponseNode(path, method, statusCode);
+        const node = ResponseHeaderNode(responseNode.id, name);
+        const schemaRootNode = SchemaRootNode(node.id);
+        if (this.graph.tryAddNode(node.id, node.type, node.data)) {
+          this.graph.addEdge(node.id, responseNode.id);
+
+          this.graph.addNode(schemaRootNode.id, schemaRootNode.type, schemaRootNode.data);
+          this.graph.addEdge(schemaRootNode.id, node.id);
+        }
+        this.mergeSchema(schemaRootNode, value);
+      } else if (observation.type === 'ResponseCookieObserved') {
+        const { path, method, statusCode, name, value } = observation;
+        const responseNode = ResponseNode(path, method, statusCode);
+        const node = ResponseCookieNode(responseNode.id, name);
+        const schemaRootNode = SchemaRootNode(node.id);
+        if (this.graph.tryAddNode(node.id, node.type, node.data)) {
+          this.graph.addEdge(node.id, responseNode.id);
+
+          this.graph.addNode(schemaRootNode.id, schemaRootNode.type, schemaRootNode.data);
+          this.graph.addEdge(schemaRootNode.id, node.id);
+        }
+        this.mergeSchema(schemaRootNode, value);
       }
-      // RequestBody Observed
-      // ResponseBody Observed
     }
   }
 
   private mergeSchema(parentNode: Node, value: any) {
     const list = this.flattenJavascriptValueToList(value);
-    console.log(parentNode.id, { list });
     const nodesByPath: Map<string, Node> = new Map();
     let currentParent = parentNode;
-    console.log('\n');
     for (const item of list) {
-      console.log({ item, currentParent });
       let node: Node;
       if (item.jsonSchemaType !== 'array' && item.jsonSchemaType !== 'object') {
         // @ts-ignore
@@ -235,17 +300,19 @@ class ObservationsToGraph {
         node = SchemaLeafNode(currentParent.id, item.jsonSchemaType);
       } else {
         node = SchemaParentNode(currentParent.id, item.jsonSchemaType);
+        if (this.graph.tryAddNode(node.id, node.type, node.data)) {
+          this.graph.addEdge(node.id, currentParent.id);
+        }
         currentParent = node;
       }
 
       if (this.graph.tryAddNode(node.id, node.type, node.data)) {
-        nodesByPath.set(item.path, node);
-        console.log({ nodesByPath });
-        console.log('\n');
-        if (item.parentPath !== null) {
-          currentParent = nodesByPath.get(item.parentPath);
-          this.graph.addEdge(node.id, currentParent.id);
-        }
+        this.graph.addEdge(node.id, currentParent.id);
+      }
+
+      nodesByPath.set(item.path, node);
+      if (item.parentPath !== null) {
+        currentParent = nodesByPath.get(item.parentPath);
       }
     }
   }

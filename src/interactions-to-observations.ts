@@ -1,5 +1,6 @@
 import { getMatchingPath, IApiInteraction, IPathMatcher } from './common';
 import * as pathMatch from 'path-match';
+import { parse } from 'cookie';
 import { ISecurityConfig } from './entry-points/optic-cli';
 /*
 interface IncomingHttpHeaders {
@@ -136,11 +137,11 @@ export interface IMethodObserved extends IBaseObservation {
   method: string
 }
 
-export interface IStatusObserved extends IBaseObservation, IRequestContext {
+export interface IStatusObserved extends IBaseObservation, IInteractionContext {
   type: 'StatusObserved'
 }
 
-interface ISecurityObserved extends IBaseObservation, IRequestContext {
+interface ISecurityObserved extends IBaseObservation, IInteractionContext {
   type: 'SecurityObserved'
 }
 
@@ -150,17 +151,41 @@ enum ParameterSource {
   path = 'path'
 }
 
-interface IRequestParameterObserved extends IBaseObservation, IRequestContext {
+interface IRequestParameterObserved extends IBaseObservation, IInteractionContext {
   type: 'RequestParameterObserved'
   source: ParameterSource
   name: string
   value: string | object | any[]
 }
 
-interface IRequestContext {
+interface IInteractionContext {
   method: string
   path: string
   statusCode: number
+}
+
+interface IRequestBodyObserved extends IBaseObservation, IInteractionContext {
+  type: 'RequestBodyObserved'
+  contentType: string
+  body: any
+}
+
+interface IResponseHeaderObserved extends IBaseObservation, IInteractionContext {
+  type: 'ResponseHeaderObserved',
+  name: string,
+  value: string
+}
+
+interface IResponseCookieObserved extends IBaseObservation, IInteractionContext {
+  type: 'ResponseCookieObserved',
+  name: string,
+  value: string
+}
+
+interface IResponseBodyObserved extends IBaseObservation, IInteractionContext {
+  type: 'ResponseBodyObserved'
+  contentType: string
+  body: any
 }
 
 export type Observation =
@@ -169,7 +194,11 @@ export type Observation =
   | IMethodObserved
   | IStatusObserved
   | ISecurityObserved
-  | IRequestParameterObserved;
+  | IRequestParameterObserved
+  | IRequestBodyObserved
+  | IResponseBodyObserved
+  | IResponseCookieObserved
+  | IResponseHeaderObserved;
 
 export interface IObserverConfig {
   pathMatcherList: IPathMatcher[],
@@ -206,7 +235,7 @@ class InteractionsToObservations {
     const { path } = pathMatcher;
 
     const { url, method, queryParameters, headers: requestHeaders, cookies } = request;
-    const { statusCode } = response;
+    const { statusCode, headers: responseHeaders } = response;
 
     const pathParser = pathMatch({ sensitive: true })(path);
     const pathParameters = pathParser(url);
@@ -286,7 +315,6 @@ class InteractionsToObservations {
       });
 
     // query parameters
-    console.log({ queryParameters });
     Object.keys(queryParameters)
       .filter((queryParameterName: string) => !additionalQueryParamsToIgnore.has(queryParameterName))
       .forEach((queryParameterName: string) => {
@@ -320,12 +348,73 @@ class InteractionsToObservations {
       });
 
     // request body
+    const requestContentType = requestHeaders['content-type'];
+    if (requestContentType) {
+      const requestBodyObservation: IRequestBodyObserved = {
+        type: 'RequestBodyObserved',
+        method,
+        path,
+        statusCode,
+        contentType: requestContentType.toString(),
+        body: request.body,
+      };
+
+      observations.push(requestBodyObservation);
+      console.log({ requestBodyObservation });
+    }
 
     // response headers
+    Object.keys(responseHeaders)
+      .filter((x: string) => !headerBlacklist.has(x))
+      .forEach((responseHeaderKey: string) => {
+        const value = responseHeaders[responseHeaderKey] as string;
+        const responseHeaderObservation: IResponseHeaderObserved = {
+          type: 'ResponseHeaderObserved',
+          method,
+          path,
+          statusCode,
+          name: responseHeaderKey,
+          value,
+        };
+        observations.push(responseHeaderObservation);
+      });
 
-    // response set-cookie
+    // response cookies
+    const responseCookie = responseHeaders['set-cookie'];
+    if (responseCookie) {
+      console.log({ responseCookie });
+      const parsedCookie = parse((responseCookie as string[]).join(';'));
+      console.log({ parsedCookie });
+      Object.keys(parsedCookie)
+        .forEach((cookieKey: string) => {
+          const cookieValue = parsedCookie[cookieKey];
+          const responseCookieObservation: IResponseCookieObserved = {
+            type: 'ResponseCookieObserved',
+            method,
+            path,
+            statusCode,
+            name: cookieKey,
+            value: cookieValue,
+          };
+          observations.push(responseCookieObservation);
+        });
+    }
 
     // response body
+    const responseContentType = responseHeaders['content-type'];
+    if (responseContentType) {
+      const responseBodyObservation: IResponseBodyObserved = {
+        type: 'ResponseBodyObserved',
+        method,
+        path,
+        statusCode,
+        contentType: responseContentType.toString(),
+        body: response.body,
+      };
+
+      observations.push(responseBodyObservation);
+      console.log({ responseBodyObservation });
+    }
 
     return observations;
   }

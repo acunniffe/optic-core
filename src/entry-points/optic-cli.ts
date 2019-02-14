@@ -1,14 +1,5 @@
-// load optic.yml, check auth status, client version, etc.
-/*
-- setup user stuff
-- document an api (using optic.yml in cwd)
--- start servers, run tests, stop servers
---
-- publish a documented api
- */
-
-
 import { exec, ExecOptions } from 'child_process';
+import * as fs from 'fs';
 import * as util from 'util';
 import { IApiInteraction, passThrough } from '../common';
 import { Observation } from '../interactions-to-observations';
@@ -95,7 +86,7 @@ class OpticCli {
         OPTIC_SERVER: 'listening',
       },
       cwd: process.cwd(),
-      timeout: 5000,
+      timeout: 60 * 1000,
     };
 
     const task = new Promise<boolean>((resolve) => {
@@ -179,6 +170,8 @@ cli
   .then((observations: Observation[]) => {
     const observationsToGraph = new ObservationsToGraph();
     observationsToGraph.interpretObservations(observations);
-    console.log(util.inspect(observationsToGraph.graph, {depth: 5, compact: false, colors: true}));
+    console.log(util.inspect(observationsToGraph.graph, { depth: 5, compact: false, colors: true }));
+    console.log('\n visualize graphviz.txt on http://www.webgraphviz.com/');
+    fs.writeFileSync('./graphviz.txt', observationsToGraph.graph.toGraphViz());
   });
 
