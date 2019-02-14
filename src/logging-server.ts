@@ -27,8 +27,12 @@ class LoggingServer extends EventEmitter {
   private responses: Map<RequestId, IResponseMetadata> = new Map();
 
   public start(options: ILoggingServerOptions) {
-    this.startRequestLogging(options);
-    this.startResponseLogging(options);
+    const promises = [
+      this.startRequestLogging(options),
+      this.startResponseLogging(options),
+    ];
+
+    return Promise.all(promises);
   }
 
   private startRequestLogging(options: ILoggingServerOptions) {
@@ -49,11 +53,18 @@ class LoggingServer extends EventEmitter {
       const request = packageRequest(req);
       this.requests.set(id, request);
 
-      res.send(id);
+      res.contentType('text/plain').send(id);
     });
 
-    const instance = requestLoggingServer.listen(options.requestLoggingServerPort);
-    this.httpInstances.push(instance);
+    return new Promise((resolve, reject) => {
+      const instance = requestLoggingServer
+        .listen(options.requestServerLoggingPort, () => {
+          this.httpInstances.push(instance);
+          console.log(`listening for requests on port ${options.requestServerLoggingPort}`);
+          resolve();
+        })
+        .on('error', reject);
+    });
   }
 
   private startResponseLogging(options: ILoggingServerOptions) {
@@ -91,12 +102,20 @@ class LoggingServer extends EventEmitter {
       return res.status(204).end();
     });
 
-    const instance = responseLoggingServer.listen(options.responseServerLoggingPort);
-    this.httpInstances.push(instance);
+    return new Promise((resolve, reject) => {
+      const instance = responseLoggingServer
+        .listen(options.responseServerLoggingPort, () => {
+          this.httpInstances.push(instance);
+          console.log(`listening for responses on port ${options.responseServerLoggingPort}`);
+          resolve();
+        })
+        .on('error', reject);
+    });
   }
 
   public stop() {
-    this.httpInstances.forEach((httpInstance: http.Server) => httpInstance.close());
+    this.httpInstances
+      .forEach((httpInstance: http.Server) => httpInstance.close());
   }
 }
 

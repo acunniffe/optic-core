@@ -27,11 +27,10 @@ class ProxyServer extends EventEmitter {
 
     const proxyMiddleware = expressHttpProxy(target, {
       userResDecorator: (proxyRes: any, proxyResData: Buffer, userReq: Request) => {
-        console.log(proxyRes.headers);
         let responseBody = proxyResData.toString('utf8');
         try {
           responseBody = JSON.parse(responseBody);
-        } catch(e){
+        } catch (e) {
 
         }
 
@@ -55,11 +54,14 @@ class ProxyServer extends EventEmitter {
       next();
     }, proxyMiddleware);
 
-    return new Promise<void>((resolve) => {
-      this.httpInstance = server.listen(options.proxyPort, () => {
-        console.log(`proxy listening on port ${options.proxyPort}`);
-        resolve();
-      });
+    return new Promise<void>((resolve, reject) => {
+      this.httpInstance = server
+        .listen(options.proxyPort, () => {
+          console.log(`proxy listening on port ${options.proxyPort}`);
+          console.log(`proxy forwarding requests to ${options.targetHost}:${options.targetPort}`);
+          resolve();
+        })
+        .on('error', reject);
     });
   }
 

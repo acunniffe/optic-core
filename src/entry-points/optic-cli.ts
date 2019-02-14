@@ -66,14 +66,15 @@ class OpticCli {
     proxy.on('sample', this.handleSample.bind(this));
 
     const { targetHost, targetPort } = config;
-    proxy.start({
+
+    return proxy.start({
       proxyPort: 30333,
       targetHost,
       targetPort,
-    });
-
-    return this
-      .runCommand(this.options.commandToRun)
+    })
+      .then(() => {
+        return this.runCommand(this.options.commandToRun);
+      })
       .then(passThrough(() => {
         proxy.stop();
       }));
@@ -113,13 +114,14 @@ class OpticCli {
   public useLoggingServer() {
     const loggingServer = new LoggingServer();
     loggingServer.on('sample', this.handleSample.bind(this));
-    loggingServer.start({
+
+    return loggingServer.start({
       requestLoggingServerPort: 30334,
       responseServerLoggingPort: 30335,
-    });
-
-    return this
-      .runCommand(this.options.commandToRun)
+    })
+      .then(() => {
+        return this.runCommand(this.options.commandToRun);
+      })
       .then(passThrough(() => {
         loggingServer.stop();
       }));
