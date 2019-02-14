@@ -67,11 +67,12 @@ class OpticCli {
 
     const { targetHost, targetPort } = config;
 
-    return proxy.start({
-      proxyPort: 30333,
-      targetHost,
-      targetPort,
-    })
+    return proxy
+      .start({
+        proxyPort: 30333,
+        targetHost,
+        targetPort,
+      })
       .then(() => {
         return this.runCommand(this.options.commandToRun);
       })
@@ -91,8 +92,7 @@ class OpticCli {
     };
 
     const task = new Promise<boolean>((resolve) => {
-      console.log(`running $ ${command}`);
-      console.log(taskOptions);
+      console.log(`running $ ${command} in ${taskOptions.cwd}`);
       const child = spawn(command, taskOptions);
       child.stdout.on('data', function(data) {
         console.log(data.toString());
@@ -115,10 +115,11 @@ class OpticCli {
     const loggingServer = new LoggingServer();
     loggingServer.on('sample', this.handleSample.bind(this));
 
-    return loggingServer.start({
-      requestLoggingServerPort: 30334,
-      responseServerLoggingPort: 30335,
-    })
+    return loggingServer
+      .start({
+        requestLoggingServerPort: 30334,
+        responseLoggingServerPort: 30335,
+      })
       .then(() => {
         return this.runCommand(this.options.commandToRun);
       })
@@ -164,7 +165,7 @@ const cliOptionsForLogging: IOpticCliOptions = {
   },
   commandToRun: 'sbt test',
 };
-const options = cliOptionsForProxy;
+const options = cliOptionsForLogging;
 const cli = new OpticCli(options);
 cli
   .run()

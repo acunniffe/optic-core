@@ -18,7 +18,7 @@ export type RequestId = string;
 
 export interface ILoggingServerOptions {
   requestLoggingServerPort: number
-  responseServerLoggingPort: number
+  responseLoggingServerPort: number
 }
 
 class LoggingServer extends EventEmitter {
@@ -47,7 +47,7 @@ class LoggingServer extends EventEmitter {
       console.log(_req);
       next();
     });
-    requestLoggingServer.all('/', (req: Request, res: Response) => {
+    requestLoggingServer.all('/*', (req: Request, res: Response) => {
       const id = idGenerator.next().value.toString();
 
       const request = packageRequest(req);
@@ -58,9 +58,9 @@ class LoggingServer extends EventEmitter {
 
     return new Promise((resolve, reject) => {
       const instance = requestLoggingServer
-        .listen(options.requestServerLoggingPort, () => {
+        .listen(options.requestLoggingServerPort, () => {
           this.httpInstances.push(instance);
-          console.log(`listening for requests on port ${options.requestServerLoggingPort}`);
+          console.log(`listening for requests on port ${options.requestLoggingServerPort}`);
           resolve();
         })
         .on('error', reject);
@@ -104,9 +104,9 @@ class LoggingServer extends EventEmitter {
 
     return new Promise((resolve, reject) => {
       const instance = responseLoggingServer
-        .listen(options.responseServerLoggingPort, () => {
+        .listen(options.responseLoggingServerPort, () => {
           this.httpInstances.push(instance);
-          console.log(`listening for responses on port ${options.responseServerLoggingPort}`);
+          console.log(`listening for responses on port ${options.responseLoggingServerPort}`);
           resolve();
         })
         .on('error', reject);
