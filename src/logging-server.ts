@@ -27,6 +27,7 @@ class LoggingServer extends EventEmitter {
   private responses: Map<RequestId, IResponseMetadata> = new Map();
 
   public start(options: ILoggingServerOptions) {
+    console.log('starting logging servers...');
     const promises = [
       this.startRequestLogging(options),
       this.startResponseLogging(options),

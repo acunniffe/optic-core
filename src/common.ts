@@ -64,7 +64,7 @@ export function packageRequest(req: Request) {
     headers: req.headers,
     cookies: req.cookies,
     method: req.method,
-    url: req.path
+    url: req.path,
   };
 
   return request;
@@ -90,7 +90,7 @@ export interface IRequestMetadata {
 export interface IResponseMetadata {
   statusCode: number
   headers: IHeaders
-  body?: object
+  body?: object | string
 
 }
 

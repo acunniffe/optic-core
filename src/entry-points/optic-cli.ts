@@ -155,7 +155,7 @@ const cliOptionsForProxy: IOpticCliOptions = {
   },
   commandToRun: 'npm run test',
 };
-const cliOptionsForLogging: IOpticCliOptions = {
+/*const cliOptionsForLogging: IOpticCliOptions = {
   paths: [],
   security: {
     type: 'bearer',
@@ -163,9 +163,10 @@ const cliOptionsForLogging: IOpticCliOptions = {
   documentationStrategy: {
     type: 'logging',
   },
-  commandToRun: 'sbt test',
-};
-const options = cliOptionsForLogging;
+  commandToRun: 'sleep 60',
+};*/
+
+const options = cliOptionsForProxy;
 const cli = new OpticCli(options);
 cli
   .run()
