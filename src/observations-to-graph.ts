@@ -1,6 +1,7 @@
 import * as deepdash from 'deepdash';
 import * as lodash from 'lodash';
-import { Graph, Node, NodeId } from './graph';
+import { ISecurityConfig } from './entry-points/optic-cli';
+import { Graph, Node, NodeId, rootNodeId } from './graph/graph';
 import { Observation } from './interactions-to-observations';
 import { stringType } from './generate-schema.js';
 
@@ -51,7 +52,9 @@ function RequestNode(path: string, method: string, statusCode: number) {
   return {
     type,
     id: `(${ResponseStatusCodeNode(path, method, statusCode).id})|(${type})`,
-    data: { count: 1 },
+    data: {
+      count: 1,
+    },
   };
 }
 
@@ -61,17 +64,20 @@ function ResponseNode(path: string, method: string, statusCode: number) {
   return {
     type,
     id: `(${ResponseStatusCodeNode(path, method, statusCode).id})|(${type})`,
-    data: { count: 1 },
+    data: {
+      count: 1,
+    },
   };
 }
 
-function SecurityNode() {
-  const type = 'security';
+function SecurityNode(security: ISecurityConfig) {
+  const type = 'securityDefinition';
 
   return {
     type,
     id: `(${type})`,
     data: {
+      security,
       count: 1,
     },
   };
@@ -84,6 +90,8 @@ function RequestParameterNode(path: string, method: string, statusCode: number, 
     type,
     id: `(${RequestNode(path, method, statusCode).id})|(${type}:${name}:${source})`,
     data: {
+      source,
+      name,
       count: 1,
     },
   };
@@ -108,6 +116,7 @@ function BodyNode(parentNodeId: NodeId, contentType: string) {
     type,
     id: `(${parentNodeId})|(${type}:${contentType})`,
     data: {
+      contentType,
       count: 1,
     },
   };
@@ -179,7 +188,7 @@ class ObservationsToGraph {
 
   constructor() {
     this.graph = new Graph();
-    this.graph.addNode('root', 'root', {});
+    this.graph.addNode(rootNodeId, 'root', {});
   }
 
   public interpretObservations(observations: Observation[]) {
@@ -211,9 +220,10 @@ class ObservationsToGraph {
           this.graph.addEdge(responseNode.id, node.id);
         }
       } else if (observation.type === 'SecurityObserved') {
-        const { path, method, statusCode } = observation;
-        const node = SecurityNode();
+        const { path, method, statusCode, security } = observation;
+        const node = SecurityNode(security);
         if (this.graph.tryAddNode(node.id, node.type, node.data)) {
+          this.graph.addEdge(node.id, 'root');
           const requestNode = RequestNode(path, method, statusCode);
           this.graph.ensureEdgeExistsBetween(requestNode.id, node.id);
         }

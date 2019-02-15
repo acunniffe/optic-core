@@ -1,4 +1,4 @@
-import { idGeneratorFactory } from './logging-server';
+import { idGeneratorFactory } from '../logging-server';
 
 export type NodeId = string;
 export type EdgeId = string;
@@ -10,15 +10,19 @@ export type Node = {
   data: NodeData
 };
 
+const rootNodeId = 'root';
+
 class Graph {
-  private nodes: Map<NodeId, Node>;
-  private edges: Map<NodeId, Map<NodeId, Set<EdgeId>>>;
+  public readonly nodes: Map<NodeId, Node>;
+  public readonly outgoingEdges: Map<NodeId, Map<NodeId, Set<EdgeId>>>;
+  public readonly incomingEdges: Map<NodeId, Map<NodeId, Set<EdgeId>>>;
   private edgeIdGenerator: IterableIterator<number>;
   private nodeIdGenerator: IterableIterator<number>;
 
   constructor() {
     this.nodes = new Map();
-    this.edges = new Map();
+    this.outgoingEdges = new Map();
+    this.incomingEdges = new Map();
     this.edgeIdGenerator = idGeneratorFactory();
     this.nodeIdGenerator = idGeneratorFactory();
   }
@@ -64,17 +68,23 @@ class Graph {
     }
 
     const id: EdgeId = this.edgeIdGenerator.next().value.toString();
-    const edgesFromSource = this.edges.get(sourceNodeId) || new Map<NodeId, Set<EdgeId>>();
+    const edgesFromDestination = this.incomingEdges.get(destinationNodeId) || new Map<NodeId, Set<EdgeId>>();
+    const edgesFromDestinationToSource = edgesFromDestination.get(sourceNodeId) || new Set();
+    edgesFromDestinationToSource.add(id);
+    edgesFromDestination.set(sourceNodeId, edgesFromDestinationToSource);
+    this.incomingEdges.set(destinationNodeId, edgesFromDestination);
+
+    const edgesFromSource = this.outgoingEdges.get(sourceNodeId) || new Map<NodeId, Set<EdgeId>>();
     const edgesFromSourceToDestination = edgesFromSource.get(destinationNodeId) || new Set();
     edgesFromSourceToDestination.add(id);
     edgesFromSource.set(destinationNodeId, edgesFromSourceToDestination);
-    this.edges.set(sourceNodeId, edgesFromSource);
+    this.outgoingEdges.set(sourceNodeId, edgesFromSource);
 
     return id;
   }
 
   public ensureEdgeExistsBetween(sourceNodeId: NodeId, destinationNodeId: NodeId) {
-    const edgesFromSource = this.edges.get(sourceNodeId);
+    const edgesFromSource = this.outgoingEdges.get(sourceNodeId);
     if (!edgesFromSource) {
       this.addEdge(sourceNodeId, destinationNodeId);
     } else {
@@ -87,9 +97,9 @@ class Graph {
   public toGraphViz() {
     const output = [];
     for (const [nodeId, node] of this.nodes.entries()) {
-      output.push(`"${nodeId}" [label="${node.type}"]`)
+      output.push(`"${nodeId}" [label="${node.type}"]`);
     }
-    for (const [sourceNodeId, destinationNodeIds] of this.edges.entries()) {
+    for (const [sourceNodeId, destinationNodeIds] of this.outgoingEdges.entries()) {
       for (const destinationNodeId of destinationNodeIds.keys()) {
         output.push(`"${sourceNodeId}" -> "${destinationNodeId}"`);
       }
@@ -106,4 +116,5 @@ ${output.join('\n')}
 
 export {
   Graph,
+  rootNodeId
 };

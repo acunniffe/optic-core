@@ -4,6 +4,7 @@ import * as expressHttpProxy from 'express-http-proxy';
 import * as http from 'http';
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
+import * as debug from 'debug';
 import { IApiInteraction, packageRequest } from './common';
 
 import * as EventEmitter from 'events';
@@ -13,6 +14,9 @@ interface IProxyServerOptions {
   targetHost: string
   targetPort: number
 }
+
+const debugProxyServerVerbose = debug('optic-debug:server:proxy-server');
+const debugProxyServer = debug('optic:server:proxy-server');
 
 class ProxyServer extends EventEmitter {
   private httpInstance: http.Server;
@@ -50,15 +54,15 @@ class ProxyServer extends EventEmitter {
       },
     });
     server.use('/', (_req, _res, next) => {
-      console.log('got req');
+      debugProxyServerVerbose('got request');
       next();
     }, proxyMiddleware);
 
     return new Promise<void>((resolve, reject) => {
       this.httpInstance = server
         .listen(options.proxyPort, () => {
-          console.log(`proxy listening on port ${options.proxyPort}`);
-          console.log(`proxy forwarding requests to ${options.targetHost}:${options.targetPort}`);
+          debugProxyServer(`proxy listening on port ${options.proxyPort}`);
+          debugProxyServer(`proxy forwarding requests to ${options.targetHost}:${options.targetPort}`);
           resolve();
         })
         .on('error', reject);

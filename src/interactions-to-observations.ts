@@ -143,6 +143,7 @@ export interface IStatusObserved extends IBaseObservation, IInteractionContext {
 
 interface ISecurityObserved extends IBaseObservation, IInteractionContext {
   type: 'SecurityObserved'
+  security: ISecurityConfig
 }
 
 enum ParameterSource {
@@ -239,7 +240,6 @@ class InteractionsToObservations {
 
     const pathParser = pathMatch({ sensitive: true })(path);
     const pathParameters = pathParser(url);
-    console.log({ url, pathParameters });
 
     const pathObservation: IPathObserved = {
       type: 'PathObserved',
@@ -281,8 +281,10 @@ class InteractionsToObservations {
         }
       }
     } else if (security.type === 'basic' || security.type === 'bearer') {
-      if (requestHeaders.authorization) {
+      const name = 'authorization';
+      if (requestHeaders[name]) {
         foundSecurityInRequest = true;
+        additionalHeadersToIgnore.add(name);
       }
     }
 
@@ -292,6 +294,7 @@ class InteractionsToObservations {
         method,
         path,
         statusCode,
+        security
       };
 
       observations.push(securityObservation);
@@ -360,7 +363,6 @@ class InteractionsToObservations {
       };
 
       observations.push(requestBodyObservation);
-      console.log({ requestBodyObservation });
     }
 
     // response headers
@@ -382,9 +384,7 @@ class InteractionsToObservations {
     // response cookies
     const responseCookie = responseHeaders['set-cookie'];
     if (responseCookie) {
-      console.log({ responseCookie });
       const parsedCookie = parse((responseCookie as string[]).join(';'));
-      console.log({ parsedCookie });
       Object.keys(parsedCookie)
         .forEach((cookieKey: string) => {
           const cookieValue = parsedCookie[cookieKey];
@@ -413,7 +413,6 @@ class InteractionsToObservations {
       };
 
       observations.push(responseBodyObservation);
-      console.log({ responseBodyObservation });
     }
 
     return observations;

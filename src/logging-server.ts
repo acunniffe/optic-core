@@ -1,4 +1,5 @@
 import * as express from 'express';
+import * as debug from 'debug';
 import { Request, Response } from 'express';
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
@@ -21,13 +22,16 @@ export interface ILoggingServerOptions {
   responseLoggingServerPort: number
 }
 
+const debugLoggingServer = debug('optic:server:logging-server');
+const debugLoggingServerVerbose = debug('optic-debug:server:logging-server');
+
 class LoggingServer extends EventEmitter {
   private httpInstances: http.Server[] = [];
   private requests: Map<RequestId, IRequestMetadata> = new Map();
   private responses: Map<RequestId, IResponseMetadata> = new Map();
 
   public start(options: ILoggingServerOptions) {
-    console.log('starting logging servers...');
+    debugLoggingServer('starting logging servers...');
     const promises = [
       this.startRequestLogging(options),
       this.startResponseLogging(options),
@@ -44,11 +48,10 @@ class LoggingServer extends EventEmitter {
     requestLoggingServer.use(bodyParser.urlencoded());
     requestLoggingServer.use(cookieParser());
     requestLoggingServer.use((_req, _res, next) => {
-      console.log('request logger');
-      console.log(_req);
+      debugLoggingServerVerbose('receiving request');
       next();
     });
-    requestLoggingServer.all('/*', (req: Request, res: Response) => {
+    requestLoggingServer.all('/', (req: Request, res: Response) => {
       const id = idGenerator.next().value.toString();
 
       const request = packageRequest(req);
@@ -61,7 +64,7 @@ class LoggingServer extends EventEmitter {
       const instance = requestLoggingServer
         .listen(options.requestLoggingServerPort, () => {
           this.httpInstances.push(instance);
-          console.log(`listening for requests on port ${options.requestLoggingServerPort}`);
+          debugLoggingServer(`listening for requests on port ${options.requestLoggingServerPort}`);
           resolve();
         })
         .on('error', reject);
@@ -73,12 +76,11 @@ class LoggingServer extends EventEmitter {
     responseLoggingServer.use(bodyParser.json());
     responseLoggingServer.use(bodyParser.urlencoded());
     responseLoggingServer.use((_req, _res, next) => {
-      console.log('response logger');
-      console.log(_req);
+      debugLoggingServerVerbose('receiving response');
       next();
     });
-    responseLoggingServer.post('/request/:requestId/status/:statusCode', (req: Request, res: Response) => {
-      const id = req.params.requestId;
+    responseLoggingServer.post('/interactions/:interactionId/status/:statusCode', (req: Request, res: Response) => {
+      const id = req.params.interactionId;
       if (!this.requests.has(id)) {
         return res.status(404).json({ message: `no request with id ${id} has been logged yet` });
       }
@@ -107,7 +109,7 @@ class LoggingServer extends EventEmitter {
       const instance = responseLoggingServer
         .listen(options.responseLoggingServerPort, () => {
           this.httpInstances.push(instance);
-          console.log(`listening for responses on port ${options.responseLoggingServerPort}`);
+          debugLoggingServer(`listening for responses on port ${options.responseLoggingServerPort}`);
           resolve();
         })
         .on('error', reject);
