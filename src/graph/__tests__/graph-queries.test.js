@@ -21,9 +21,9 @@ describe('GraphQueries', function() {
 
   describe('parent', function() {
     it('should should yield parent', function() {
-      expect(graphQueries.node('a').parent()).toThrow();
+      expect(() => graphQueries.node('a').parent()).toThrow();
       expect(graphQueries.node('b').parent().node.id).toEqual('a');
-      expect(graphQueries.node('c').parent()).toEqual('b');
+      expect(graphQueries.node('c').parent().node.id).toEqual('b');
     });
   });
 

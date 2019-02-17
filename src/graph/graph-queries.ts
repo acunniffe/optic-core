@@ -127,7 +127,7 @@ class NodeQueries {
   }
 }
 
-module.exports = {
+export {
   GraphQueries,
   NodeQueries,
 };

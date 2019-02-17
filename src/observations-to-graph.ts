@@ -1,9 +1,9 @@
 import * as deepdash from 'deepdash';
 import * as lodash from 'lodash';
-import { ISecurityConfig } from './entry-points/optic-cli';
+import { ISecurityConfig } from './session-manager';
 import { Graph, Node, NodeId, rootNodeId } from './graph/graph';
 import { Observation } from './interactions-to-observations';
-import { stringType } from './generate-schema.js';
+import { stringType } from './string-type.js';
 
 const _ = deepdash(lodash);
 
@@ -297,17 +297,25 @@ class ObservationsToGraph {
     const nodesByPath: Map<string, Node> = new Map();
     let currentParent = parentNode;
     for (const item of list) {
+
+      if (item.parentPath !== null) {
+        currentParent = nodesByPath.get(item.parentPath);
+      }
+
       let node: Node;
-      if (item.jsonSchemaType !== 'array' && item.jsonSchemaType !== 'object') {
-        // @ts-ignore
-        if (currentParent.data.jsonSchemaType === 'object') {
-          const propertyNode = ObjectPropertyNode(currentParent.id, item.key);
-          if (this.graph.tryAddNode(propertyNode.id, propertyNode.type, propertyNode.data)) {
-            this.graph.addEdge(propertyNode.id, currentParent.id);
-          }
-          currentParent = propertyNode;
+      // @ts-ignore
+      if (currentParent.data.jsonSchemaType === 'object') {
+        const propertyNode = ObjectPropertyNode(currentParent.id, item.key);
+        if (this.graph.tryAddNode(propertyNode.id, propertyNode.type, propertyNode.data)) {
+          this.graph.addEdge(propertyNode.id, currentParent.id);
         }
+        currentParent = propertyNode;
+      }
+      if (item.jsonSchemaType !== 'array' && item.jsonSchemaType !== 'object') {
         node = SchemaLeafNode(currentParent.id, item.jsonSchemaType);
+        if (this.graph.tryAddNode(node.id, node.type, node.data)) {
+          this.graph.addEdge(node.id, currentParent.id);
+        }
       } else {
         node = SchemaParentNode(currentParent.id, item.jsonSchemaType);
         if (this.graph.tryAddNode(node.id, node.type, node.data)) {
@@ -315,15 +323,7 @@ class ObservationsToGraph {
         }
         currentParent = node;
       }
-
-      if (this.graph.tryAddNode(node.id, node.type, node.data)) {
-        this.graph.addEdge(node.id, currentParent.id);
-      }
-
       nodesByPath.set(item.path, node);
-      if (item.parentPath !== null) {
-        currentParent = nodesByPath.get(item.parentPath);
-      }
     }
   }
 
@@ -337,6 +337,7 @@ class ObservationsToGraph {
         key, path, depth: depth + 1, parentPath, jsonSchemaType: this.jsonSchemaTypeString(value),
       });
     });
+
 
     return list;
   }

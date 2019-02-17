@@ -54,6 +54,7 @@ export function passThrough<T>(callback: Function) {
 
 export function getMatchingPath(url: string, pathMatcherList: IPathMatcher[]) {
   const matchedPath = pathMatcherList.find((pathMatcher: IPathMatcher) => pathMatcher.regexp.test(url));
+
   return matchedPath || null;
 }
 

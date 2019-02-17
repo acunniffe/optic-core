@@ -1,5 +1,5 @@
 import { Counter, IApiInteraction, IPathMatcher, pathToMatcher } from './common';
-import { IOpticCliOptions } from './entry-points/optic-cli';
+import { ISessionManagerOptions } from './session-manager';
 import {
   InteractionsToObservations,
   IObserverConfig, IPathObserved,
@@ -13,7 +13,7 @@ export interface IOpticReport {
 }
 
 class ReportBuilder {
-  public buildReport(options: IOpticCliOptions, samples: IApiInteraction[]): IOpticReport {
+  public buildReport(options: ISessionManagerOptions, samples: IApiInteraction[]): IOpticReport {
     const messages = [];
     if (samples.length === 0) {
       messages.push('I did not observe any API interactions :(');

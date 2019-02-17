@@ -3,9 +3,14 @@
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "build",
-    "removeComments": true
+    "removeComments": true,
+    "allowJs": false,
+    "declaration": true
   },
   "include": [
     "src/**/*"
+  ],
+  "exclude": [
+    "__tests__/**/*"
   ]
 }

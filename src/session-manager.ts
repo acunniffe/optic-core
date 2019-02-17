@@ -1,12 +1,8 @@
-process.env.DEBUG = process.env.DEBUG ? `${process.env.DEBUG},optic:*` : 'optic:*';
-import * as debug from 'debug';
 import { spawn, SpawnOptions } from 'child_process';
-import * as fs from 'fs';
-import { IApiInteraction, passThrough } from '../common';
-import { LoggingServer } from '../logging-server';
-import { ObservationsToGraph } from '../observations-to-graph';
-import { ProxyServer } from '../proxy-server';
-import { IOpticReport, ReportBuilder } from '../report-builder';
+import * as debug from 'debug';
+import { IApiInteraction, passThrough } from './common';
+import { LoggingServer } from './logging-server';
+import { ProxyServer } from './proxy-server';
 
 export interface IBaseSecurity {
   type: string
@@ -40,7 +36,7 @@ export interface ILoggingDocumentationConfig {
 
 export type IDocumentationConfig = IProxyDocumentationConfig | ILoggingDocumentationConfig
 
-export interface IOpticCliOptions {
+export interface ISessionManagerOptions {
   documentationStrategy: IDocumentationConfig;
   paths: string[]
   commandToRun: string
@@ -50,11 +46,11 @@ export interface IOpticCliOptions {
 const logCli = debug('optic:cli');
 const debugCliVerbose = debug('optic-debug:cli');
 
-class OpticCli {
+class SessionManager {
   public samples: IApiInteraction[];
-  private options: IOpticCliOptions;
+  private options: ISessionManagerOptions;
 
-  constructor(options: IOpticCliOptions) {
+  constructor(options: ISessionManagerOptions) {
     this.options = options;
     this.samples = [];
   }
@@ -107,7 +103,7 @@ class OpticCli {
       });
 
       child.on('exit', function(code) {
-        logCli(`child process exited with code ${code.toString()}`);
+        logCli(`Your command exited with code ${code.toString()}`);
         resolve(code === 0);
       });
     });
@@ -143,58 +139,6 @@ class OpticCli {
   }
 }
 
-const cliOptionsForProxy: IOpticCliOptions = {
-  paths: [
-    '/uses',
-    '/users',
-    '/users/login',
-    '/users/:userId/followers',
-  ],
-  security: [{
-    type: 'bearer',
-  }],
-  documentationStrategy: {
-    type: 'proxy',
-    targetPort: 3005,
-    targetHost: 'localhost',
-  },
-  commandToRun: 'npm run test',
+export {
+  SessionManager,
 };
-/*const cliOptionsForLogging: IOpticCliOptions = {
-  paths: [],
-  security: [{
-    type: 'bearer',
-  }],
-  documentationStrategy: {
-    type: 'logging',
-  },
-  commandToRun: 'sleep 60',
-};*/
-
-const cliOptions = cliOptionsForProxy;
-const cli = new OpticCli(cliOptions);
-cli
-  .run()
-  .then((successful: boolean) => {
-    if (successful) {
-      logCli('working...');
-      const report = new ReportBuilder().buildReport(cliOptions, cli.samples);
-
-      return report;
-    } else {
-      throw new Error(`The command was not successful :(`);
-    }
-  })
-  .then((report: IOpticReport) => {
-    logCli('done!');
-
-    const { messages, observations } = report;
-    messages.forEach((message) => logCli(message));
-
-    fs.writeFileSync('./optic-observations.json', JSON.stringify(observations));
-    const observationsToGraph = new ObservationsToGraph();
-    observationsToGraph.interpretObservations(observations);
-
-    fs.writeFileSync('./graphviz.txt', observationsToGraph.graph.toGraphViz());
-  });
-

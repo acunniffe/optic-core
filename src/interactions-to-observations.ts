@@ -1,7 +1,7 @@
 import { getMatchingPath, IApiInteraction, IPathMatcher } from './common';
 import * as pathMatch from 'path-match';
 import { parse } from 'cookie';
-import { ISecurityConfig } from './entry-points/optic-cli';
+import { ISecurityConfig } from './session-manager';
 /*
 interface IncomingHttpHeaders {
         'accept'?: string;

@@ -1,0 +1,3028 @@
+[
+  {
+    "type": "PathObserved",
+    "path": "/self/apis/:apiId"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/apis/:apiId",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/apis/:apiId",
+    "method": "GET",
+    "statusCode": "200"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId",
+    "statusCode": "200",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId",
+    "statusCode": "200",
+    "name": "apiId",
+    "source": "path",
+    "value": "api-a"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId",
+    "statusCode": "200",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId",
+    "statusCode": "200",
+    "contentType": "application/json",
+    "body": {
+      "info": {
+        "slug": "api-a",
+        "createdDate": "2019-02-16T13:32:00.231-05:00",
+        "subscribers": {
+          "users": {}
+        },
+        "teamwidePermissions": {
+          "read": true,
+          "write": false,
+          "administer": false
+        },
+        "uuid": "25dd6c04-3219-11e9-ac23-f56bc13e4479"
+      },
+      "history": {
+        "branches": {},
+        "totalSnapshots": 0
+      },
+      "collaborators": [],
+      "sessionPermissions": {
+        "read": true,
+        "write": true,
+        "administer": true
+      }
+    }
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self/apis/:apiId"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/apis/:apiId",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/apis/:apiId",
+    "method": "GET",
+    "statusCode": "404"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId",
+    "statusCode": "404",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId",
+    "statusCode": "404",
+    "name": "apiId",
+    "source": "path",
+    "value": "not-real"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId",
+    "statusCode": "404",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId",
+    "statusCode": "404",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self/apis/:apiId"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/apis/:apiId",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/apis/:apiId",
+    "method": "GET",
+    "statusCode": "404"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId",
+    "statusCode": "404",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId",
+    "statusCode": "404",
+    "name": "apiId",
+    "source": "path",
+    "value": "api-b"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId",
+    "statusCode": "404",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId",
+    "statusCode": "404",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self/apis/:apiId"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/apis/:apiId",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/apis/:apiId",
+    "method": "GET",
+    "statusCode": "401"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId",
+    "statusCode": "401",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId",
+    "statusCode": "401",
+    "name": "apiId",
+    "source": "path",
+    "value": "abcdefg"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId",
+    "statusCode": "401",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId",
+    "statusCode": "401",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/:teamId/apis/:apiId"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/:teamId/apis/:apiId",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/:teamId/apis/:apiId",
+    "method": "GET",
+    "statusCode": "200"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "200",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "200",
+    "name": "teamId",
+    "source": "path",
+    "value": "my-team-for-testing"
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "200",
+    "name": "apiId",
+    "source": "path",
+    "value": "team-api-a"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "200",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "200",
+    "contentType": "application/json",
+    "body": {
+      "info": {
+        "slug": "team-api-a",
+        "createdDate": "2019-02-16T13:32:01.873-05:00",
+        "subscribers": {
+          "users": {}
+        },
+        "teamwidePermissions": {
+          "read": true,
+          "write": false,
+          "administer": false
+        },
+        "uuid": "26d75c66-3219-11e9-ac23-61b7a5321e00"
+      },
+      "history": {
+        "branches": {},
+        "totalSnapshots": 0
+      },
+      "collaborators": [],
+      "teamInfo": {
+        "shortname": "my-team-for-testing",
+        "name": "TEAM",
+        "accountType": "team",
+        "createdDate": "2019-02-16T13:32:02.394-05:00"
+      },
+      "sessionPermissions": {
+        "read": true,
+        "write": true,
+        "administer": true
+      }
+    }
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/:teamId/apis/:apiId"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/:teamId/apis/:apiId",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/:teamId/apis/:apiId",
+    "method": "GET",
+    "statusCode": "404"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "404",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "404",
+    "name": "teamId",
+    "source": "path",
+    "value": "my-team-for-testing"
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "404",
+    "name": "apiId",
+    "source": "path",
+    "value": "not-real"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "404",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "404",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/:teamId/apis/:apiId"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/:teamId/apis/:apiId",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/:teamId/apis/:apiId",
+    "method": "GET",
+    "statusCode": "403"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "403",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "403",
+    "name": "teamId",
+    "source": "path",
+    "value": "my-team-for-testing"
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "403",
+    "name": "apiId",
+    "source": "path",
+    "value": "team-api-a"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "403",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "403",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/:teamId/apis/:apiId"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/:teamId/apis/:apiId",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/:teamId/apis/:apiId",
+    "method": "GET",
+    "statusCode": "401"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "401",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "401",
+    "name": "teamId",
+    "source": "path",
+    "value": "team-a"
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "401",
+    "name": "apiId",
+    "source": "path",
+    "value": "abc"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "401",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "401",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/:teamId"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/:teamId",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/:teamId",
+    "method": "GET",
+    "statusCode": "200"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/teams/:teamId",
+    "statusCode": "200",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId",
+    "statusCode": "200",
+    "name": "teamId",
+    "source": "path",
+    "value": "my-team"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/teams/:teamId",
+    "statusCode": "200",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/teams/:teamId",
+    "statusCode": "200",
+    "contentType": "application/json",
+    "body": {
+      "membersCount": 1,
+      "totalProjects": 0,
+      "info": {
+        "shortname": "my-team",
+        "name": "My Team",
+        "accountType": "team",
+        "createdDate": "2019-02-16T13:32:04.871-05:00",
+        "invited": []
+      },
+      "sharedProjects": [],
+      "isTeamAdmin": true,
+      "myPermissions": {},
+      "members": [
+        {
+          "name": "Test Optic User",
+          "isAdmin": true,
+          "memberSince": "2019-02-16T13:32:04.872-05:00",
+          "projectPermissions": {},
+          "id": "test-optic|agyZi6"
+        }
+      ]
+    }
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/:teamId"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/:teamId",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/:teamId",
+    "method": "GET",
+    "statusCode": "404"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/teams/:teamId",
+    "statusCode": "404",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId",
+    "statusCode": "404",
+    "name": "teamId",
+    "source": "path",
+    "value": "abc"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/teams/:teamId",
+    "statusCode": "404",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/teams/:teamId",
+    "statusCode": "404",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/:teamId"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/:teamId",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/:teamId",
+    "method": "GET",
+    "statusCode": "403"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/teams/:teamId",
+    "statusCode": "403",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId",
+    "statusCode": "403",
+    "name": "teamId",
+    "source": "path",
+    "value": "my-team"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/teams/:teamId",
+    "statusCode": "403",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/teams/:teamId",
+    "statusCode": "403",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/:teamId"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/:teamId",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/:teamId",
+    "method": "GET",
+    "statusCode": "401"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/teams/:teamId",
+    "statusCode": "401",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId",
+    "statusCode": "401",
+    "name": "teamId",
+    "source": "path",
+    "value": "my-team"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/teams/:teamId",
+    "statusCode": "401",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/teams/:teamId",
+    "statusCode": "401",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/",
+    "method": "POST",
+    "statusCode": "200"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/teams/",
+    "statusCode": "200",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/teams/",
+    "statusCode": "200",
+    "contentType": "application/json",
+    "body": {
+      "name": "My Team",
+      "shortname": "team-a",
+      "accountType": "team"
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "POST",
+    "path": "/teams/",
+    "statusCode": "200",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/teams/",
+    "statusCode": "200",
+    "contentType": "application/json",
+    "body": {
+      "shortname": "team-a",
+      "name": "My Team",
+      "accountType": "team",
+      "createdDate": "2019-02-16T13:32:20.414-05:00",
+      "invited": []
+    }
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/",
+    "method": "POST",
+    "statusCode": "400"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/teams/",
+    "statusCode": "400",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/teams/",
+    "statusCode": "400",
+    "contentType": "application/json",
+    "body": {
+      "name": "My Team",
+      "shortname": "team-conflict",
+      "accountType": "team"
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "POST",
+    "path": "/teams/",
+    "statusCode": "400",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/teams/",
+    "statusCode": "400",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/",
+    "method": "POST",
+    "statusCode": "401"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/teams/",
+    "statusCode": "401",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/teams/",
+    "statusCode": "401",
+    "contentType": "application/json",
+    "body": {
+      "name": "team",
+      "shortname": "team-for-auth",
+      "accountType": "team"
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "POST",
+    "path": "/teams/",
+    "statusCode": "401",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/teams/",
+    "statusCode": "401",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "method": "GET",
+    "statusCode": "200"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "200",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "200",
+    "name": "apiId",
+    "source": "path",
+    "value": "project-snapshot-test"
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "200",
+    "name": "snapshotId",
+    "source": "path",
+    "value": "3306b72d-3219-11e9-ac23-7bc15b1b102a"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "200",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "200",
+    "contentType": "application/json",
+    "body": {
+      "info": {
+        "branch": "master",
+        "userId": "test-optic|vXUp1y",
+        "projectId": "32b2cacc-3219-11e9-ac23-31b06934afd3",
+        "opticVersion": "0.3.0",
+        "published": false,
+        "name": "0.1.1",
+        "description": {},
+        "date": "2019-02-16T13:32:22.530-05:00",
+        "uuid": "3306b72d-3219-11e9-ac23-7bc15b1b102a"
+      },
+      "gqlResponse": {
+        "snapshot": {
+          "endpoints": [],
+          "securityDefinitions": []
+        }
+      }
+    }
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "method": "GET",
+    "statusCode": "403"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "403",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "403",
+    "name": "apiId",
+    "source": "path",
+    "value": "project-snapshot-test"
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "403",
+    "name": "snapshotId",
+    "source": "path",
+    "value": "3306b72d-3219-11e9-ac23-7bc15b1b102a"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "403",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "403",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "method": "GET",
+    "statusCode": "404"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "404",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "404",
+    "name": "apiId",
+    "source": "path",
+    "value": "project-snapshot-test"
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "404",
+    "name": "snapshotId",
+    "source": "path",
+    "value": "fake"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "404",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "404",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "method": "GET",
+    "statusCode": "404"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "404",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "404",
+    "name": "apiId",
+    "source": "path",
+    "value": "fake"
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "404",
+    "name": "snapshotId",
+    "source": "path",
+    "value": "3306b72d-3219-11e9-ac23-7bc15b1b102a"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "404",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "404",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "method": "GET",
+    "statusCode": "401"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "401",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "401",
+    "name": "apiId",
+    "source": "path",
+    "value": "any-project"
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "401",
+    "name": "snapshotId",
+    "source": "path",
+    "value": "id"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "401",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/self/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "401",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/:teamId/apis/:apiId"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/:teamId/apis/:apiId",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/:teamId/apis/:apiId",
+    "method": "GET",
+    "statusCode": "200"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "200",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "200",
+    "name": "teamId",
+    "source": "path",
+    "value": "my-team-for-testing"
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "200",
+    "name": "apiId",
+    "source": "path",
+    "value": "team-api-a"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "200",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "200",
+    "contentType": "application/json",
+    "body": {
+      "info": {
+        "slug": "team-api-a",
+        "createdDate": "2019-02-16T13:32:23.443-05:00",
+        "subscribers": {
+          "users": {}
+        },
+        "teamwidePermissions": {
+          "read": true,
+          "write": false,
+          "administer": false
+        },
+        "uuid": "33b2ae9e-3219-11e9-ac23-d77b5d6a1608"
+      },
+      "history": {
+        "branches": {
+          "master": [
+            {
+              "branch": "master",
+              "userId": "test-optic|vXUp1y",
+              "projectId": "33b2ae9e-3219-11e9-ac23-d77b5d6a1608",
+              "opticVersion": "0.3.0",
+              "published": false,
+              "name": "0.1.1",
+              "description": {},
+              "date": "2019-02-16T13:32:25.424-05:00",
+              "uuid": "34c1ad9f-3219-11e9-ac23-9b3d41097822"
+            }
+          ]
+        },
+        "default": {
+          "branch": "master",
+          "userId": "test-optic|vXUp1y",
+          "projectId": "33b2ae9e-3219-11e9-ac23-d77b5d6a1608",
+          "opticVersion": "0.3.0",
+          "published": false,
+          "name": "0.1.1",
+          "description": {},
+          "date": "2019-02-16T13:32:25.424-05:00",
+          "uuid": "34c1ad9f-3219-11e9-ac23-9b3d41097822"
+        },
+        "totalSnapshots": 1
+      },
+      "collaborators": [
+        {
+          "email": "testuser@gmail.com",
+          "name": "Test Optic User",
+          "user_id": "test-optic|vXUp1y",
+          "app_metadata": {
+            "apiTokens": []
+          }
+        }
+      ],
+      "teamInfo": {
+        "shortname": "my-team-for-testing",
+        "name": "TEAM",
+        "accountType": "team",
+        "createdDate": "2019-02-16T13:32:23.955-05:00"
+      },
+      "sessionPermissions": {
+        "read": true,
+        "write": true,
+        "administer": true
+      }
+    }
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/:teamId/apis/:apiId"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/:teamId/apis/:apiId",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/:teamId/apis/:apiId",
+    "method": "GET",
+    "statusCode": "403"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "403",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "403",
+    "name": "teamId",
+    "source": "path",
+    "value": "my-team-for-testing"
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "403",
+    "name": "apiId",
+    "source": "path",
+    "value": "team-api-a"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "403",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId",
+    "statusCode": "403",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "method": "GET",
+    "statusCode": "404"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "404",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "404",
+    "name": "teamId",
+    "source": "path",
+    "value": "my-team-for-testing"
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "404",
+    "name": "apiId",
+    "source": "path",
+    "value": "team-api-a"
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "404",
+    "name": "snapshotId",
+    "source": "path",
+    "value": "fake"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "404",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "404",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "method": "GET",
+    "statusCode": "404"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "404",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "404",
+    "name": "teamId",
+    "source": "path",
+    "value": "my-team"
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "404",
+    "name": "apiId",
+    "source": "path",
+    "value": "fake"
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "404",
+    "name": "snapshotId",
+    "source": "path",
+    "value": "34c1ad9f-3219-11e9-ac23-9b3d41097822"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "404",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "404",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "method": "GET",
+    "statusCode": "401"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "401",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "401",
+    "name": "teamId",
+    "source": "path",
+    "value": "team"
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "401",
+    "name": "apiId",
+    "source": "path",
+    "value": "any-project"
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "401",
+    "name": "snapshotId",
+    "source": "path",
+    "value": "id"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "401",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+    "statusCode": "401",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/:teamId/invite"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/:teamId/invite",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/:teamId/invite",
+    "method": "POST",
+    "statusCode": "200"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite",
+    "statusCode": "200",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite",
+    "statusCode": "200",
+    "name": "teamId",
+    "source": "path",
+    "value": "my-team"
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite",
+    "statusCode": "200",
+    "contentType": "application/json",
+    "body": {
+      "emails": [
+        "test@optic.com",
+        "test2@optic.com"
+      ]
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite",
+    "statusCode": "200",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite",
+    "statusCode": "200",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/:teamId/invite"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/:teamId/invite",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/:teamId/invite",
+    "method": "POST",
+    "statusCode": "200"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite",
+    "statusCode": "200",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite",
+    "statusCode": "200",
+    "name": "teamId",
+    "source": "path",
+    "value": "my-team"
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite",
+    "statusCode": "200",
+    "contentType": "application/json",
+    "body": {
+      "emails": [
+        "test@optic.com",
+        "test2@optic.com"
+      ]
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite",
+    "statusCode": "200",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite",
+    "statusCode": "200",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/:teamId/invite"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/:teamId/invite",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/:teamId/invite",
+    "method": "POST",
+    "statusCode": "401"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite",
+    "statusCode": "401",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite",
+    "statusCode": "401",
+    "name": "teamId",
+    "source": "path",
+    "value": "my-team"
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite",
+    "statusCode": "401",
+    "contentType": "application/json",
+    "body": {
+      "emails": [
+        "example@example.com"
+      ]
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite",
+    "statusCode": "401",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite",
+    "statusCode": "401",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self/apis/:apiId/snapshots"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/apis/:apiId/snapshots",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/apis/:apiId/snapshots",
+    "method": "POST",
+    "statusCode": "200"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/self/apis/:apiId/snapshots",
+    "statusCode": "200",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "POST",
+    "path": "/self/apis/:apiId/snapshots",
+    "statusCode": "200",
+    "name": "apiId",
+    "source": "path",
+    "value": "project-snapshot-test"
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/self/apis/:apiId/snapshots",
+    "statusCode": "200",
+    "contentType": "application/json",
+    "body": {
+      "observations": [],
+      "branch": "master",
+      "opticVersion": "0.3.0",
+      "commitName": "0.1.1",
+      "published": false
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "POST",
+    "path": "/self/apis/:apiId/snapshots",
+    "statusCode": "200",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/self/apis/:apiId/snapshots",
+    "statusCode": "200",
+    "contentType": "application/json",
+    "body": {
+      "branch": "master",
+      "userId": "test-optic|AV4FQX",
+      "projectId": "3bab3d70-3219-11e9-ac23-cb78b9858c8b",
+      "opticVersion": "0.3.0",
+      "published": false,
+      "name": "0.1.1",
+      "description": {},
+      "date": "2019-02-16T13:32:37.640-05:00",
+      "uuid": "3c082a81-3219-11e9-ac23-3102a1de4a4a"
+    }
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self/apis/:apiId/snapshots"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/apis/:apiId/snapshots",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/apis/:apiId/snapshots",
+    "method": "POST",
+    "statusCode": "404"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/self/apis/:apiId/snapshots",
+    "statusCode": "404",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "POST",
+    "path": "/self/apis/:apiId/snapshots",
+    "statusCode": "404",
+    "name": "apiId",
+    "source": "path",
+    "value": "project-snapshot-test"
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/self/apis/:apiId/snapshots",
+    "statusCode": "404",
+    "contentType": "application/json",
+    "body": {
+      "observations": [],
+      "branch": "master",
+      "opticVersion": "0.3.0",
+      "commitName": "0.1.1",
+      "published": false
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "POST",
+    "path": "/self/apis/:apiId/snapshots",
+    "statusCode": "404",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/self/apis/:apiId/snapshots",
+    "statusCode": "404",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self/apis/:apiId/snapshots"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/apis/:apiId/snapshots",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/apis/:apiId/snapshots",
+    "method": "POST",
+    "statusCode": "404"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/self/apis/:apiId/snapshots",
+    "statusCode": "404",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "POST",
+    "path": "/self/apis/:apiId/snapshots",
+    "statusCode": "404",
+    "name": "apiId",
+    "source": "path",
+    "value": "fake"
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/self/apis/:apiId/snapshots",
+    "statusCode": "404",
+    "contentType": "application/json",
+    "body": {
+      "observations": [],
+      "branch": "master",
+      "opticVersion": "0.3.0",
+      "commitName": "0.1.1",
+      "published": false
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "POST",
+    "path": "/self/apis/:apiId/snapshots",
+    "statusCode": "404",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/self/apis/:apiId/snapshots",
+    "statusCode": "404",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/:teamId/apis/:apiId/snapshots"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/:teamId/apis/:apiId/snapshots",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/:teamId/apis/:apiId/snapshots",
+    "method": "POST",
+    "statusCode": "200"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/apis/:apiId/snapshots",
+    "statusCode": "200",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/apis/:apiId/snapshots",
+    "statusCode": "200",
+    "name": "teamId",
+    "source": "path",
+    "value": "my-team-for-testing"
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/apis/:apiId/snapshots",
+    "statusCode": "200",
+    "name": "apiId",
+    "source": "path",
+    "value": "team-api-a"
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/apis/:apiId/snapshots",
+    "statusCode": "200",
+    "contentType": "application/json",
+    "body": {
+      "observations": [],
+      "branch": "master",
+      "opticVersion": "0.3.0",
+      "commitName": "0.1.1",
+      "published": false
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/apis/:apiId/snapshots",
+    "statusCode": "200",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/apis/:apiId/snapshots",
+    "statusCode": "200",
+    "contentType": "application/json",
+    "body": {
+      "branch": "master",
+      "userId": "test-optic|AV4FQX",
+      "projectId": "3c5efd12-3219-11e9-ac23-c9fe0e6588a4",
+      "opticVersion": "0.3.0",
+      "published": false,
+      "name": "0.1.1",
+      "description": {},
+      "date": "2019-02-16T13:32:40.519-05:00",
+      "uuid": "3d69b653-3219-11e9-ac23-134358fd1893"
+    }
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/:teamId/apis/:apiId/snapshots"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/:teamId/apis/:apiId/snapshots",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/:teamId/apis/:apiId/snapshots",
+    "method": "POST",
+    "statusCode": "403"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/apis/:apiId/snapshots",
+    "statusCode": "403",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/apis/:apiId/snapshots",
+    "statusCode": "403",
+    "name": "teamId",
+    "source": "path",
+    "value": "my-team-for-testing"
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/apis/:apiId/snapshots",
+    "statusCode": "403",
+    "name": "apiId",
+    "source": "path",
+    "value": "team-api-a"
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/apis/:apiId/snapshots",
+    "statusCode": "403",
+    "contentType": "application/json",
+    "body": {
+      "observations": [],
+      "branch": "master",
+      "opticVersion": "0.3.0",
+      "commitName": "0.1.1",
+      "published": false
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/apis/:apiId/snapshots",
+    "statusCode": "403",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/apis/:apiId/snapshots",
+    "statusCode": "403",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self/apis/:apiId/snapshots"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/apis/:apiId/snapshots",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/apis/:apiId/snapshots",
+    "method": "POST",
+    "statusCode": "404"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/self/apis/:apiId/snapshots",
+    "statusCode": "404",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "POST",
+    "path": "/self/apis/:apiId/snapshots",
+    "statusCode": "404",
+    "name": "apiId",
+    "source": "path",
+    "value": "fake"
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/self/apis/:apiId/snapshots",
+    "statusCode": "404",
+    "contentType": "application/json",
+    "body": {
+      "observations": [],
+      "branch": "master",
+      "opticVersion": "0.3.0",
+      "commitName": "0.1.1",
+      "published": false
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "POST",
+    "path": "/self/apis/:apiId/snapshots",
+    "statusCode": "404",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/self/apis/:apiId/snapshots",
+    "statusCode": "404",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self",
+    "method": "GET",
+    "statusCode": "200"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/self",
+    "statusCode": "200",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/self",
+    "statusCode": "200",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/self",
+    "statusCode": "200",
+    "contentType": "application/json",
+    "body": {
+      "email": "acunniffe@gmail.com",
+      "name": "Aidan Cunniffe",
+      "user_id": "google-oauth2|106827456778846722760",
+      "app_metadata": {
+        "apiTokens": []
+      }
+    }
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self",
+    "method": "GET",
+    "statusCode": "404"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/self",
+    "statusCode": "404",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/self",
+    "statusCode": "404",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/self",
+    "statusCode": "404",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self",
+    "method": "GET",
+    "statusCode": "401"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/self",
+    "statusCode": "401",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/self",
+    "statusCode": "401",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/self",
+    "statusCode": "401",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self/api-tokens"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/api-tokens",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/api-tokens",
+    "method": "GET",
+    "statusCode": "200"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/self/api-tokens",
+    "statusCode": "200",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/self/api-tokens",
+    "statusCode": "200",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/self/api-tokens",
+    "statusCode": "200",
+    "contentType": "application/json",
+    "body": [
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWJqZWN0IjoiZ29vZ2xlLW9hdXRoMnwxMDY4Mjc0NTY3Nzg4NDY3MjI3NjAiLCJpc3N1ZWRBdCI6MTU1MDM0MTk2MzYwMTAwMH0.EvGjKiNyDN95tjAhxeKCxOY7OusKhrWyG6q5ZtH1oKo",
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWJqZWN0IjoiZ29vZ2xlLW9hdXRoMnwxMDY4Mjc0NTY3Nzg4NDY3MjI3NjAiLCJpc3N1ZWRBdCI6MTU1MDM0MTk2MzYwMTAwMH0.EvGjKiNyDN95tjAhxeKCxOY7OusKhrWyG6q5ZtH1oKo"
+    ]
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self/api-tokens"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/api-tokens",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/api-tokens",
+    "method": "GET",
+    "statusCode": "401"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/self/api-tokens",
+    "statusCode": "401",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/self/api-tokens",
+    "statusCode": "401",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/self/api-tokens",
+    "statusCode": "401",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self/api-tokens"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/api-tokens",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/api-tokens",
+    "method": "POST",
+    "statusCode": "401"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/self/api-tokens",
+    "statusCode": "401",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "POST",
+    "path": "/self/api-tokens",
+    "statusCode": "401",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/self/api-tokens",
+    "statusCode": "401",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self/api-tokens/:token"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/api-tokens/:token",
+    "method": "DELETE"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/api-tokens/:token",
+    "method": "DELETE",
+    "statusCode": "200"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "DELETE",
+    "path": "/self/api-tokens/:token",
+    "statusCode": "200",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "DELETE",
+    "path": "/self/api-tokens/:token",
+    "statusCode": "200",
+    "name": "token",
+    "source": "path",
+    "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWJqZWN0IjoiZ29vZ2xlLW9hdXRoMnwxMDY4Mjc0NTY3Nzg4NDY3MjI3NjAiLCJpc3N1ZWRBdCI6MTU1MDM0MTk2NDMyNDAwMH0.P9WY-PGFLJEDWO-O5dxJsNl6lm9L6G5y08FRwDfBUBY"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "DELETE",
+    "path": "/self/api-tokens/:token",
+    "statusCode": "200",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "DELETE",
+    "path": "/self/api-tokens/:token",
+    "statusCode": "200",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self/api-tokens/:token"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/api-tokens/:token",
+    "method": "DELETE"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/api-tokens/:token",
+    "method": "DELETE",
+    "statusCode": "401"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "DELETE",
+    "path": "/self/api-tokens/:token",
+    "statusCode": "401",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "DELETE",
+    "path": "/self/api-tokens/:token",
+    "statusCode": "401",
+    "name": "token",
+    "source": "path",
+    "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWJqZWN0IjoiZ29vZ2xlLW9hdXRoMnwxMDY4Mjc0NTY3Nzg4NDY3MjI3NjAiLCJpc3N1ZWRBdCI6MTU1MDM0MTk2Mjk4MDAwMH0.SutMlg8v6h4im3FYuUcLC-Tj9xBHqgmIt90ecz1G31Q"
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "DELETE",
+    "path": "/self/api-tokens/:token",
+    "statusCode": "401",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "DELETE",
+    "path": "/self/api-tokens/:token",
+    "statusCode": "401",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self/apis"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/apis",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/apis",
+    "method": "POST",
+    "statusCode": "200"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/self/apis",
+    "statusCode": "200",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/self/apis",
+    "statusCode": "200",
+    "contentType": "application/json",
+    "body": {
+      "slug": "my-project"
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "POST",
+    "path": "/self/apis",
+    "statusCode": "200",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/self/apis",
+    "statusCode": "200",
+    "contentType": "application/json",
+    "body": {
+      "slug": "my-project",
+      "createdDate": "2019-02-16T13:32:45.886-05:00",
+      "subscribers": {
+        "users": {}
+      },
+      "teamwidePermissions": {
+        "read": true,
+        "write": false,
+        "administer": false
+      },
+      "uuid": "41133654-3219-11e9-ac23-850405d801da"
+    }
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self/apis"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/apis",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/apis",
+    "method": "POST",
+    "statusCode": "400"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/self/apis",
+    "statusCode": "400",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/self/apis",
+    "statusCode": "400",
+    "contentType": "application/json",
+    "body": {
+      "slug": "my-project"
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "POST",
+    "path": "/self/apis",
+    "statusCode": "400",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/self/apis",
+    "statusCode": "400",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self/apis"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/apis",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/apis",
+    "method": "POST",
+    "statusCode": "401"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/self/apis",
+    "statusCode": "401",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/self/apis",
+    "statusCode": "401",
+    "contentType": "application/json",
+    "body": {
+      "slug": "my-project"
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "POST",
+    "path": "/self/apis",
+    "statusCode": "401",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/self/apis",
+    "statusCode": "401",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self/memberships"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/memberships",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/memberships",
+    "method": "GET",
+    "statusCode": "200"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/self/memberships",
+    "statusCode": "200",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/self/memberships",
+    "statusCode": "200",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/self/memberships",
+    "statusCode": "200",
+    "contentType": "application/json",
+    "body": [
+      {
+        "name": "test-team",
+        "shortname": "test-team",
+        "isAdmin": true,
+        "memberSince": "2019-02-16T13:32:47.044-05:00",
+        "memberCount": 1
+      }
+    ]
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self",
+    "method": "GET",
+    "statusCode": "404"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/self",
+    "statusCode": "404",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/self",
+    "statusCode": "404",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/self",
+    "statusCode": "404",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/self/memberships"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/self/memberships",
+    "method": "GET"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/self/memberships",
+    "method": "GET",
+    "statusCode": "401"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "GET",
+    "path": "/self/memberships",
+    "statusCode": "401",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "GET",
+    "path": "/self/memberships",
+    "statusCode": "401",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "GET",
+    "path": "/self/memberships",
+    "statusCode": "401",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/:teamId/invite/accept"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/:teamId/invite/accept",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/:teamId/invite/accept",
+    "method": "POST",
+    "statusCode": "200"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite/accept",
+    "statusCode": "200",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite/accept",
+    "statusCode": "200",
+    "name": "teamId",
+    "source": "path",
+    "value": "my-team-for-invites"
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite/accept",
+    "statusCode": "200",
+    "contentType": "application/json",
+    "body": {
+      "token": "jhd2toleqdbucougiuigc1rp"
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite/accept",
+    "statusCode": "200",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite/accept",
+    "statusCode": "200",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/:teamId/invite/accept"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/:teamId/invite/accept",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/:teamId/invite/accept",
+    "method": "POST",
+    "statusCode": "400"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite/accept",
+    "statusCode": "400",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite/accept",
+    "statusCode": "400",
+    "name": "teamId",
+    "source": "path",
+    "value": "my-team-for-invites"
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite/accept",
+    "statusCode": "400",
+    "contentType": "application/json",
+    "body": {
+      "token": "6r2hdppiul83c47tius9epm8"
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite/accept",
+    "statusCode": "400",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite/accept",
+    "statusCode": "400",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/:teamId/invite/accept"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/:teamId/invite/accept",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/:teamId/invite/accept",
+    "method": "POST",
+    "statusCode": "400"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite/accept",
+    "statusCode": "400",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite/accept",
+    "statusCode": "400",
+    "name": "teamId",
+    "source": "path",
+    "value": "my-team-for-invites"
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite/accept",
+    "statusCode": "400",
+    "contentType": "application/json",
+    "body": {
+      "token": "BAD TOKEN"
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite/accept",
+    "statusCode": "400",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite/accept",
+    "statusCode": "400",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  },
+  {
+    "type": "PathObserved",
+    "path": "/teams/:teamId/invite/accept"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/teams/:teamId/invite/accept",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/teams/:teamId/invite/accept",
+    "method": "POST",
+    "statusCode": "401"
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite/accept",
+    "statusCode": "401",
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite/accept",
+    "statusCode": "401",
+    "name": "teamId",
+    "source": "path",
+    "value": "my-team-for-invites"
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite/accept",
+    "statusCode": "401",
+    "contentType": "application/json",
+    "body": {
+      "token": "TOKEN"
+    }
+  },
+  {
+    "type": "ResponseHeaderObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite/accept",
+    "statusCode": "401",
+    "name": "transfer-encoding",
+    "value": "chunked"
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/teams/:teamId/invite/accept",
+    "statusCode": "401",
+    "contentType": "text/plain; charset=UTF-8",
+    "body": {}
+  }
+]
