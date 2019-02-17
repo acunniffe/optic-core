@@ -1,7 +1,8 @@
-import { getMatchingPath, IApiInteraction, IPathMatcher } from './common';
-import * as pathMatch from 'path-match';
 import { parse } from 'cookie';
+import * as pathMatch from 'path-match';
+import { getMatchingPath, IApiInteraction, IPathMatcher } from './common';
 import { ISecurityConfig } from './session-manager';
+import { flattenJavascriptValueToList, IFlattenedJsValueItem } from './value-to-shape';
 /*
 interface IncomingHttpHeaders {
         'accept'?: string;
@@ -117,6 +118,8 @@ const headerBlacklist = new Set([
   'Save-Data',
 ].map(x => x.toLowerCase()));
 
+export type DataShape = IFlattenedJsValueItem[];
+
 export interface IBaseObservation {
   type: string
 }
@@ -156,7 +159,7 @@ interface IRequestParameterObserved extends IBaseObservation, IInteractionContex
   type: 'RequestParameterObserved'
   source: ParameterSource
   name: string
-  value: string | object | any[]
+  valueShape: DataShape
 }
 
 interface IInteractionContext {
@@ -168,25 +171,25 @@ interface IInteractionContext {
 interface IRequestBodyObserved extends IBaseObservation, IInteractionContext {
   type: 'RequestBodyObserved'
   contentType: string
-  body: any
+  bodyShape: IFlattenedJsValueItem[]
 }
 
 interface IResponseHeaderObserved extends IBaseObservation, IInteractionContext {
   type: 'ResponseHeaderObserved',
   name: string,
-  value: string
+  valueShape: DataShape
 }
 
 interface IResponseCookieObserved extends IBaseObservation, IInteractionContext {
   type: 'ResponseCookieObserved',
   name: string,
-  value: string
+  valueShape: DataShape
 }
 
 interface IResponseBodyObserved extends IBaseObservation, IInteractionContext {
   type: 'ResponseBodyObserved'
   contentType: string
-  body: any
+  bodyShape: IFlattenedJsValueItem[]
 }
 
 export type Observation =
@@ -314,7 +317,7 @@ class InteractionsToObservations {
           statusCode,
           name: headerName,
           source: ParameterSource.header,
-          value,
+          valueShape: flattenJavascriptValueToList(value),
         };
         observations.push(observation);
       });
@@ -331,7 +334,7 @@ class InteractionsToObservations {
           statusCode,
           name: queryParameterName,
           source: ParameterSource.query,
-          value,
+          valueShape: flattenJavascriptValueToList(value),
         };
         observations.push(observation);
       });
@@ -347,7 +350,7 @@ class InteractionsToObservations {
           statusCode,
           name: pathParameterName,
           source: ParameterSource.path,
-          value,
+          valueShape: flattenJavascriptValueToList(value),
         };
         observations.push(observation);
       });
@@ -361,7 +364,7 @@ class InteractionsToObservations {
         path,
         statusCode,
         contentType: requestContentType.toString(),
-        body: request.body,
+        bodyShape: flattenJavascriptValueToList(request.body),
       };
 
       observations.push(requestBodyObservation);
@@ -378,7 +381,7 @@ class InteractionsToObservations {
           path,
           statusCode,
           name: responseHeaderKey,
-          value,
+          valueShape: flattenJavascriptValueToList(value),
         };
         observations.push(responseHeaderObservation);
       });
@@ -396,7 +399,7 @@ class InteractionsToObservations {
             path,
             statusCode,
             name: cookieKey,
-            value: cookieValue,
+            valueShape: flattenJavascriptValueToList(cookieValue),
           };
           observations.push(responseCookieObservation);
         });
@@ -411,7 +414,7 @@ class InteractionsToObservations {
         path,
         statusCode,
         contentType: responseContentType.toString(),
-        body: response.body,
+        bodyShape: flattenJavascriptValueToList(response.body),
       };
 
       observations.push(responseBodyObservation);

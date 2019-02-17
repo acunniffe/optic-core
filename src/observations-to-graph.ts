@@ -1,11 +1,7 @@
-import * as deepdash from 'deepdash';
-import * as lodash from 'lodash';
 import { ISecurityConfig } from './session-manager';
 import { Graph, Node, NodeId, rootNodeId } from './graph/graph';
 import { Observation } from './interactions-to-observations';
-import { stringType } from './string-type';
-
-const _ = deepdash(lodash);
+import { IFlattenedJsValueItem } from './value-to-shape';
 
 function PathNode(path: string) {
   const type = 'path';
@@ -188,7 +184,7 @@ class ObservationsToGraph {
 
   constructor() {
     this.graph = new Graph();
-    this.graph.addNode(rootNodeId, 'root', {});
+    this.graph.addNode(rootNodeId, rootNodeId, {});
   }
 
   public interpretObservations(observations: Observation[]) {
@@ -197,7 +193,7 @@ class ObservationsToGraph {
         const { path } = observation;
         const node = PathNode(path);
         if (this.graph.tryAddNode(node.id, node.type, node.data)) {
-          this.graph.addEdge(node.id, 'root');
+          this.graph.addEdge(node.id, rootNodeId);
         }
       } else if (observation.type === 'MethodObserved') {
         const { path, method } = observation;
@@ -223,12 +219,12 @@ class ObservationsToGraph {
         const { path, method, statusCode, security } = observation;
         const node = SecurityNode(security);
         if (this.graph.tryAddNode(node.id, node.type, node.data)) {
-          this.graph.addEdge(node.id, 'root');
+          this.graph.addEdge(node.id, rootNodeId);
           const requestNode = RequestNode(path, method, statusCode);
           this.graph.ensureEdgeExistsBetween(requestNode.id, node.id);
         }
       } else if (observation.type === 'RequestParameterObserved') {
-        const { path, method, statusCode, source, name, value } = observation;
+        const { path, method, statusCode, source, name, valueShape } = observation;
         const node = RequestParameterNode(path, method, statusCode, source, name);
         const schemaRootNode = SchemaRootNode(node.id);
 
@@ -239,9 +235,9 @@ class ObservationsToGraph {
           this.graph.addNode(schemaRootNode.id, schemaRootNode.type, schemaRootNode.data);
           this.graph.addEdge(schemaRootNode.id, node.id);
         }
-        this.mergeSchema(schemaRootNode, value);
+        this.mergeSchema(schemaRootNode, valueShape);
       } else if (observation.type === 'RequestBodyObserved') {
-        const { path, method, statusCode, contentType, body } = observation;
+        const { path, method, statusCode, contentType, bodyShape } = observation;
         const requestNode = RequestNode(path, method, statusCode);
         const node = BodyNode(requestNode.id, contentType);
         const schemaRootNode = SchemaRootNode(node.id);
@@ -251,9 +247,9 @@ class ObservationsToGraph {
           this.graph.addNode(schemaRootNode.id, schemaRootNode.type, schemaRootNode.data);
           this.graph.addEdge(schemaRootNode.id, node.id);
         }
-        this.mergeSchema(schemaRootNode, body);
+        this.mergeSchema(schemaRootNode, bodyShape);
       } else if (observation.type === 'ResponseBodyObserved') {
-        const { path, method, statusCode, contentType, body } = observation;
+        const { path, method, statusCode, contentType, bodyShape } = observation;
         const responseNode = ResponseNode(path, method, statusCode);
         const node = BodyNode(responseNode.id, contentType);
         const schemaRootNode = SchemaRootNode(node.id);
@@ -263,9 +259,9 @@ class ObservationsToGraph {
           this.graph.addNode(schemaRootNode.id, schemaRootNode.type, schemaRootNode.data);
           this.graph.addEdge(schemaRootNode.id, node.id);
         }
-        this.mergeSchema(schemaRootNode, body);
+        this.mergeSchema(schemaRootNode, bodyShape);
       } else if (observation.type === 'ResponseHeaderObserved') {
-        const { path, method, statusCode, name, value } = observation;
+        const { path, method, statusCode, name, valueShape } = observation;
         const responseNode = ResponseNode(path, method, statusCode);
         const node = ResponseHeaderNode(responseNode.id, name);
         const schemaRootNode = SchemaRootNode(node.id);
@@ -275,9 +271,9 @@ class ObservationsToGraph {
           this.graph.addNode(schemaRootNode.id, schemaRootNode.type, schemaRootNode.data);
           this.graph.addEdge(schemaRootNode.id, node.id);
         }
-        this.mergeSchema(schemaRootNode, value);
+        this.mergeSchema(schemaRootNode, valueShape);
       } else if (observation.type === 'ResponseCookieObserved') {
-        const { path, method, statusCode, name, value } = observation;
+        const { path, method, statusCode, name, valueShape } = observation;
         const responseNode = ResponseNode(path, method, statusCode);
         const node = ResponseCookieNode(responseNode.id, name);
         const schemaRootNode = SchemaRootNode(node.id);
@@ -287,13 +283,12 @@ class ObservationsToGraph {
           this.graph.addNode(schemaRootNode.id, schemaRootNode.type, schemaRootNode.data);
           this.graph.addEdge(schemaRootNode.id, node.id);
         }
-        this.mergeSchema(schemaRootNode, value);
+        this.mergeSchema(schemaRootNode, valueShape);
       }
     }
   }
 
-  private mergeSchema(parentNode: Node, value: any) {
-    const list = this.flattenJavascriptValueToList(value);
+  private mergeSchema(parentNode: Node, list: IFlattenedJsValueItem[]) {
     const nodesByPath: Map<string, Node> = new Map();
     let currentParent = parentNode;
     for (const item of list) {
@@ -321,29 +316,9 @@ class ObservationsToGraph {
         if (this.graph.tryAddNode(node.id, node.type, node.data)) {
           this.graph.addEdge(node.id, currentParent.id);
         }
-        currentParent = node;
       }
       nodesByPath.set(item.path, node);
     }
-  }
-
-  private flattenJavascriptValueToList(x: any) {
-    const list = [
-      { key: '', parentPath: null, path: '', depth: 0, jsonSchemaType: this.jsonSchemaTypeString(x) },
-    ];
-
-    _.eachDeep(x, (value: any, key: string, path: string, depth: number, _parent: any, _parentKey: string, parentPath: string) => {
-      list.push({
-        key, path, depth: depth + 1, parentPath, jsonSchemaType: this.jsonSchemaTypeString(value),
-      });
-    });
-
-
-    return list;
-  }
-
-  private jsonSchemaTypeString(value: any) {
-    return stringType(value).toLowerCase();
   }
 }
 

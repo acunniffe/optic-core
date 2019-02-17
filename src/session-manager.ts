@@ -26,12 +26,14 @@ export type ISecurityConfig = IBasicAuthSecurity | IBearerTokenSecurity | IApiKe
 
 export interface IProxyDocumentationConfig {
   type: 'proxy'
+  commandToRun: string
   targetHost: string
   targetPort: number
 }
 
 export interface ILoggingDocumentationConfig {
   type: 'logging'
+  commandToRun: string
 }
 
 export type IDocumentationConfig = IProxyDocumentationConfig | ILoggingDocumentationConfig
@@ -42,8 +44,7 @@ export interface IApiMeta {
 }
 
 export interface ISessionManagerOptions {
-  documentationStrategy: IDocumentationConfig;
-  commandToRun: string
+  strategy: IDocumentationConfig;
   api: IApiMeta
 }
 
@@ -77,7 +78,7 @@ class SessionManager {
         targetPort,
       })
       .then(() => {
-        return this.runCommand(this.options.commandToRun);
+        return this.runCommand(config.commandToRun);
       })
       .then(passThrough(() => {
         proxy.stop();
@@ -115,7 +116,7 @@ class SessionManager {
     return task;
   }
 
-  public useLoggingServer() {
+  public useLoggingServer(config: ILoggingDocumentationConfig) {
     const loggingServer = new LoggingServer();
     loggingServer.on('sample', this.handleSample.bind(this));
 
@@ -125,7 +126,7 @@ class SessionManager {
         responseLoggingServerPort: 30335,
       })
       .then(() => {
-        return this.runCommand(this.options.commandToRun);
+        return this.runCommand(config.commandToRun);
       })
       .then(passThrough(() => {
         loggingServer.stop();
@@ -133,14 +134,14 @@ class SessionManager {
   }
 
   public run() {
-    const { documentationStrategy } = this.options;
-    if (documentationStrategy.type === 'logging') {
-      return this.useLoggingServer();
-    } else if (documentationStrategy.type === 'proxy') {
-      return this.useProxyServer(documentationStrategy);
+    const { strategy } = this.options;
+    if (strategy.type === 'logging') {
+      return this.useLoggingServer(strategy);
+    } else if (strategy.type === 'proxy') {
+      return this.useProxyServer(strategy);
     }
 
-    return Promise.reject(new Error(`unknown documentationStrategy ${documentationStrategy}`));
+    return Promise.reject(new Error(`unknown strategy ${JSON.stringify(strategy)}`));
   }
 }
 

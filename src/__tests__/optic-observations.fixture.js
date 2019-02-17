@@ -1,15 +1,18 @@
-const pathObservations = [{
-  'type': 'PathObserved',
-  'path': '/teams/:teamId/invite',
-},
+const { flattenJavascriptValueToList } = require('../value-to-shape');
+
+const pathObservations = [
+  {
+    'type': 'PathObserved',
+    'path': '/',
+  },
   {
     'type': 'MethodObserved',
-    'path': '/teams/:teamId/invite',
+    'path': '/',
     'method': 'POST',
   },
   {
     'type': 'StatusObserved',
-    'path': '/teams/:teamId/invite',
+    'path': '/',
     'method': 'POST',
     'statusCode': '200',
   }];
@@ -18,10 +21,10 @@ const singleRequestBody = (body) => [
   {
     type: 'RequestBodyObserved',
     method: 'POST',
-    path: '/teams/:teamId/invite',
+    path: '/',
     statusCode: '200',
     contentType: 'application/json',
-    body,
+    bodyShape: flattenJavascriptValueToList(body),
   },
 ];
 
