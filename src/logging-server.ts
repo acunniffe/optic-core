@@ -51,7 +51,7 @@ class LoggingServer extends EventEmitter {
       debugLoggingServerVerbose('receiving request');
       next();
     });
-    requestLoggingServer.all('/', (req: Request, res: Response) => {
+    requestLoggingServer.all('*', (req: Request, res: Response) => {
       const id = idGenerator.next().value.toString();
 
       const request = packageRequest(req);
