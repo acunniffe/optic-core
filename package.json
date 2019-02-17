@@ -19,7 +19,6 @@
     "@types/node": "^10.12.18",
     "@types/path-to-regexp": "^1.7.0",
     "jest": "~23.6.0",
-    "nodemon": "^1.18.9",
     "prettier": "1.15.3",
     "rimraf": "^2.6.3",
     "ts-jest": "~23.10.5",
@@ -36,9 +35,8 @@
     "lint": "tslint -t stylish --project \"tsconfig.json\"",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
-    "echo:start": "npx nodemon build/src/echo-server.js",
-    "proxy:start": "npx nodemon build/src/proxy-server.js",
-    "logging:start": "npx nodemon build/src/logging-server.js"
+    "postversion": "npm test",
+    "prepublish": "npm test"
   },
   "dependencies": {
     "body-parser": "^1.18.3",

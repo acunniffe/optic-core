@@ -5,7 +5,8 @@
     "outDir": "build",
     "removeComments": true,
     "allowJs": false,
-    "declaration": true
+    "declaration": true,
+    "declarationMap": true
   },
   "include": [
     "src/**/*"

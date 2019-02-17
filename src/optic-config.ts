@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
 import { IApiMeta, ISessionManagerOptions } from './session-manager';
 
-const opticCoreVersion = require('../package.json').version;
+export const opticCoreVersion = '0.1.3-alpha.7';
 
 export const opticYamlFileName = 'optic.yml';
 
@@ -46,7 +46,7 @@ export const opticConfigType = Joi.object()
   });
 
 export function validate(config: object) {
-  return Joi.validate(config, opticConfigType)
+  return Joi.validate(config, opticConfigType);
 }
 
 export interface IOpticYamlConfig extends ISessionManagerOptions {
