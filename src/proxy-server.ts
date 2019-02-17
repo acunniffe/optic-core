@@ -1,10 +1,9 @@
+import * as debug from 'debug';
 import * as express from 'express';
 import { Request } from 'express';
 import * as expressHttpProxy from 'express-http-proxy';
 import * as http from 'http';
-import * as cookieParser from 'cookie-parser';
-import * as bodyParser from 'body-parser';
-import * as debug from 'debug';
+import { addBodyParsers } from './body-parser-pipeline';
 import { IApiInteraction, packageRequest } from './common';
 
 import * as EventEmitter from 'events';
@@ -25,9 +24,7 @@ class ProxyServer extends EventEmitter {
     const target = `http://${options.targetHost}:${options.targetPort}`;
 
     const server = express();
-    server.use(bodyParser.json());
-    server.use(bodyParser.urlencoded({extended: true}));
-    server.use(cookieParser());
+    addBodyParsers(server);
 
     const proxyMiddleware = expressHttpProxy(target, {
       userResDecorator: (proxyRes: any, proxyResData: Buffer, userReq: Request) => {

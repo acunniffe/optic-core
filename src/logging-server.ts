@@ -1,9 +1,8 @@
 import * as express from 'express';
 import * as debug from 'debug';
 import { Request, Response } from 'express';
-import * as cookieParser from 'cookie-parser';
-import * as bodyParser from 'body-parser';
 import * as http from 'http';
+import { addBodyParsers } from './body-parser-pipeline';
 import { IApiInteraction, IRequestMetadata, IResponseMetadata, packageRequest } from './common';
 import * as EventEmitter from 'events';
 
@@ -44,9 +43,7 @@ class LoggingServer extends EventEmitter {
     const idGenerator = idGeneratorFactory();
 
     const requestLoggingServer = express();
-    requestLoggingServer.use(bodyParser.json());
-    requestLoggingServer.use(bodyParser.urlencoded({extended: true}));
-    requestLoggingServer.use(cookieParser());
+    addBodyParsers(requestLoggingServer);
     requestLoggingServer.use((_req, _res, next) => {
       debugLoggingServerVerbose('receiving request');
       next();
@@ -73,8 +70,7 @@ class LoggingServer extends EventEmitter {
 
   private startResponseLogging(options: ILoggingServerOptions) {
     const responseLoggingServer = express();
-    responseLoggingServer.use(bodyParser.json());
-    responseLoggingServer.use(bodyParser.urlencoded({extended: true}));
+    addBodyParsers(responseLoggingServer);
     responseLoggingServer.use((_req, _res, next) => {
       debugLoggingServerVerbose('receiving response');
       next();

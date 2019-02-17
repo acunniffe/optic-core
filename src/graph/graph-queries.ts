@@ -61,10 +61,13 @@ class NodeQueries {
     });
   }
 
-  public descendants() {
-    const descendants = this.children();
-    for (const child of descendants) {
-      descendants.push(...child.descendants());
+  public descendants(seenSet: Set<NodeId> = new Set()) {
+    const descendants = [];
+    for (const child of this.children()) {
+      if (!seenSet.has(child.node.id)) {
+        seenSet.add(child.node.id);
+        descendants.push(child, ...child.descendants(seenSet));
+      }
     }
 
     return descendants;
