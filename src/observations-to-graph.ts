@@ -3,7 +3,7 @@ import * as lodash from 'lodash';
 import { ISecurityConfig } from './session-manager';
 import { Graph, Node, NodeId, rootNodeId } from './graph/graph';
 import { Observation } from './interactions-to-observations';
-import { stringType } from './string-type.js';
+import { stringType } from './string-type';
 
 const _ = deepdash(lodash);
 

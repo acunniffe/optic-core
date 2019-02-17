@@ -1,5 +1,5 @@
-var isBuiltIn = (function() {
-  var built_ins = [
+const isBuiltIn = (function() {
+  const built_ins = [
     Object,
     Function,
     Array,
@@ -10,10 +10,10 @@ var isBuiltIn = (function() {
     RegExp,
     Error,
   ];
-  var built_ins_length = built_ins.length;
+  const built_ins_length = built_ins.length;
 
   return function(_constructor) {
-    for (var i = 0; i < built_ins_length; i++) {
+    for (let i = 0; i < built_ins_length; i++) {
       if (built_ins[i] === _constructor) {
         return true;
       }
@@ -22,18 +22,18 @@ var isBuiltIn = (function() {
   };
 })();
 
-var stringType = (function() {
-  var _toString = ({}).toString;
+const stringType = (function() {
+  const _toString = ({}).toString;
 
   return function(obj) {
     // [object Blah] -> Blah
-    var stype = _toString.call(obj).slice(8, -1);
+    const stype = _toString.call(obj).slice(8, -1);
 
     if ((obj === null) || (obj === undefined)) {
       return stype.toLowerCase();
     }
 
-    var ctype = of(obj);
+    const ctype = of(obj);
 
     if (ctype && !isBuiltIn(ctype)) {
       return ctype.name;
@@ -51,6 +51,6 @@ function of(obj) {
   }
 }
 
-module.exports = {
+export {
   stringType
 };
