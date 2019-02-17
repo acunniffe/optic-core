@@ -45,7 +45,7 @@ class LoggingServer extends EventEmitter {
 
     const requestLoggingServer = express();
     requestLoggingServer.use(bodyParser.json());
-    requestLoggingServer.use(bodyParser.urlencoded());
+    requestLoggingServer.use(bodyParser.urlencoded({extended: true}));
     requestLoggingServer.use(cookieParser());
     requestLoggingServer.use((_req, _res, next) => {
       debugLoggingServerVerbose('receiving request');
@@ -74,7 +74,7 @@ class LoggingServer extends EventEmitter {
   private startResponseLogging(options: ILoggingServerOptions) {
     const responseLoggingServer = express();
     responseLoggingServer.use(bodyParser.json());
-    responseLoggingServer.use(bodyParser.urlencoded());
+    responseLoggingServer.use(bodyParser.urlencoded({extended: true}));
     responseLoggingServer.use((_req, _res, next) => {
       debugLoggingServerVerbose('receiving response');
       next();

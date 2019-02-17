@@ -26,7 +26,7 @@ class ProxyServer extends EventEmitter {
 
     const server = express();
     server.use(bodyParser.json());
-    server.use(bodyParser.urlencoded());
+    server.use(bodyParser.urlencoded({extended: true}));
     server.use(cookieParser());
 
     const proxyMiddleware = expressHttpProxy(target, {

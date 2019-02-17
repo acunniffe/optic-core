@@ -9,7 +9,7 @@ const config = {
 
 const server = express();
 server.use(bodyParser.json());
-server.use(bodyParser.urlencoded());
+server.use(bodyParser.urlencoded({extended: true}));
 server.use('/', (req: Request, res: Response) => {
   const { method, path, /*body, query, params, headers*/ } = req;
   res
