@@ -203,7 +203,7 @@ export type Observation =
 
 export interface IObserverConfig {
   pathMatcherList: IPathMatcher[],
-  security: ISecurityConfig
+  security?: ISecurityConfig
 }
 
 class InteractionsToObservations {
@@ -262,42 +262,44 @@ class InteractionsToObservations {
     const additionalHeadersToIgnore = new Set<string>();
     const additionalQueryParamsToIgnore = new Set<string>();
     const { security } = config;
-    let foundSecurityInRequest = false;
-    if (security.type === 'apiKey') {
-      if (security.in === 'cookie') {
-        if (cookies[security.name]) {
-          foundSecurityInRequest = true;
+    if (security) {
+      let foundSecurityInRequest = false;
+      if (security.type === 'apiKey') {
+        if (security.in === 'cookie') {
+          if (cookies[security.name]) {
+            foundSecurityInRequest = true;
+          }
+        } else if (security.in === 'header') {
+          const headerName = security.name.toLowerCase();
+          if (requestHeaders[headerName]) {
+            foundSecurityInRequest = true;
+            additionalHeadersToIgnore.add(headerName);
+          }
+        } else if (security.in === 'query') {
+          if (queryParameters[security.name]) {
+            foundSecurityInRequest = true;
+            additionalQueryParamsToIgnore.add(security.name);
+          }
         }
-      } else if (security.in === 'header') {
-        const headerName = security.name.toLowerCase();
-        if (requestHeaders[headerName]) {
+      } else if (security.type === 'basic' || security.type === 'bearer') {
+        const name = 'authorization';
+        if (requestHeaders[name]) {
           foundSecurityInRequest = true;
-          additionalHeadersToIgnore.add(headerName);
-        }
-      } else if (security.in === 'query') {
-        if (queryParameters[security.name]) {
-          foundSecurityInRequest = true;
-          additionalQueryParamsToIgnore.add(security.name);
+          additionalHeadersToIgnore.add(name);
         }
       }
-    } else if (security.type === 'basic' || security.type === 'bearer') {
-      const name = 'authorization';
-      if (requestHeaders[name]) {
-        foundSecurityInRequest = true;
-        additionalHeadersToIgnore.add(name);
+
+      if (foundSecurityInRequest) {
+        const securityObservation: ISecurityObserved = {
+          type: 'SecurityObserved',
+          method,
+          path,
+          statusCode,
+          security,
+        };
+
+        observations.push(securityObservation);
       }
-    }
-
-    if (foundSecurityInRequest) {
-      const securityObservation: ISecurityObserved = {
-        type: 'SecurityObserved',
-        method,
-        path,
-        statusCode,
-        security
-      };
-
-      observations.push(securityObservation);
     }
 
     // header parameters

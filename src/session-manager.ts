@@ -36,11 +36,15 @@ export interface ILoggingDocumentationConfig {
 
 export type IDocumentationConfig = IProxyDocumentationConfig | ILoggingDocumentationConfig
 
+export interface IApiMeta {
+  paths: string[]
+  security?: ISecurityConfig[]
+}
+
 export interface ISessionManagerOptions {
   documentationStrategy: IDocumentationConfig;
-  paths: string[]
   commandToRun: string
-  security?: ISecurityConfig[]
+  api: IApiMeta
 }
 
 const logCli = debug('optic:cli');

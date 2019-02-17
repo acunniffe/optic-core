@@ -21,10 +21,10 @@ class ReportBuilder {
       messages.push(`I observed ${samples.length} API interactions!`);
     }
 
-    const pathMatcherList = options.paths.map(pathToMatcher);
+    const pathMatcherList = options.api.paths.map(pathToMatcher);
     const config: IObserverConfig = {
       pathMatcherList,
-      security: options.security[0],
+      security: options.api.security && options.api.security[0]
     };
 
     const observations = InteractionsToObservations.getObservations(samples, config);
