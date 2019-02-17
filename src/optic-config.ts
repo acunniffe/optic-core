@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
 import { IApiMeta, ISessionManagerOptions } from './session-manager';
 
-export const opticCoreVersion = '0.1.3-alpha.8';
+export const opticCoreVersion = '0.1.3-alpha.9';
 
 export const opticYamlFileName = 'optic.yml';
 
