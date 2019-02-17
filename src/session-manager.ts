@@ -135,7 +135,8 @@ class SessionManager {
     } else if (documentationStrategy.type === 'proxy') {
       return this.useProxyServer(documentationStrategy);
     }
-    throw new Error(`unknown documentationStrategy ${documentationStrategy}`);
+
+    return Promise.reject(new Error(`unknown documentationStrategy ${documentationStrategy}`));
   }
 }
 
