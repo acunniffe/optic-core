@@ -1,9 +1,9 @@
 import * as Joi from 'joi';
 import { IApiMeta, ISessionManagerOptions } from './session-manager';
 
-export const opticCoreVersion = '0.1.3-alpha.11';
-const baseUrl = 'https://app.useoptic.com'
-const apiBaseUrl = 'https://api.useoptic.com'
+export const opticCoreVersion = '0.1.3-alpha.12';
+const baseUrl = 'https://app.useoptic.com';
+const apiBaseUrl = 'https://api.useoptic.com';
 
 
 export const opticYamlFileName = 'optic.yml';
@@ -48,7 +48,7 @@ export const opticConfigType = Joi.object()
     }).default({
       version: opticCoreVersion,
       apiBaseUrl,
-      baseUrl
+      baseUrl,
     }).optional(),
   });
 
