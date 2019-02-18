@@ -2,6 +2,9 @@ import * as Joi from 'joi';
 import { IApiMeta, ISessionManagerOptions } from './session-manager';
 
 export const opticCoreVersion = '0.1.3-alpha.10';
+const baseUrl = 'https://app.useoptic.com'
+const apiBaseUrl = 'https://api.useoptic.com'
+
 
 export const opticYamlFileName = 'optic.yml';
 
@@ -40,9 +43,13 @@ export const opticConfigType = Joi.object()
     }).required(),
     optic: Joi.object().keys({
       version: Joi.string().default(opticCoreVersion).required(),
-      apiBaseUrl: Joi.string().default('https://api.useoptic.com').required(),
-      baseUrl: Joi.string().default('https://app.useoptic.com').required(),
-    }),
+      apiBaseUrl: Joi.string().default(apiBaseUrl).required(),
+      baseUrl: Joi.string().default(baseUrl).required(),
+    }).default({
+      version: opticCoreVersion,
+      apiBaseUrl,
+      baseUrl
+    }).optional(),
   });
 
 export function validate(config: object) {
