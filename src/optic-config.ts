@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
 import { IApiMeta, ISessionManagerOptions } from './session-manager';
 
-export const opticCoreVersion = '0.1.3-alpha.9';
+export const opticCoreVersion = '0.1.3-alpha.10';
 
 export const opticYamlFileName = 'optic.yml';
 
@@ -32,7 +32,7 @@ export const securityConfigType = Joi.array()
 
 export const opticConfigType = Joi.object()
   .keys({
-    strategy: strategyConfigType,
+    strategy: strategyConfigType.required(),
     api: Joi.object().keys({
       id: Joi.string().required(),
       security: securityConfigType,
@@ -41,7 +41,7 @@ export const opticConfigType = Joi.object()
     optic: Joi.object().keys({
       version: Joi.string().default(opticCoreVersion).required(),
       apiBaseUrl: Joi.string().default('https://api.useoptic.com').required(),
-      baseUrl: Joi.string().default('https://useoptic.com').required(),
+      baseUrl: Joi.string().default('https://app.useoptic.com').required(),
     }),
   });
 
