@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
 import { IApiMeta, ISessionManagerOptions } from './session-manager';
 
-export const opticCoreVersion = '0.1.3-alpha.12';
+export const opticCoreVersion = '0.1.3-alpha.13';
 const baseUrl = 'https://app.useoptic.com';
 const apiBaseUrl = 'https://api.useoptic.com';
 
@@ -33,23 +33,30 @@ export const securityConfigType = Joi.array()
     }),
   );
 
+export const apiConfigType = Joi.object()
+  .keys({
+    id: Joi.string().required(),
+    security: securityConfigType,
+    paths: Joi.array().items(Joi.string()).required(),
+  });
+
+export const opticInternalConfigType = Joi.object()
+  .keys({
+    version: Joi.string().default(opticCoreVersion),
+    apiBaseUrl: Joi.string().default(apiBaseUrl),
+    baseUrl: Joi.string().default(baseUrl),
+  });
+
 export const opticConfigType = Joi.object()
   .keys({
     strategy: strategyConfigType.required(),
-    api: Joi.object().keys({
-      id: Joi.string().required(),
-      security: securityConfigType,
-      paths: Joi.array().items(Joi.string()).required(),
-    }).required(),
-    optic: Joi.object().keys({
-      version: Joi.string().default(opticCoreVersion).required(),
-      apiBaseUrl: Joi.string().default(apiBaseUrl).required(),
-      baseUrl: Joi.string().default(baseUrl).required(),
-    }).default({
-      version: opticCoreVersion,
-      apiBaseUrl,
-      baseUrl,
-    }).optional(),
+    api: apiConfigType.required(),
+    optic: opticInternalConfigType
+      .default({
+        version: opticCoreVersion,
+        apiBaseUrl,
+        baseUrl,
+      }),
   });
 
 export function validate(config: object) {
