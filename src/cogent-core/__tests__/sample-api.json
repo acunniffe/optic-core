@@ -1,0 +1,1464 @@
+{
+  "snapshot": {
+    "endpoints": [
+      {
+        "path": "/self/apis/:apiId/snapshots/:snapshotId",
+        "method": "GET",
+        "securityDefinitions": [
+          {
+            "type": "bearer"
+          }
+        ],
+        "request": {
+          "headerParameters": [],
+          "pathParameters": [
+            {
+              "name": "apiId",
+              "schema": {
+                "asJsonSchema": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "name": "snapshotId",
+              "schema": {
+                "asJsonSchema": {
+                  "type": "string"
+                }
+              }
+            }
+          ],
+          "queryParameters": [],
+          "bodies": []
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "bodies": [
+              {
+                "contentType": "application/json",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {
+                      "info": {
+                        "type": "object",
+                        "properties": {
+                          "branch": {
+                            "type": "string"
+                          },
+                          "userId": {
+                            "type": "string"
+                          },
+                          "projectId": {
+                            "type": "string"
+                          },
+                          "opticVersion": {
+                            "type": "string"
+                          },
+                          "published": {
+                            "type": "boolean"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "object",
+                            "properties": {}
+                          },
+                          "date": {
+                            "type": "string"
+                          },
+                          "uuid": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "gqlResponse": {
+                        "type": "object",
+                        "properties": {
+                          "snapshot": {
+                            "type": "object",
+                            "properties": {
+                              "endpoints": {
+                                "type": "array",
+                                "items": {}
+                              },
+                              "securityDefinitions": {
+                                "type": "array",
+                                "items": {}
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 403,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 404,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 401,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/teams/:teamId/apis/:apiId",
+        "method": "GET",
+        "securityDefinitions": [],
+        "request": {
+          "headerParameters": [],
+          "pathParameters": [
+            {
+              "name": "teamId",
+              "schema": {
+                "asJsonSchema": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "name": "apiId",
+              "schema": {
+                "asJsonSchema": {
+                  "type": "string"
+                }
+              }
+            }
+          ],
+          "queryParameters": [],
+          "bodies": []
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "bodies": [
+              {
+                "contentType": "application/json",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {
+                      "info": {
+                        "type": "object",
+                        "properties": {
+                          "slug": {
+                            "type": "string"
+                          },
+                          "createdDate": {
+                            "type": "string"
+                          },
+                          "subscribers": {
+                            "type": "object",
+                            "properties": {
+                              "users": {
+                                "type": "object",
+                                "properties": {}
+                              }
+                            }
+                          },
+                          "teamwidePermissions": {
+                            "type": "object",
+                            "properties": {
+                              "read": {
+                                "type": "boolean"
+                              },
+                              "write": {
+                                "type": "boolean"
+                              },
+                              "administer": {
+                                "type": "boolean"
+                              }
+                            }
+                          },
+                          "uuid": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "history": {
+                        "type": "object",
+                        "properties": {
+                          "branches": {
+                            "type": "object",
+                            "properties": {
+                              "master": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "branch": {
+                                      "type": "string"
+                                    },
+                                    "userId": {
+                                      "type": "string"
+                                    },
+                                    "projectId": {
+                                      "type": "string"
+                                    },
+                                    "opticVersion": {
+                                      "type": "string"
+                                    },
+                                    "published": {
+                                      "type": "boolean"
+                                    },
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "description": {
+                                      "type": "object",
+                                      "properties": {}
+                                    },
+                                    "date": {
+                                      "type": "string"
+                                    },
+                                    "uuid": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "default": {
+                            "type": "object",
+                            "properties": {
+                              "branch": {
+                                "type": "string"
+                              },
+                              "userId": {
+                                "type": "string"
+                              },
+                              "projectId": {
+                                "type": "string"
+                              },
+                              "opticVersion": {
+                                "type": "string"
+                              },
+                              "published": {
+                                "type": "boolean"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "description": {
+                                "type": "object",
+                                "properties": {}
+                              },
+                              "date": {
+                                "type": "string"
+                              },
+                              "uuid": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "totalSnapshots": {
+                            "type": "number"
+                          }
+                        }
+                      },
+                      "collaborators": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "email": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "user_id": {
+                              "type": "string"
+                            },
+                            "app_metadata": {
+                              "type": "object",
+                              "properties": {
+                                "apiTokens": {
+                                  "type": "array",
+                                  "items": {}
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "teamInfo": {
+                        "type": "object",
+                        "properties": {
+                          "shortname": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "accountType": {
+                            "type": "string"
+                          },
+                          "createdDate": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "sessionPermissions": {
+                        "type": "object",
+                        "properties": {
+                          "read": {
+                            "type": "boolean"
+                          },
+                          "write": {
+                            "type": "boolean"
+                          },
+                          "administer": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 403,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 404,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 401,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/teams/:teamId/apis/:apiId/snapshots/:snapshotId",
+        "method": "GET",
+        "securityDefinitions": [],
+        "request": null,
+        "responses": [
+          {
+            "statusCode": 404,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 401,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/self/api-tokens",
+        "method": "GET",
+        "securityDefinitions": [],
+        "request": {
+          "headerParameters": [],
+          "pathParameters": [],
+          "queryParameters": [],
+          "bodies": []
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "bodies": [
+              {
+                "contentType": "application/json",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 401,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/self/api-tokens",
+        "method": "POST",
+        "securityDefinitions": [],
+        "request": {
+          "headerParameters": [],
+          "pathParameters": [],
+          "queryParameters": [],
+          "bodies": []
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "bodies": [
+              {
+                "contentType": "application/json",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {
+                      "token": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 401,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/self/api-tokens/:token",
+        "method": "DELETE",
+        "securityDefinitions": [],
+        "request": {
+          "headerParameters": [],
+          "pathParameters": [
+            {
+              "name": "token",
+              "schema": {
+                "asJsonSchema": {
+                  "type": "string"
+                }
+              }
+            }
+          ],
+          "queryParameters": [],
+          "bodies": []
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 401,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/self/apis",
+        "method": "POST",
+        "securityDefinitions": [],
+        "request": {
+          "headerParameters": [],
+          "pathParameters": [],
+          "queryParameters": [],
+          "bodies": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "asJsonSchema": {
+                  "type": "object",
+                  "properties": {
+                    "slug": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "bodies": [
+              {
+                "contentType": "application/json",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {
+                      "slug": {
+                        "type": "string"
+                      },
+                      "createdDate": {
+                        "type": "string"
+                      },
+                      "subscribers": {
+                        "type": "object",
+                        "properties": {
+                          "users": {
+                            "type": "object",
+                            "properties": {}
+                          }
+                        }
+                      },
+                      "teamwidePermissions": {
+                        "type": "object",
+                        "properties": {
+                          "read": {
+                            "type": "boolean"
+                          },
+                          "write": {
+                            "type": "boolean"
+                          },
+                          "administer": {
+                            "type": "boolean"
+                          }
+                        }
+                      },
+                      "uuid": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 400,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 401,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/teams/:teamId",
+        "method": "GET",
+        "securityDefinitions": [],
+        "request": {
+          "headerParameters": [],
+          "pathParameters": [
+            {
+              "name": "teamId",
+              "schema": {
+                "asJsonSchema": {
+                  "type": "string"
+                }
+              }
+            }
+          ],
+          "queryParameters": [],
+          "bodies": []
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "bodies": [
+              {
+                "contentType": "application/json",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {
+                      "membersCount": {
+                        "type": "number"
+                      },
+                      "totalProjects": {
+                        "type": "number"
+                      },
+                      "info": {
+                        "type": "object",
+                        "properties": {
+                          "shortname": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "accountType": {
+                            "type": "string"
+                          },
+                          "createdDate": {
+                            "type": "string"
+                          },
+                          "invited": {
+                            "type": "array",
+                            "items": {}
+                          }
+                        }
+                      },
+                      "sharedProjects": {
+                        "type": "array",
+                        "items": {}
+                      },
+                      "isTeamAdmin": {
+                        "type": "boolean"
+                      },
+                      "myPermissions": {
+                        "type": "object",
+                        "properties": {}
+                      },
+                      "members": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string"
+                            },
+                            "isAdmin": {
+                              "type": "boolean"
+                            },
+                            "memberSince": {
+                              "type": "string"
+                            },
+                            "projectPermissions": {
+                              "type": "object",
+                              "properties": {}
+                            },
+                            "id": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 404,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 403,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 401,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/self/memberships",
+        "method": "GET",
+        "securityDefinitions": [],
+        "request": {
+          "headerParameters": [],
+          "pathParameters": [],
+          "queryParameters": [],
+          "bodies": []
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "bodies": [
+              {
+                "contentType": "application/json",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "shortname": {
+                          "type": "string"
+                        },
+                        "isAdmin": {
+                          "type": "boolean"
+                        },
+                        "memberSince": {
+                          "type": "string"
+                        },
+                        "memberCount": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 401,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/self",
+        "method": "GET",
+        "securityDefinitions": [],
+        "request": {
+          "headerParameters": [],
+          "pathParameters": [],
+          "queryParameters": [],
+          "bodies": []
+        },
+        "responses": [
+          {
+            "statusCode": 404,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 200,
+            "bodies": [
+              {
+                "contentType": "application/json",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "app_metadata": {
+                        "type": "object",
+                        "properties": {
+                          "apiTokens": {
+                            "type": "array",
+                            "items": {}
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 401,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/teams/:teamId/invite/accept",
+        "method": "POST",
+        "securityDefinitions": [],
+        "request": {
+          "headerParameters": [],
+          "pathParameters": [
+            {
+              "name": "teamId",
+              "schema": {
+                "asJsonSchema": {
+                  "type": "string"
+                }
+              }
+            }
+          ],
+          "queryParameters": [],
+          "bodies": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "asJsonSchema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 400,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 401,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/self/apis/:apiId",
+        "method": "GET",
+        "securityDefinitions": [],
+        "request": {
+          "headerParameters": [],
+          "pathParameters": [
+            {
+              "name": "apiId",
+              "schema": {
+                "asJsonSchema": {
+                  "type": "string"
+                }
+              }
+            }
+          ],
+          "queryParameters": [],
+          "bodies": []
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "bodies": [
+              {
+                "contentType": "application/json",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {
+                      "info": {
+                        "type": "object",
+                        "properties": {
+                          "slug": {
+                            "type": "string"
+                          },
+                          "createdDate": {
+                            "type": "string"
+                          },
+                          "subscribers": {
+                            "type": "object",
+                            "properties": {
+                              "users": {
+                                "type": "object",
+                                "properties": {}
+                              }
+                            }
+                          },
+                          "teamwidePermissions": {
+                            "type": "object",
+                            "properties": {
+                              "read": {
+                                "type": "boolean"
+                              },
+                              "write": {
+                                "type": "boolean"
+                              },
+                              "administer": {
+                                "type": "boolean"
+                              }
+                            }
+                          },
+                          "uuid": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "history": {
+                        "type": "object",
+                        "properties": {
+                          "branches": {
+                            "type": "object",
+                            "properties": {}
+                          },
+                          "totalSnapshots": {
+                            "type": "number"
+                          }
+                        }
+                      },
+                      "collaborators": {
+                        "type": "array",
+                        "items": {}
+                      },
+                      "sessionPermissions": {
+                        "type": "object",
+                        "properties": {
+                          "read": {
+                            "type": "boolean"
+                          },
+                          "write": {
+                            "type": "boolean"
+                          },
+                          "administer": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 404,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 401,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/teams/:teamId/invite",
+        "method": "POST",
+        "securityDefinitions": [],
+        "request": {
+          "headerParameters": [],
+          "pathParameters": [
+            {
+              "name": "teamId",
+              "schema": {
+                "asJsonSchema": {
+                  "type": "string"
+                }
+              }
+            }
+          ],
+          "queryParameters": [],
+          "bodies": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "asJsonSchema": {
+                  "type": "object",
+                  "properties": {
+                    "emails": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 401,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/self/apis/:apiId/snapshots",
+        "method": "POST",
+        "securityDefinitions": [],
+        "request": {
+          "headerParameters": [],
+          "pathParameters": [
+            {
+              "name": "apiId",
+              "schema": {
+                "asJsonSchema": {
+                  "type": "string"
+                }
+              }
+            }
+          ],
+          "queryParameters": [],
+          "bodies": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "asJsonSchema": {
+                  "type": "object",
+                  "properties": {
+                    "observations": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "branch": {
+                      "type": "string"
+                    },
+                    "opticVersion": {
+                      "type": "string"
+                    },
+                    "commitName": {
+                      "type": "string"
+                    },
+                    "published": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "bodies": [
+              {
+                "contentType": "application/json",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {
+                      "branch": {
+                        "type": "string"
+                      },
+                      "userId": {
+                        "type": "string"
+                      },
+                      "projectId": {
+                        "type": "string"
+                      },
+                      "opticVersion": {
+                        "type": "string"
+                      },
+                      "published": {
+                        "type": "boolean"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "object",
+                        "properties": {}
+                      },
+                      "date": {
+                        "type": "string"
+                      },
+                      "uuid": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 404,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/teams/:teamId/apis/:apiId/snapshots",
+        "method": "POST",
+        "securityDefinitions": [],
+        "request": {
+          "headerParameters": [],
+          "pathParameters": [
+            {
+              "name": "teamId",
+              "schema": {
+                "asJsonSchema": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "name": "apiId",
+              "schema": {
+                "asJsonSchema": {
+                  "type": "string"
+                }
+              }
+            }
+          ],
+          "queryParameters": [],
+          "bodies": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "asJsonSchema": {
+                  "type": "object",
+                  "properties": {
+                    "observations": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "branch": {
+                      "type": "string"
+                    },
+                    "opticVersion": {
+                      "type": "string"
+                    },
+                    "commitName": {
+                      "type": "string"
+                    },
+                    "published": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "bodies": [
+              {
+                "contentType": "application/json",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {
+                      "branch": {
+                        "type": "string"
+                      },
+                      "userId": {
+                        "type": "string"
+                      },
+                      "projectId": {
+                        "type": "string"
+                      },
+                      "opticVersion": {
+                        "type": "string"
+                      },
+                      "published": {
+                        "type": "boolean"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "object",
+                        "properties": {}
+                      },
+                      "date": {
+                        "type": "string"
+                      },
+                      "uuid": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "statusCode": 403,
+            "bodies": [
+              {
+                "contentType": "text/plain; charset=UTF-8",
+                "schema": {
+                  "asJsonSchema": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "securityDefinitions": [
+      {
+        "type": "bearer"
+      }
+    ]
+  }
+}
