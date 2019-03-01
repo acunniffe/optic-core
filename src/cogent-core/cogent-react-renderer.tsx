@@ -1,38 +1,10 @@
-/*
-https://www.typescriptlang.org/docs/handbook/jsx.html
-namespace JSX {
 
-  interface IntrinsicElements {
-    file: any
-    folder: any
-  }
-}
-*/
-import * as React from 'react';
-
-type FileName = string
-type FolderName = string
-type PathName = string
-
-//@TODO add postprocessors like formatting and linting, might need to be an intrinsic element around files/folders
-interface IFileSystemRendererFile {
-  name: FileName
-  path: PathName
-  contents: string[]
-}
-
-interface IFileSystemRendererFolder {
-  name: FolderName
-  path: PathName
-  files: { [path: string]: IFileSystemRendererFile }
-  folders: { [path: string]: IFileSystemRendererFolder }
-}
 
 //@TODO this should be a stack
 const contextStack = [];
 
 //@TODO: instead, use react-is/src/ReactIs.js
-function evaluateTree(root: JSX.Element) {
+function evaluateElement(root: JSX.Element) {
   if (root === null) {
     return null;
   }
@@ -49,20 +21,16 @@ function evaluateTree(root: JSX.Element) {
   if (root.type) {
     if (root.type.$$typeof === Symbol.for('react.provider')) {
       //console.log(require('util').inspect(root, { colors: true, depth: 10 }));
-      contextMap.set(root.type._context.Provider, root.props.value);
 
-      //@TODO this is not guaranteed to work everywhere; need to support a fragment-like concept
-
-      return evaluateTree(<source>{root.props.children}</source>);
+      return React.Children.toArray(root.props.children);
     } else if (root.type.$$typeof === Symbol.for('react.context')) {
       //console.log(require('util').inspect(root, { colors: true, depth: 10 }));
 
-      const contextValue = contextMap.get(root.type._context.Provider);
-      return evaluateTree(root.props.children(contextValue));
+      return evaluateTree(root.props.children());
     }
   }
 
-  return root;
+  return React.Children.toArray(root);
 }
 
 function renderSync(component: JSX.Element, options, callback) {

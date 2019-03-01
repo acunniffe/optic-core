@@ -129,7 +129,7 @@ describe('Cogent React Renderer', function() {
         path: '',
       });
     });
-    it('should support context stack', function() {
+    xit('should support context stack', function() {
       const DepthContext = React.createContext(0);
       const Nested = () => {
         return (
@@ -169,7 +169,7 @@ describe('Cogent React Renderer', function() {
       const contents = result.folders.root.files.test.contents.join('');
       expect(contents).toBe(`\n#\n##\ndone\n#\n##\ndone`);
     });
-    it('should allow js helpers', function() {
+    xit('should allow js helpers', function() {
       const Curly = ({ children }) => (<source>{'{'}{children}{'}'}</source>);
 
       const api = {
