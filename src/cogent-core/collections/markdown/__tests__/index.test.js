@@ -37,15 +37,25 @@ describe('Markdown', function() {
       const { result } = global.render(<Component/>);
       const contents = result.files['README.md'].contents.join('');
       const expectedContents = `# a1
+      
 ## a2
+
 ### a3
+
 #### a4
+
 ##### a5
+
 # b1
+
 ## b2
+
 ### b3
+
 #### b4
+
 ##### b5
+
 `;
       expect(contents).toEqual(expectedContents);
     });
