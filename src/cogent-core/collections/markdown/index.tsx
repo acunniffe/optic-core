@@ -1,22 +1,20 @@
+import { ReactNode } from 'react';
 import * as React from 'react';
-import * as Markdown from './__tests__/index.test';
+
 //@TODO expose some template tags to make line breaks easier
 //@TODO make React.Children.filter utility to only acceptable children?
 const SectionDepth = React.createContext(1);
 
-function Line({ children }) {
-  return (
-    <source>{children}{'\n'}</source>
-  );
+interface IMarkdownSectionProps {
+  title: string
+  children: ReactNode
 }
 
-
-function Section({ title, children }) {
+function Section({ title, children }: IMarkdownSectionProps) {
   return (
-    <Line>
+    <source>
       <SectionDepth.Consumer>
         {(depth) => {
-          console.warn({ depth, title });
           return (
             <source>
               <Line>{'#'.repeat(depth)} {title}</Line>
@@ -27,40 +25,72 @@ function Section({ title, children }) {
           );
         }}
       </SectionDepth.Consumer>
-    </Line>
+    </source>
   );
 }
 
-function Root({ children }) {
+interface IMarkdownRootProps {
+  children: ReactNode
+}
+
+function Root({ children }: IMarkdownRootProps) {
   return (
-    <SectionDepth.Provider value={1}>
-      <Section title="d1">
-        <Section title="d2">
-          <Section title="d3">
-            <Section title="d4">
-              <Section title="d5">
-              </Section>
-            </Section>
-          </Section>
-        </Section>
-      </Section>
-    </SectionDepth.Provider>
+    <source>
+      <SectionDepth.Provider value={1}>
+        {children}
+      </SectionDepth.Provider>
+    </source>
   );
 }
 
-function Code({ language = '', children }) {
+interface IMarkdownCodeProps {
+  language: string
+  children: ReactNode
+}
+
+function Code({ language = '', children }: IMarkdownCodeProps) {
   return (
     <React.Fragment>
-      <Line>```{language}</Line>
-      <Line>{children}</Line>
-      <Line>```</Line>
+      <line>```{language}</line>
+      <line>{children}</line>
+      <line>```</line>
     </React.Fragment>
   );
+}
+
+interface IMarkdownLinkProps {
+  label: string
+  to: string
+}
+
+function Link({ label = '', to = '' }: IMarkdownLinkProps) {
+  return <source> [{label}]({to}) </source>;
+}
+
+interface IMarkdownLineProps {
+  children: ReactNode
+}
+
+function Line({ children }: IMarkdownLineProps) {
+  return (
+    <line>{children}{'\n'}</line>
+  );
+}
+
+interface IMarkdownUnorderedListProps {
+  children: ReactNode
+}
+
+//@TODO: add depth context
+function UnorderedList({ children }: IMarkdownUnorderedListProps) {
+  return <line>- {children}</line>;
 }
 
 export {
   Root,
   Section,
-  Line,
   Code,
+  Link,
+  Line,
+  UnorderedList,
 };

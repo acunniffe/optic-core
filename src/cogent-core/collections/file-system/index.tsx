@@ -5,7 +5,6 @@ import * as React from 'react';
 function NestedFolder({ path, children }) {
   const splitPath = path.split('/');
   const nestedFolders = splitPath.reduceRight((acc: JSX.Element, pathComponent: string) => {
-    // @ts-ignore
     return <folder name={pathComponent}>{acc}</folder>;
   }, children);
 

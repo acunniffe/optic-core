@@ -1,4 +1,3 @@
-import { FileSystemRenderer } from '../../../react/file-system-renderer';
 import React from 'react';
 import * as FileSystem from '../index';
 
@@ -14,14 +13,7 @@ describe('File System', function() {
           </FileSystem.NestedFolder>
         );
       };
-      const callback = jest.fn();
-      const renderer = new FileSystemRenderer();
-      renderer.renderSync(<Component/>, {}, callback);
-      const [err, result] = callback.mock.calls[0];
-      if (err) {
-        console.error(err);
-      }
-      expect(err).toBeNull();
+      const { result } = global.render(<Component/>);
       expect(result).toEqual({
         files: {},
         folders: {

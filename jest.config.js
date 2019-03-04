@@ -18,7 +18,8 @@ module.exports = {
   ],
   globals: {
     'ts-jest': {
-      diagnostics: false
+      diagnostics: false,
     },
   },
+  setupFilesAfterEnv: ['./src/jest-setup.ts'],
 };

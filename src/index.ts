@@ -1,3 +1,5 @@
+import { FileSystemReconciler } from './cogent-core/react/file-system-reconciler';
+import { CogentEngine } from './cogent-engines/cogent-engine';
 import { GraphQueries, NodeQueries } from './graph/graph-queries';
 import { InteractionsToObservations } from './interactions-to-observations';
 import { LoggingServer } from './logging-server';
@@ -13,4 +15,6 @@ export {
   GraphQueries,
   LoggingServer,
   ProxyServer,
+  FileSystemReconciler,
+  CogentEngine,
 };

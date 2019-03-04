@@ -1,41 +1,55 @@
 /*
 @TODO expose types with Cogent Intrinsic Elements
 https://www.typescriptlang.org/docs/handbook/jsx.html
-namespace JSX {
+*/
 
-  interface IntrinsicElements {
-    file: any
-    folder: any
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      file: any
+      folder: any
+    }
   }
 }
-*/
 import * as React from 'react';
 import * as ReactIs from 'react-is';
 import { ContextStack } from './context-stack';
+
+export interface IFileSystemRendererOptions {
+  callback: Callback<IFileSystemRendererFolder>
+}
 
 type FileName = string
 type FolderName = string
 type PathName = string
 
 //@TODO add postprocessors like formatting and linting, might need to be an intrinsic element around files/folders
-interface IFileSystemRendererFile {
+export interface IFileSystemRendererFile {
   name: FileName
   path: PathName
   contents: string[]
 }
 
-interface IFileSystemRendererFolder {
+export interface IFileSystemRendererFolder {
   name: FolderName
   path: PathName
   files: { [path: string]: IFileSystemRendererFile }
   folders: { [path: string]: IFileSystemRendererFolder }
 }
 
+type Stack<T> = T[]
+type Task = () => void
+type TaskList = Task[]
+export type Callback<T> = (err: Error | null, result?: T) => void
+
+//@TODO support React hooks
 class FileSystemRenderer {
   private readonly contextStack: ContextStack = new ContextStack();
   private readonly intrinsicElementTypes: Set<string> = new Set(['folder', 'file', 'source', 'line']);
+  private readonly subtreeTasks: Stack<TaskList> = [];
+  private subtreeTaskCursor: number;
 
-  public renderSync(element: JSX.Element, options: any, callback) {
+  public renderSync(element: JSX.Element, options: IFileSystemRendererOptions) {
     try {
       const rootFolder = {
         name: '',
@@ -43,14 +57,16 @@ class FileSystemRenderer {
         files: {},
         folders: {},
       };
-      const rootNodes = this.evaluateElement(element);
-      rootNodes.forEach((rootNode) => {
-        this.renderSyncHelper(rootNode, rootFolder);
+      this.subtree(() => {
+        const rootNodes = this.evaluateElement(element);
+        rootNodes.forEach((rootNode) => {
+          this.renderSyncHelper(rootNode, rootFolder);
+        });
       });
 
-      callback(null, rootFolder);
+      options.callback(null, rootFolder);
     } catch (e) {
-      callback(e);
+      options.callback(e);
     }
   }
 
@@ -67,10 +83,13 @@ class FileSystemRenderer {
         folders: {},
       };
       parentFolder.folders[name] = folder;
-      React.Children.forEach(children, (c: JSX.Element) => {
-        const childNodes = this.evaluateElement(c);
+
+      this.subtree(() => {
+        const childNodes = this.evaluateElements(React.Children.toArray(children));
         childNodes.forEach((child) => {
-          if (child.type === 'file' || child.type === 'folder') {
+          if (child.type === 'file') {
+            this.renderSyncHelper(child, folder);
+          } else if (child.type === 'folder') {
             this.renderSyncHelper(child, folder);
           } else {
             console.warn('<folder> should only have <file> or <folder> children', child);
@@ -88,8 +107,8 @@ class FileSystemRenderer {
         contents: [],
       };
       parentFolder.files[name] = file;
-      React.Children.forEach(children, (c: JSX.Element) => {
-        const childNodes = this.evaluateElement(c);
+      this.subtree(() => {
+        const childNodes = this.evaluateElements(React.Children.toArray(children));
         childNodes.forEach((child) => {
           if (child.type === 'source') {
             this.appendToFile(child, file);
@@ -103,10 +122,23 @@ class FileSystemRenderer {
     }
   }
 
+  private addTask(task: Task) {
+    this.subtreeTasks[this.subtreeTaskCursor].push(task);
+  }
+
+  private subtree(workForSubtree: () => void) {
+    this.subtreeTaskCursor = this.subtreeTasks.push([]) - 1;
+    workForSubtree();
+    const tasks = this.subtreeTasks.pop();
+    tasks.forEach((task: Task) => task());
+    this.subtreeTaskCursor -= 1;
+  }
+
   private appendToFile(element: JSX.Element, file: IFileSystemRendererFile) {
-    React.Children.forEach(element.props.children, (c: JSX.Element) => {
-      const childNodes = this.evaluateElement(c);
+    this.subtree(() => {
+      const childNodes = this.evaluateElements(React.Children.toArray(element.props.children));
       childNodes.forEach((child) => {
+        //@TODO other primitives?
         if (typeof child === 'string') {
           file.contents.push(child);
         } else if (child.type === 'line') {
@@ -115,11 +147,9 @@ class FileSystemRenderer {
         } else if (child.type === 'source') {
           this.appendToFile(child, file);
         } else {
-          console.warn(`<file> should only have string or <line> or <source> children`, { file });
-          console.log(require('util').inspect(child, { colors: true, depth: 10, compact: false }));
+          console.warn(`<file> should only have string or <line> or <source> children`, child);
         }
       });
-
     });
   }
 
@@ -155,34 +185,70 @@ class FileSystemRenderer {
 
 
     if (ReactIs.isFragment(element)) {
-      return this.evaluateElements(React.Children.toArray(element.props.children));
+      let returnValue;
+      this.subtree(() => {
+        returnValue = this.evaluateElements(React.Children.toArray(element.props.children));
+      });
+
+      return returnValue;
     }
 
     if (ReactIs.isContextProvider(element)) {
-      this.contextStack.enterContext(element);
-
-      const returnValue = this.evaluateElements(React.Children.toArray(element.props.children));
+      this.contextStack.enterContext(element as any);
+      let returnValue;
+      this.subtree(() => {
+        returnValue = this.evaluateElements(React.Children.toArray(element.props.children));
+      });
       //console.log(require('util').inspect(returnValue, { colors: true, depth: 10 }));
 
-      this.contextStack.exitContext(element);
+      this.addTask(() => {
+        this.contextStack.exitContext(element as any);
+      });
 
       return returnValue;
     }
 
     if (ReactIs.isContextConsumer(element)) {
-      const contextValue = this.contextStack.getCurrentValue(element);
+      const contextValue = this.contextStack.getCurrentValue(element as any);
+      let returnValue;
+      this.subtree(() => {
+        returnValue = this.evaluateElement(element.props.children(contextValue));
+      });
 
-      return this.evaluateElement(element.props.children(contextValue));
+      return returnValue;
     }
 
     if (typeof element.type === 'function') {
-      return this.evaluateElement(element.type(element.props));
+      let returnValue;
+      this.subtree(() => {
+
+        returnValue = this.evaluateElement(element.type(element.props));
+      });
+
+      return returnValue;
     }
 
     throw new Error(`unexpected element`);
   }
 }
 
+function stringify(folder: IFileSystemRendererFolder, acc: string = '') {
+  let output = '';
+  Object.keys(folder.folders)
+    .forEach((folderName: string) => {
+      const f = folder.folders[folderName];
+      stringify(f);
+    });
+  Object.keys(folder.files)
+    .forEach((fileName: string) => {
+      const file = folder.files[fileName];
+      output += (`${file.path}:\n==\n${file.contents.join('')}\n==\n`);
+    });
+
+  return acc + output;
+}
+
 export {
+  stringify,
   FileSystemRenderer,
 };

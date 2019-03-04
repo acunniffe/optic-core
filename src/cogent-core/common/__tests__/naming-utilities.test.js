@@ -6,84 +6,132 @@ describe('Naming Utilities', function() {
       {
         path: '/self/apis/:apiId/snapshots/:snapshotId',
         method: 'GET',
-        expectedName: 'getSelfApiSnapshotByApiIdAndSnapshotId',
+        expected: {
+          requestName: 'getSelfApiSnapshotByApiIdAndSnapshotId',
+          resourceName: 'selfApiSnapshot',
+        },
       },
       {
         path: '/teams/:teamId/apis/:apiId',
         method: 'GET',
-        expectedName: 'getTeamApiByTeamIdAndApiId',
+        expected: {
+          requestName: 'getTeamApiByTeamIdAndApiId',
+          resourceName: 'teamApi',
+        },
       },
       {
         path: '/teams/:teamId/apis/:apiId/snapshots/:snapshotId',
         method: 'GET',
-        expectedName: 'getTeamApiSnapshotByTeamIdAndApiIdAndSnapshotId',
+        expected: {
+          requestName: 'getTeamApiSnapshotByTeamIdAndApiIdAndSnapshotId',
+          resourceName: 'teamApiSnapshot',
+        },
       },
       {
         path: '/self/api-tokens',
         method: 'GET',
-        expectedName: 'getSelfApiTokens',
+        expected: {
+          requestName: 'getSelfApiTokens',
+          resourceName: 'selfApiTokens',
+        },
       },
       {
         path: '/self/api-tokens',
         method: 'POST',
-        expectedName: 'postSelfApiTokens',
+        expected: {
+          requestName: 'postSelfApiToken',
+          resourceName: 'selfApiToken',
+        },
       },
       {
         path: '/self/api-tokens/:token',
         method: 'DELETE',
-        expectedName: 'deleteSelfApiTokenByToken',
+        expected: {
+          requestName: 'deleteSelfApiTokenByToken',
+          resourceName: 'selfApiToken',
+        },
       },
       {
         path: '/self/apis',
         method: 'POST',
-        expectedName: 'postSelfApis',
+        expected: {
+          requestName: 'postSelfApi',
+          resourceName: 'selfApi',
+        },
       },
       {
         path: '/teams/:teamId',
         method: 'GET',
-        expectedName: 'getTeamByTeamId',
+        expected: {
+          requestName: 'getTeamByTeamId',
+          resourceName: 'team',
+        },
       },
       {
         path: '/self/memberships',
         method: 'GET',
-        expectedName: 'getSelfMemberships',
+        expected: {
+          requestName: 'getSelfMemberships',
+          resourceName: 'selfMemberships',
+        },
       },
       {
         path: '/self',
         method: 'GET',
-        expectedName: 'getSelf',
+        expected: {
+          requestName: 'getSelf',
+          resourceName: 'self',
+        },
       },
       {
         path: '/teams/:teamId/invite/accept',
         method: 'POST',
-        expectedName: 'postTeamInviteAcceptByTeamId',
+        expected: {
+          requestName: 'postTeamInviteAcceptByTeamId',
+          resourceName: 'teamInviteAccept',
+        },
       },
       {
         path: '/self/apis/:apiId',
         method: 'GET',
-        expectedName: 'getSelfApiByApiId',
+        expected: {
+          requestName: 'getSelfApiByApiId',
+          resourceName: 'selfApi',
+        },
       },
       {
         path: '/teams/:teamId/invite',
         method: 'POST',
-        expectedName: 'postTeamInviteByTeamId',
+        expected: {
+          requestName: 'postTeamInviteByTeamId',
+          resourceName: 'teamInvite',
+        },
       },
       {
         path: '/self/apis/:apiId/snapshots',
         method: 'POST',
-        expectedName: 'postSelfApiSnapshotsByApiId',
+        expected: {
+          requestName: 'postSelfApiSnapshotByApiId',
+          resourceName: 'selfApiSnapshot',
+        },
       },
       {
         path: '/teams/:teamId/apis/:apiId/snapshots',
         method: 'POST',
-        expectedName: 'postTeamApiSnapshotsByTeamIdAndApiId',
+        expected: {
+          requestName: 'postTeamApiSnapshotByTeamIdAndApiId',
+          resourceName: 'teamApiSnapshot',
+        },
       },
     ];
 
     for (const pair of pairs) {
-      const { method, path, expectedName } = pair;
-      it(`${method} ${path} should be ${expectedName}`, function() {
-        expect(methodAndPathToName(method, path)).toEqual(expectedName);
+      const { method, path, expected } = pair;
+      it(`requestName for ${method} ${path} should be ${expected.requestName}`, function() {
+        expect(methodAndPathToName(method, path).requestName).toEqual(expected.requestName);
+      });
+      it(`resourceName for ${method} ${path} should be ${expected.resourceName}`, function() {
+        expect(methodAndPathToName(method, path).resourceName).toEqual(expected.resourceName);
       });
     }
   });

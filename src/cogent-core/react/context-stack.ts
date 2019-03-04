@@ -1,24 +1,24 @@
 type ContextValueType = any;
 
-interface IReactContext {
+export interface IReactContext {
   _currentValue: ContextValueType
   _defaultValue: ContextValueType
 }
 
-interface IReactContextContainer {
+export interface IReactContextContainer {
   _context: IReactContext
 }
 
-interface IReactContextProviderProps {
+export interface IReactContextProviderProps {
   value: ContextValueType
 }
 
-interface IReactContextProvider {
+export interface IReactContextProvider {
   type: IReactContextContainer
   props: IReactContextProviderProps
 }
 
-interface IReactContextConsumer {
+export interface IReactContextConsumer {
   type: IReactContextContainer
 }
 
@@ -27,7 +27,6 @@ class ContextStack {
   private cursor: number = -1;
 
   public enterContext(provider: IReactContextProvider) {
-    console.log(`entered ${provider.props.value} (previously ${provider.type._context._currentValue})`);
     this.cursor += 1;
     const { value } = provider.props;
     const context = provider.type._context;
@@ -36,9 +35,8 @@ class ContextStack {
     context._currentValue = value;
   }
 
-  //@alternatively, we can maintain a stack of context
+  //@instead of having the provider be passed in, we can maintain a stack of context
   public exitContext(provider: IReactContextProvider) {
-    console.log(`exited ${provider.props.value} (restoring to ${this.valueHistory[this.cursor]})`);
     const context = provider.type._context;
     const previousValue = this.valueHistory[this.cursor];
     context._currentValue = previousValue;
@@ -47,7 +45,6 @@ class ContextStack {
   }
 
   public getCurrentValue(consumer: IReactContextConsumer) {
-    console.log(`inspecting context for ${consumer.type._context._currentValue}`);
     return consumer.type._context._currentValue;
   }
 

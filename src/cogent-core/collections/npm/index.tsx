@@ -1,32 +1,58 @@
 import * as React from 'react';
 
-function PackageJson() {
-  const packageJsonContents = {
+type NpmModuleId = string
+type NpmModuleVersion = string
+
+interface INpmPackageBaseMetadata {
+  name: NpmModuleId,
+  version: NpmModuleVersion,
+}
+
+interface INpmPeerDependency {
+  moduleId: NpmModuleId
+  version: NpmModuleVersion
+}
+
+interface IPackageJson {
+  main?: string
+  dependencies: { [key: string]: NpmModuleVersion }
+}
+
+function createPackageJson(metadata: INpmPackageBaseMetadata) {
+  const packageJsonContents: IPackageJson = {
+    ...metadata,
     dependencies: {},
   };
 
   const File = () => (
-    // @ts-ignore
     <file name="package.json">
-      <source>{JSON.stringify(contents, null, 2)}</source>
+      <source>{JSON.stringify(packageJsonContents, null, 2)}</source>
     </file>
   );
 
-  function Dependency({ name, version, exportName }) {
-    if (packageJsonContents.dependencies[name]) {
-      console.warn(`overwriting package.json dependency ${name}@${version}`);
+  function addDependency({ moduleId, version }: INpmPeerDependency) {
+    if (packageJsonContents.dependencies[moduleId]) {
+      console.warn(`overwriting package.json peer dependency ${moduleId}@${version}`);
     }
-    packageJsonContents.dependencies[name] = version;
+    packageJsonContents.dependencies[moduleId] = version;
 
     return null;
   }
 
+  function setMain(main: string) {
+    if (packageJsonContents.main) {
+      console.warn(`overwriting package.json main script`);
+    }
+    packageJsonContents.main = main;
+  }
+
   return {
     File,
-    Dependency
-  }
+    addDependency,
+    setMain,
+  };
 }
 
 export {
-  PackageJson,
+  createPackageJson,
 };

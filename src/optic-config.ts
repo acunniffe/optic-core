@@ -36,6 +36,7 @@ export const securityConfigType = Joi.array()
 export const apiConfigType = Joi.object()
   .keys({
     id: Joi.string().required(),
+    version: Joi.string().required(),
     security: securityConfigType,
     paths: Joi.array().items(Joi.string()).required(),
   });
@@ -47,29 +48,45 @@ export const opticInternalConfigType = Joi.object()
     baseUrl: Joi.string().default(baseUrl),
   });
 
+export const opticDependenciesType = Joi.array()
+  .items(
+    Joi.object().keys({
+      id: Joi.string().required(),
+      version: Joi.string().required(),
+    }),
+  );
+
 export const opticConfigType = Joi.object()
   .keys({
-    strategy: strategyConfigType.required(),
-    api: apiConfigType.required(),
+    strategy: strategyConfigType,
+    api: apiConfigType,
     optic: opticInternalConfigType
       .default({
         version: opticCoreVersion,
         apiBaseUrl,
         baseUrl,
       }),
+    dependencies: opticDependenciesType.default([]),
   });
 
 export function validate(config: object) {
   return Joi.validate(config, opticConfigType);
 }
 
+export interface IOpticApiDependency {
+  id: string
+  version: string
+}
+
 export interface IOpticYamlConfig extends ISessionManagerOptions {
   api: {
     id: string
+    version: string
   } & IApiMeta
   optic: {
     version: string
     apiBaseUrl: string
     baseUrl: string
   }
+  dependencies: IOpticApiDependency[]
 }

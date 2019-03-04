@@ -1,19 +1,11 @@
 import React from 'react';
-import { FileSystemRenderer } from '../file-system-renderer';
 
 //@TODO make some of these snapshot tests as applicable
 describe('File System Renderer', function() {
   describe('Folders', function() {
     it('should support rendering a single folder', function() {
       const Component = () => <folder name="f"/>;
-      const callback = jest.fn();
-      const renderer = new FileSystemRenderer();
-      renderer.renderSync(<Component/>, {}, callback);
-      const [err, result] = callback.mock.calls[0];
-      if (err) {
-        console.error(err);
-      }
-      expect(err).toBeNull();
+      const { result } = global.render(<Component/>);
       expect(result).toEqual({
         files: {},
         folders: {
@@ -41,14 +33,7 @@ describe('File System Renderer', function() {
           </folder>
         );
       };
-      const callback = jest.fn();
-      const renderer = new FileSystemRenderer();
-      renderer.renderSync(<Component/>, {}, callback);
-      const [err, result] = callback.mock.calls[0];
-      if (err) {
-        console.error(err);
-      }
-      expect(err).toBeNull();
+      const { result } = global.render(<Component/>);
       expect(result).toEqual({
         files: {},
         folders: {
@@ -99,14 +84,7 @@ describe('File System Renderer', function() {
           <source>123</source>
         </file>
       );
-      const callback = jest.fn();
-      const renderer = new FileSystemRenderer();
-      renderer.renderSync(<Component/>, {}, callback);
-      const [err, result] = callback.mock.calls[0];
-      if (err) {
-        console.error(err);
-      }
-      expect(err).toBeNull();
+      const { result } = global.render(<Component/>);
       expect(result).toEqual({
         files: {
           'f.txt': {
@@ -122,6 +100,7 @@ describe('File System Renderer', function() {
     });
   });
   describe('Context', function() {
+    //@BUG context should reset to 0 after the first Nested
     it('should support rendering context', function() {
       const DepthContext = React.createContext(0);
       const Nested = () => {
@@ -131,7 +110,7 @@ describe('File System Renderer', function() {
               if (depth < 3) {
                 return (
                   <DepthContext.Provider value={depth + 1}>
-                    <line>{'#'.repeat(depth)}</line>
+                    <line>{depth.toString()}</line>
                     <Nested/>
                   </DepthContext.Provider>
                 );
@@ -149,6 +128,7 @@ describe('File System Renderer', function() {
                 <DepthContext.Provider value={0}>
                   <Nested/>
                   <Nested/>
+                  <Nested/>
                 </DepthContext.Provider>
               </source>
             </file>
@@ -156,16 +136,9 @@ describe('File System Renderer', function() {
         );
       };
 
-      const callback = jest.fn();
-      const renderer = new FileSystemRenderer();
-      renderer.renderSync(<Component/>, {}, callback);
-      const [err, result] = callback.mock.calls[0];
-      if (err) {
-        console.error(err);
-      }
-      expect(err).toBeNull();
+      const { result } = global.render(<Component/>);
       const contents = result.folders.root.files.test.contents.join('');
-      expect(contents).toBe(`\n#\n##\ndone\n\n#\n##\ndone\n`);
+      expect(contents).toBe(`0\n1\n2\ndone\n0\n1\n2\ndone\n0\n1\n2\ndone\n`);
     });
   });
   describe('Fragment', function() {
@@ -185,14 +158,7 @@ describe('File System Renderer', function() {
         );
       };
 
-      const callback = jest.fn();
-      const renderer = new FileSystemRenderer();
-      renderer.renderSync(<Component/>, {}, callback);
-      const [err, result] = callback.mock.calls[0];
-      if (err) {
-        console.error(err);
-      }
-      expect(err).toBeNull();
+      const { result } = global.render(<Component/>);
       expect(Object.keys(result.folders)).toEqual(['f1', 'f2', 'f3']);
     });
   });

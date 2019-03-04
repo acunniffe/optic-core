@@ -220,9 +220,9 @@ class ObservationsToGraph {
         const node = SecurityNode(security);
         if (this.graph.tryAddNode(node.id, node.type, node.data)) {
           this.graph.addEdge(node.id, rootNodeId);
-          const requestNode = RequestNode(path, method, statusCode);
-          this.graph.ensureEdgeExistsBetween(requestNode.id, node.id);
         }
+        const requestNode = RequestNode(path, method, statusCode);
+        this.graph.ensureEdgeExistsBetween(requestNode.id, node.id);
       } else if (observation.type === 'RequestParameterObserved') {
         const { path, method, statusCode, source, name, valueShape } = observation;
         const node = RequestParameterNode(path, method, statusCode, source, name);
