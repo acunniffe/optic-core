@@ -6,6 +6,7 @@ import { ProxyServer } from './proxy-server';
 
 export interface IBaseSecurity {
   type: string
+  unsecuredPaths: string[]
 }
 
 export interface IBasicAuthSecurity extends IBaseSecurity {

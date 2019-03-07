@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
 import { IApiMeta, ISessionManagerOptions } from './session-manager';
 
-export const opticCoreVersion = '0.1.3-alpha.17';
+export const opticCoreVersion = '0.1.3-alpha.18';
 const baseUrl = 'https://app.useoptic.com';
 const apiBaseUrl = 'https://api.useoptic.com';
 
@@ -21,15 +21,21 @@ export const strategyConfigType = Joi.alternatives(
   }),
 );
 
+export const securityWhitelistConfigType = Joi.array()
+  .items(Joi.string())
+  .default([]);
+
 export const securityConfigType = Joi.array()
   .items(
     Joi.object().keys({
       type: Joi.string().valid('basic', 'bearer').required(),
+      unsecuredPaths: securityWhitelistConfigType,
     }),
     Joi.object().keys({
       type: Joi.string().valid('apiKey').required(),
       in: Joi.string().valid('cookie', 'query', 'header').required(),
       name: Joi.string().required().min(1),
+      unsecuredPaths: securityWhitelistConfigType,
     }),
   );
 
@@ -46,6 +52,7 @@ export const opticInternalConfigType = Joi.object()
     version: Joi.string().default(opticCoreVersion),
     apiBaseUrl: Joi.string().default(apiBaseUrl),
     baseUrl: Joi.string().default(baseUrl),
+    segmentWriteKey: Joi.string().default('FAKE_SEGMENT_KEY'),
   });
 
 export const opticDependenciesType = Joi.array()
@@ -78,15 +85,18 @@ export interface IOpticApiDependency {
   version: string
 }
 
+export interface IOpticInternalConfig {
+  version: string
+  apiBaseUrl: string
+  baseUrl: string
+  segmentWriteKey: string
+}
+
 export interface IOpticYamlConfig extends ISessionManagerOptions {
   api: {
     id: string
     version: string
   } & IApiMeta
-  optic: {
-    version: string
-    apiBaseUrl: string
-    baseUrl: string
-  }
+  optic: IOpticInternalConfig
   dependencies: IOpticApiDependency[]
 }

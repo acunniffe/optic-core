@@ -3,119 +3,61 @@ import * as pathMatch from 'path-match';
 import { getMatchingPath, IApiInteraction, IPathMatcher } from './common';
 import { ISecurityConfig } from './session-manager';
 import { flattenJavascriptValueToList, IFlattenedJsValueItem } from './value-to-shape';
-/*
-interface IncomingHttpHeaders {
-        'accept'?: string;
-        'access-control-allow-origin'?: string;
-        'access-control-allow-credentials'?: string;
-        'access-control-expose-headers'?: string;
-        'access-control-max-age'?: string;
-        'access-control-allow-methods'?: string;
-        'access-control-allow-headers'?: string;
-        'accept-patch'?: string;
-        'accept-ranges'?: string;
-        'age'?: string;
-        'allow'?: string;
-        'alt-svc'?: string;
-        'authorization'?: string;
-        'cache-control'?: string;
-        'connection'?: string;
-        'content-disposition'?: string;
-        'content-encoding'?: string;
-        'content-language'?: string;
-        'content-length'?: string;
-        'content-location'?: string;
-        'content-range'?: string;
-        'content-type'?: string;
-        'cookie'?: string;
-        'date'?: string;
-        'expect'?: string;
-        'expires'?: string;
-        'forwarded'?: string;
-        'from'?: string;
-        'host'?: string;
-        'if-match'?: string;
-        'if-modified-since'?: string;
-        'if-none-match'?: string;
-        'if-unmodified-since'?: string;
-        'last-modified'?: string;
-        'location'?: string;
-        'pragma'?: string;
-        'proxy-authenticate'?: string;
-        'proxy-authorization'?: string;
-        'public-key-pins'?: string;
-        'range'?: string;
-        'referer'?: string;
-        'retry-after'?: string;
-        'set-cookie'?: string[];
-        'strict-transport-security'?: string;
-        'trailer'?: string;
-        'transfer-encoding'?: string;
-        'tk'?: string;
-        'upgrade'?: string;
-        'user-agent'?: string;
-        'vary'?: string;
-        'via'?: string;
-        'warning'?: string;
-        'www-authenticate'?: string;
-        [header: string]: string | string[] | undefined;
-    }
- */
-const headerBlacklist = new Set([
-  'A-IM',
-  'Accept',
-  'Accept-Charset',
-  'Accept-Encoding',
-  'Accept-Datetime',
-  'Access-Control-Request-Method',
-  'Access-Control-Request-Headers',
-  'Connection',
-  'Content-Type',
-  'Content-Length',
-  'Cookie',
-  'Content-MD5',
-  'Date',
-  'Expect',
-  'Expires',
-  'ETag',
-  'Forwarded',
-  'From',
-  'Host',
-  'If-Match',
-  'If-Modified-Since',
-  'If-None-Match',
-  'If-Range',
-  'If-Unmodified-Since',
-  'Last-Modified',
-  'Location',
-  'Max-Forwards',
-  'Origin',
-  'P3P',
-  'Pragma',
-  'Set-Cookie',
-  'Server',
-  'Timeout-Access',
-  'Retry-After',
-  'Referer',
-  'TE',
-  'User-Agent',
-  'Upgrade',
-  'Via',
-  'Warning',
 
-  'X-Requested-With',
-  'DNT',
-  'X-Forwarded-For',
-  'X-Forwarded-Host',
-  'X-Forwarded-Proto',
-  'Front-End-Https',
-  'X-Http-Method-Override',
-  'X-Powered-By',
-  'X-ATT-DeviceId',
-  'X-Wap-Profile',
-  'Proxy-Connection',
-  'X-UIDH',
-  'Save-Data',
+const headerBlacklist = new Set([
+  'accept',
+  'access-control-allow-origin',
+  'access-control-allow-credentials',
+  'access-control-expose-headers',
+  'access-control-max-age',
+  'access-control-allow-methods',
+  'access-control-allow-headers',
+  'accept-patch',
+  'accept-ranges',
+  'age',
+  'allow',
+  'alt-svc',
+  'authorization',
+  'cache-control',
+  'connection',
+  'content-disposition',
+  'content-encoding',
+  'content-language',
+  'content-length',
+  'content-location',
+  'content-range',
+  'content-type',
+  'cookie',
+  'date',
+  'expect',
+  'expires',
+  'forwarded',
+  'from',
+  'host',
+  'if-match',
+  'if-modified-since',
+  'if-none-match',
+  'if-unmodified-since',
+  'last-modified',
+  'location',
+  'pragma',
+  'proxy-authenticate',
+  'proxy-authorization',
+  'public-key-pins',
+  'range',
+  'referer',
+  'retry-after',
+  'set-cookie',
+  'strict-transport-security',
+  'trailer',
+  'transfer-encoding',
+  'tk',
+  'upgrade',
+  'user-agent',
+  'vary',
+  'via',
+  'warning',
+  'www-authenticate',
 ].map(x => x.toLowerCase()));
 
 export type DataShape = IFlattenedJsValueItem[];
@@ -266,7 +208,8 @@ class InteractionsToObservations {
     const additionalQueryParamsToIgnore = new Set<string>();
     const { security } = config;
     if (security) {
-      let foundSecurityInRequest = false;
+      const unsecuredPathsSet = new Set(security.unsecuredPaths);
+      let foundSecurityInRequest = !unsecuredPathsSet.has(path);
       if (security.type === 'apiKey') {
         if (security.in === 'cookie') {
           if (cookies[security.name]) {
@@ -306,6 +249,7 @@ class InteractionsToObservations {
     }
 
     // header parameters
+    //@TODO make useful observations from the transport headers (caching, compression, browser security etc.)
     Object.keys(requestHeaders)
       .filter((headerName: string) => !headerBlacklist.has(headerName) && !additionalHeadersToIgnore.has(headerName))
       .forEach((headerName: string) => {
