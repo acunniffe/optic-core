@@ -74,6 +74,7 @@ export interface IPathObserved extends IBaseObservation {
 export interface IUnrecognizedUrlObserved extends IBaseObservation {
   type: 'UnrecognizedUrlObserved'
   url: string
+  responseStatusCode: number
 }
 
 export interface IMethodObserved extends IBaseObservation {
@@ -171,6 +172,7 @@ class InteractionsToObservations {
       const observation: IUnrecognizedUrlObserved = {
         type: 'UnrecognizedUrlObserved',
         url: request.url,
+        responseStatusCode: response.statusCode
       };
       observations.push(observation);
 

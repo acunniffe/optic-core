@@ -1,16 +1,26 @@
 import { idGeneratorFactory } from '../logging-server';
 
 export type NodeId = string;
+export type NodeHash = string;
 export type EdgeId = string;
 export type NodeType = string;
-export type NodeData = object;
+export type NodeData = IGraphNode;
 export type Node = {
   id: NodeId
-  type: NodeType
-  data: NodeData
+  value: NodeData
 };
 
-const rootNodeId = 'root';
+export interface IBaseGraphNode {
+  hashCode(): NodeHash
+
+  toHashString(): string
+
+  toGraphViz(): string
+}
+
+export interface IGraphNode extends IBaseGraphNode {
+  type: NodeType
+}
 
 class Graph {
   public readonly nodes: Map<NodeId, Node>;
@@ -18,42 +28,62 @@ class Graph {
   public readonly incomingEdges: Map<NodeId, Map<NodeId, Set<EdgeId>>>;
   private edgeIdGenerator: IterableIterator<number>;
   private nodeIdGenerator: IterableIterator<number>;
+  private nodesHashes: Map<NodeHash, Node>;
 
   constructor() {
     this.nodes = new Map();
+    this.nodesHashes = new Map();
     this.outgoingEdges = new Map();
     this.incomingEdges = new Map();
     this.edgeIdGenerator = idGeneratorFactory();
     this.nodeIdGenerator = idGeneratorFactory();
   }
 
-  public addNode(id: NodeId, type: NodeType, data: NodeData) {
+  public addNode(node: IGraphNode) {
+    const id: NodeId = this.nodeIdGenerator.next().value.toString();
+
     if (this.nodes.has(id)) {
       throw new Error(`graph already has node with id ${id}`);
     }
-    this.unsafeAddNode(id, type, data);
+    const hash = node.hashCode();
+    if (this.nodesHashes.has(hash)) {
+      throw new Error(`graph already has node with hash ${hash}`);
+    }
+
+    this.unsafeAddNode(id, node);
 
     return id;
   }
 
-  public tryAddNode(id: NodeId, type: NodeType, data: NodeData) {
+  public tryAddNode(node: IGraphNode) {
+    const id: NodeId = this.nodeIdGenerator.next().value.toString();
     if (this.nodes.has(id)) {
-      return false;
+      return null;
     }
 
-    this.unsafeAddNode(id, type, data);
+    const hash = node.hashCode();
+    if (this.nodesHashes.has(hash)) {
+      return null;
+    }
 
-    return true;
+    this.unsafeAddNode(id, node);
+
+    return id;
   }
 
-  public addNodeWithDynamicId(type: NodeType, data: NodeData) {
-    const id: NodeId = this.nodeIdGenerator.next().value.toString();
-
-    return this.addNode(id, type, data);
+  //@TODO move this to a separate class?
+  public idFromHash(node: IGraphNode) {
+    const hash = node.hashCode();
+    if (this.nodesHashes.has(hash)) {
+      return this.nodesHashes.get(hash).id;
+    }
+    throw new Error(`graph does not have a node with hash ${hash}`);
   }
 
-  private unsafeAddNode(id: NodeId, type: NodeType, data: NodeData) {
-    this.nodes.set(id, { id, type, data });
+  private unsafeAddNode(id: NodeId, value: IGraphNode) {
+    const node = { id, value };
+    this.nodes.set(id, node);
+    this.nodesHashes.set(value.hashCode(), node);
   }
 
   public addEdge(sourceNodeId: NodeId, destinationNodeId: NodeId) {
@@ -97,7 +127,7 @@ class Graph {
   public toGraphViz() {
     const output = [];
     for (const [nodeId, node] of this.nodes.entries()) {
-      output.push(`"${nodeId}" [label="${node.type}"]`);
+      output.push(`"${nodeId}" [label="${node.value.toGraphViz()}"]`);
     }
     for (const [sourceNodeId, destinationNodeIds] of this.outgoingEdges.entries()) {
       for (const destinationNodeId of destinationNodeIds.keys()) {
@@ -108,7 +138,7 @@ class Graph {
 
     return `
 digraph G {
-rankdir=BT
+rankdir=RL
 ${output.join('\n')}
 }`;
   }
@@ -116,5 +146,4 @@ ${output.join('\n')}
 
 export {
   Graph,
-  rootNodeId
 };
