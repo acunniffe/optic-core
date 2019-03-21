@@ -3,6 +3,7 @@ import * as debug from 'debug';
 import { IApiInteraction, passThrough } from './common';
 import { LoggingServer } from './logging-server';
 import { ProxyServer } from './proxy-server';
+import * as kill from 'tree-kill';
 
 export interface IBaseSecurity {
   type: string
@@ -55,6 +56,8 @@ const debugCliVerbose = debug('optic-debug:cli');
 class SessionManager {
   public samples: IApiInteraction[];
   private options: ISessionManagerOptions;
+  private onSampleCallbacks: ((sample: IApiInteraction) => void)[] = []
+  private stopHandler: () => void
 
   constructor(options: ISessionManagerOptions) {
     this.options = options;
@@ -63,7 +66,12 @@ class SessionManager {
 
   private handleSample(sample: IApiInteraction) {
     debugCliVerbose('got sample');
+    this.onSampleCallbacks.forEach((cb: (sample: IApiInteraction) => void)  => cb(sample))
     this.samples.push(sample);
+  }
+
+  public onSample(callback: (sample: IApiInteraction) => void) {
+    this.onSampleCallbacks.push(callback)
   }
 
   public useProxyServer(config: IProxyDocumentationConfig) {
@@ -86,6 +94,12 @@ class SessionManager {
       }));
   }
 
+  public stop() {
+    if (this.stopHandler) {
+      this.stopHandler()
+    }
+  }
+
   private runCommand(command: string) {
     const taskOptions: SpawnOptions = {
       env: {
@@ -100,6 +114,12 @@ class SessionManager {
       logCli(`running $ ${command}`);
       logCli(`in ${taskOptions.cwd}`);
       const child = spawn(command, taskOptions);
+
+      this.stopHandler = () => {
+        kill(child.pid)
+        resolve(true)
+      }
+
       child.stdout.on('data', function(data) {
         process.stdout.write(data);
       });
@@ -109,7 +129,7 @@ class SessionManager {
       });
 
       child.on('exit', function(code) {
-        logCli(`Your command exited with code ${code.toString()}`);
+        logCli(`Your command exited with code ${(code || 'killed').toString()}`);
         resolve(code === 0);
       });
     });
