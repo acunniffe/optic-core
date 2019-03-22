@@ -72,7 +72,7 @@ class SessionManager {
     this.events.on('sample', ((sample: IApiInteraction) => {
       debugCliVerbose('got sample');
       this.samples.push(sample);
-    });
+    }));
   }
 
   public onSample(callback: (sample: IApiInteraction) => void) {
