@@ -3,6 +3,8 @@ import * as debug from 'debug';
 import { IApiInteraction, passThrough } from './common';
 import { LoggingServer } from './logging-server';
 import { ProxyServer } from './proxy-server';
+import * as kill from 'tree-kill';
+import * as EventEmitter from 'events'
 
 export interface IBaseSecurity {
   type: string
@@ -52,23 +54,34 @@ export interface ISessionManagerOptions {
 const logCli = debug('optic:cli');
 const debugCliVerbose = debug('optic-debug:cli');
 
+class SessionManagerEmitter extends EventEmitter {}
+
 class SessionManager {
   public samples: IApiInteraction[];
+
   private options: ISessionManagerOptions;
+
+  private events: SessionManagerEmitter = new SessionManagerEmitter();
+
+  private stopHandler: () => void
 
   constructor(options: ISessionManagerOptions) {
     this.options = options;
     this.samples = [];
+
+    this.events.on('sample', ((sample: IApiInteraction) => {
+      debugCliVerbose('got sample');
+      this.samples.push(sample);
+    }));
   }
 
-  private handleSample(sample: IApiInteraction) {
-    debugCliVerbose('got sample');
-    this.samples.push(sample);
+  public onSample(callback: (sample: IApiInteraction) => void) {
+    this.events.on('sample', callback)
   }
 
   public useProxyServer(config: IProxyDocumentationConfig) {
     const proxy = new ProxyServer();
-    proxy.on('sample', this.handleSample.bind(this));
+    proxy.on('sample', (sample: IApiInteraction) => this.events.emit('sample', sample));
 
     const { targetHost, targetPort } = config;
 
@@ -86,6 +99,12 @@ class SessionManager {
       }));
   }
 
+  public stop() {
+    if (this.stopHandler) {
+      this.stopHandler()
+    }
+  }
+
   private runCommand(command: string) {
     const taskOptions: SpawnOptions = {
       env: {
@@ -100,6 +119,15 @@ class SessionManager {
       logCli(`running $ ${command}`);
       logCli(`in ${taskOptions.cwd}`);
       const child = spawn(command, taskOptions);
+
+      let killed = false
+
+      this.stopHandler = () => {
+        kill(child.pid)
+        killed = true
+        resolve(true)
+      }
+
       child.stdout.on('data', function(data) {
         process.stdout.write(data);
       });
@@ -109,8 +137,10 @@ class SessionManager {
       });
 
       child.on('exit', function(code) {
-        logCli(`Your command exited with code ${code.toString()}`);
-        resolve(code === 0);
+        if (!killed) {
+          logCli(`Your command exited with code ${(code).toString()}`);
+          resolve(code === 0);
+        }
       });
     });
 
@@ -119,7 +149,7 @@ class SessionManager {
 
   public useLoggingServer(config: ILoggingDocumentationConfig) {
     const loggingServer = new LoggingServer();
-    loggingServer.on('sample', this.handleSample.bind(this));
+    loggingServer.on('sample', (sample: IApiInteraction) => this.events.emit('sample', sample));
 
     return loggingServer
       .start({
