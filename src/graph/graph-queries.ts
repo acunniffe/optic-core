@@ -1,4 +1,8 @@
-import { Graph, Node, NodeId, NodeType, rootNodeId } from './graph';
+import { Graph, Node, NodeData, NodeId, NodeType } from './graph';
+import { ApiObjectPropertyNode } from './nodes/api-object-property-node';
+import { ApiSchemaLeafNode } from './nodes/api-schema-leaf-node';
+import { ApiSchemaParentNode } from './nodes/api-schema-parent-node';
+import { ApiSchemaRootNode } from './nodes/api-schema-root-node';
 
 class GraphQueries {
   public readonly graph: Graph;
@@ -9,12 +13,8 @@ class GraphQueries {
 
   public listNodesByType(type: NodeType) {
     return [...this.graph.nodes.values()]
-      .filter((node: Node) => node.type === type)
+      .filter((node: Node) => node.value.type === type)
       .map((node: Node) => new NodeQueries(this, node));
-  }
-
-  public root() {
-    return this.node(rootNodeId);
   }
 
   public node(nodeId: NodeId) {
@@ -36,7 +36,7 @@ class NodeQueries {
   }
 
   public isA(type: string) {
-    return this.node.type === type;
+    return this.node.value.type === type;
   }
 
   public isChildOf(parentId: NodeId) {
@@ -46,10 +46,30 @@ class NodeQueries {
   }
 
   public parent() {
-    const parentNodeIds = (this.graphQueries.graph.outgoingEdges.get(this.node.id) || new Map()).keys();
-    const [parentNodeId] = parentNodeIds;
+    const [parentNodeId] = this.parentNodeIds();
 
     return this.graphQueries.node(parentNodeId);
+  }
+
+  public parentNodeIds() {
+    const parentNodeIds = (this.graphQueries.graph.outgoingEdges.get(this.node.id) || new Map()).keys();
+    return parentNodeIds;
+  }
+
+  public hasParent() {
+    const parentNodeIds = this.parentNodeIds();
+
+    return [...parentNodeIds].length > 0;
+  }
+
+  //@GOTCHA: this includes the current node as a sibling of itself
+  public siblingsAndSelf() {
+    const [parentNodeId] = this.parentNodeIds();
+    if (!parentNodeId) {
+      return [];
+    }
+
+    return this.graphQueries.node(parentNodeId).children();
   }
 
   public children() {
@@ -75,23 +95,24 @@ class NodeQueries {
 
   public toJsonSchema() {
 
-    if (!new Set(['schemaRoot', 'schemaParent', 'schemaLeaf']).has(this.node.type)) {
-      throw new Error(`unexpected node in traversal ${this.node.type}`);
+    if (isSchemaRootNode(this.node.value)) {
+      return this.getMergedChildType();
     }
-    //@ts-ignore
-    const jsonSchemaType: string = this.node.data.jsonSchemaType;
-    if (this.node.type === 'schemaLeaf') {
+
+    if (isSchemaLeafNode(this.node.value)) {
+      const jsonSchemaType: string = this.node.value.jsonSchemaType;
+
       return {
         type: jsonSchemaType,
       };
     }
 
-    if (this.node.type === 'schemaParent') {
+    if (isSchemaParentNode(this.node.value)) {
+      const jsonSchemaType: string = this.node.value.jsonSchemaType;
       if (jsonSchemaType === 'object') {
         const properties = this.children()
           .reduce((acc: object, child: NodeQueries) => {
-            //@ts-ignore
-            const name: string = child.node.data.name;
+            const name: string = (child.node.value as ApiObjectPropertyNode).name;
             acc[name] = child.getMergedChildType();
 
             return acc;
@@ -108,12 +129,7 @@ class NodeQueries {
         };
       }
     }
-
-    if (this.node.type === 'schemaRoot') {
-      return this.getMergedChildType();
-    }
-
-    throw new Error('should not get here');
+    throw new Error(`unexpected node in traversal ${this.node.value.type}`);
   }
 
   private getMergedChildType() {
@@ -128,6 +144,18 @@ class NodeQueries {
       };
     }
   }
+}
+
+function isSchemaRootNode(value: NodeData): value is ApiSchemaRootNode {
+  return value.type === 'schemaRoot';
+}
+
+function isSchemaLeafNode(value: NodeData): value is ApiSchemaLeafNode {
+  return value.type === 'schemaLeaf';
+}
+
+function isSchemaParentNode(value: NodeData): value is ApiSchemaParentNode {
+  return value.type === 'schemaParent';
 }
 
 export {
