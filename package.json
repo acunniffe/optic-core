@@ -27,6 +27,7 @@
     "@types/react-is": "^16.7.1",
     "babel-jest": "^24.1.0",
     "jest": "^24.1.0",
+    "jest-snapshot": "^24.5.0",
     "prettier": "1.15.3",
     "rimraf": "^2.6.3",
     "ts-jest": "^24.0.0",
