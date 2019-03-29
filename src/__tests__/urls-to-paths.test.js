@@ -1,7 +1,6 @@
 import { UrlsToPaths } from '../urls-to-paths';
 
 const urls = [
-<<<<<<< HEAD
   '/channel/destinations/f97106b2-c696-44e1-9551-a64828133dd3/rating.json',
   '/channel/destinations/f97106b2-c696-44e1-9551-a64828133dd3/rating.json',
   '/channel/destinations/d1a010d4-6f27-4afa-bacf-e033a913cf56/rating.json',
@@ -510,7 +509,6 @@ const urls = [
   '/channel/users/04f25d34-2851-47b5-b01e-8332c5f492ac/roles.json',
   '/channel/campaigns/d2650fa3-169d-40d3-966a-61f8b888049f/accounts/a1fabba7-6cb8-49ed-b7d5-5d93b35d0449/copy.json',
   '/channel/campaigns/e452ad1c-0b26-4d65-b692-d0f4ce9b71ed/accounts/d9fd3fcd-503a-4352-9cf2-1d340b0b61f0/copy.json',
-=======
   '/bbb/destinations/f97106b2-c696-44e1-9551-a64828133dd3/rating.json',
   '/bbb/destinations/f97106b2-c696-44e1-9551-a64828133dd3/rating.json',
   '/bbb/destinations/d1a010d4-6f27-4afa-bacf-e033a913cf56/rating.json',
@@ -1019,7 +1017,6 @@ const urls = [
   '/bbb/users/04f25d34-2851-47b5-b01e-8332c5f492ac/roles.json',
   '/bbb/campaigns/d2650fa3-169d-40d3-966a-61f8b888049f/accounts/a1fabba7-6cb8-49ed-b7d5-5d93b35d0449/copy.json',
   '/bbb/campaigns/e452ad1c-0b26-4d65-b692-d0f4ce9b71ed/accounts/d9fd3fcd-503a-4352-9cf2-1d340b0b61f0/copy.json',
->>>>>>> e8381d56330e5014c5b1757ce1e0a747c9be89fc
 ];
 
 describe('URLs to Paths', function() {
@@ -1048,12 +1045,8 @@ describe('URLs to Paths', function() {
             return updatedComponents.join('/');
           }),
       )];
-<<<<<<< HEAD
-      // require('fs').writeFileSync('paths.json', JSON.stringify(paths, null, 2));
-=======
       paths.sort()
-      //require('fs').writeFileSync('paths.json', JSON.stringify(paths, null, 2));
->>>>>>> e8381d56330e5014c5b1757ce1e0a747c9be89fc
+      //require('fs').writeFileSync('paths.json', JSON.stringify(paths, null, 2))
     });
   });
 });

@@ -1,11 +1,7 @@
 import * as Joi from 'joi';
 import { IApiMeta, ISessionManagerOptions } from './session-manager';
 
-<<<<<<< HEAD
 export const opticCoreVersion = '0.1.4-alpha.1';
-=======
-export const opticCoreVersion = '0.1.3-alpha.19';
->>>>>>> e8381d56330e5014c5b1757ce1e0a747c9be89fc
 const baseUrl = 'https://app.useoptic.com';
 const apiBaseUrl = 'https://api.useoptic.com';
 
