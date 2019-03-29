@@ -100,15 +100,16 @@ class NodeQueries {
     }
 
     if (isSchemaLeafNode(this.node.value)) {
-      const jsonSchemaType: string = this.node.value.jsonSchemaType;
+      const {jsonSchemaType}= this.node.value;
 
       return {
         type: jsonSchemaType,
+        title: this.node.value.hashCode()
       };
     }
 
     if (isSchemaParentNode(this.node.value)) {
-      const jsonSchemaType: string = this.node.value.jsonSchemaType;
+      const {jsonSchemaType}= this.node.value;
       if (jsonSchemaType === 'object') {
         const properties = this.children()
           .reduce((acc: object, child: NodeQueries) => {
@@ -120,11 +121,13 @@ class NodeQueries {
 
         return {
           type: jsonSchemaType,
+          title: this.node.value.hashCode(),
           properties,
         };
       } else if (jsonSchemaType === 'array') {
         return {
           type: jsonSchemaType,
+          title: this.node.value.hashCode(),
           items: this.getMergedChildType(),
         };
       }

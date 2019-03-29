@@ -78,10 +78,10 @@ class UrlsToPaths {
 
 
       if (matchingCousinNode) {
-        console.log('.', component);
+        /*console.log('.', component);
         console.log('p', (queries.node(parentNodeId).node.value as PathComponentNode).component);
         console.log('s', (parentSiblingWithMatchingChild.node.value as PathComponentNode).component);
-        console.log('c', (matchingCousinNode.node.value as PathComponentNode).component);
+        console.log('c', (matchingCousinNode.node.value as PathComponentNode).component);*/
 
         this.qualify(queries.node(parentNodeId));
         this.qualify(parentSiblingWithMatchingChild);

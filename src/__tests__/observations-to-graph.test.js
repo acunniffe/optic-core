@@ -4,6 +4,8 @@ const { GraphQueries } = require('../graph/graph-queries');
 
 const { ObservationsToGraph } = require('../observations-to-graph');
 const { pathObservations, singleRequestBody } = require('./optic-observations.fixture.js');
+const {toMatchSnapshot} = require('jest-snapshot');
+expect.extend({toMatchSnapshot});
 
 describe('ObservationsToGraph', function() {
   describe('simple API', function() {
@@ -19,15 +21,7 @@ describe('ObservationsToGraph', function() {
       }));
       const graphQueries = new GraphQueries(observationsToGraph.graph);
       const [schemaRootNode] = graphQueries.listNodesByType('schemaRoot');
-      expect(schemaRootNode.toJsonSchema()).toEqual({
-        type: 'object',
-        properties: {
-          emails: {
-            type: 'array',
-            items: { type: 'string' },
-          },
-        },
-      });
+      expect(schemaRootNode.toJsonSchema()).toMatchSnapshot()
     });
 
     it('should understand the request body format with different observations', function() {
@@ -56,26 +50,7 @@ describe('ObservationsToGraph', function() {
 
       const graphQueries = new GraphQueries(observationsToGraph.graph);
       const [schemaRootNode] = graphQueries.listNodesByType('schemaRoot');
-      expect(schemaRootNode.toJsonSchema()).toEqual({
-        oneOf: [
-          {
-            type: 'object',
-            properties: {
-              emails: {
-                type: 'array',
-                items: {
-                  oneOf: [
-                    { type: 'string' },
-                    { type: 'number' },
-                  ],
-                },
-              },
-            },
-          },
-          { type: 'array', items: {} },
-          { type: 'string' },
-        ],
-      });
+      expect(schemaRootNode.toJsonSchema()).toMatchSnapshot();
     });
   });
 });

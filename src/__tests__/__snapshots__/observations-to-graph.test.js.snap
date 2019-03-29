@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ObservationsToGraph simple API should understand the request body format 1`] = `
+Object {
+  "properties": Object {
+    "emails": Object {
+      "items": Object {
+        "title": "6c29c0c2",
+        "type": "string",
+      },
+      "title": "d6234db7",
+      "type": "array",
+    },
+  },
+  "title": "5a7b1b6a",
+  "type": "object",
+}
+`;
+
+exports[`ObservationsToGraph simple API should understand the request body format with different observations 1`] = `
+Object {
+  "oneOf": Array [
+    Object {
+      "properties": Object {
+        "emails": Object {
+          "items": Object {
+            "oneOf": Array [
+              Object {
+                "title": "6c29c0c2",
+                "type": "string",
+              },
+              Object {
+                "title": "d47d4fb4",
+                "type": "number",
+              },
+            ],
+          },
+          "title": "d6234db7",
+          "type": "array",
+        },
+      },
+      "title": "5a7b1b6a",
+      "type": "object",
+    },
+    Object {
+      "items": Object {},
+      "title": "6c1c76c6",
+      "type": "array",
+    },
+    Object {
+      "title": "c3b347f8",
+      "type": "string",
+    },
+  ],
+}
+`;
