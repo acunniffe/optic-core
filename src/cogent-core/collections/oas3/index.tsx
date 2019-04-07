@@ -1,10 +1,17 @@
 import { ReactNode } from 'react';
-import * as collect from 'collect.js';
 import * as React from 'react';
 import { IApiEndpoint } from '../../../../build/src/cogent-engines/cogent-engine';
+import { YArray } from '../yaml';
 import * as Yaml from '../yaml';
-import { collectPaths, IOASRequestParameter, toSwaggerParameter } from './oas-mapping';
-
+import * as collect from 'collect.js'
+import {
+  collectPaths,
+  IOASRequestParameter,
+  schemaToSwaggerYaml,
+  toSwaggerParameter,
+  toSwaggerPath,
+} from './oas-mapping';
+import * as niceTry from 'nice-try'
 
 interface IOASRoot {
   endpoints: IApiEndpoint[],
@@ -26,12 +33,19 @@ function OASRoot({ endpoints }: IOASRoot) {
   ]
 
   return (<Yaml.File name={'oas.yml'}>
-    <Yaml.YObject>
+    <Yaml.YObject key={"root"}>
       {metaInfo}
-      <Yaml.Entry key={"path"} name="paths" value={
+      <Yaml.Entry key={"paths"} name="paths" value={
         <Yaml.YObject>
           {allPaths.map((path) => {
-            return <Yaml.Entry key={path} name={path} value={
+
+            const allPathParameters =
+              collect(groupedEndpoints[path].map(i => (i.request) ? i.request.pathParameters : []))
+                .collapse().all()
+
+            const swaggerPath = toSwaggerPath(path, allPathParameters)
+
+            return <Yaml.Entry key={swaggerPath} name={swaggerPath} value={
               <Yaml.YObject>
                 {groupedEndpoints[path].map(endpoint => <OASEndpoint endpoint={endpoint} />)}
               </Yaml.YObject>
@@ -50,18 +64,71 @@ interface IOASRootEndpoint {
 
 function OASEndpoint({ endpoint }: IOASRootEndpoint) {
 
+  let swaggerParams: IOASRequestParameter[] = []
 
-  const parameters: IOASRequestParameter[] = (() => {
-    const headerParams = endpoint.request.headerParameters.map(toSwaggerParameter)
-    const pathParams = endpoint.request.pathParameters.map(toSwaggerParameter)
-    const queryPrams = endpoint.request.queryParameters.map(toSwaggerParameter)
-    collect(headerParams, pathParams, queryPrams).collapse().all()
-  })()
+  try {
+    const pathParams = endpoint.request.pathParameters.map(i => toSwaggerParameter(i, 'path'))
+    const headerParams = endpoint.request.headerParameters.map(i => toSwaggerParameter(i, 'header'))
+    const queryPrams = endpoint.request.queryParameters.map(i => toSwaggerParameter(i, 'query'))
+    swaggerParams = collect([headerParams, pathParams, queryPrams]).collapse().all()
+  } catch (e) {
+    // console.log(e)
+  }
 
-  return <Yaml.Entry name={endpoint.method} value={
+
+  const parameters = (<Yaml.YArray>
+    {swaggerParams.map(i => {
+
+      return <Yaml.ArrayItem children={schemaToSwaggerYaml(i)}/>
+    })}
+  </Yaml.YArray>)
+
+
+  const bodies = niceTry(() => endpoint.request.bodies) || []
+
+  const requestBody = (<Yaml.YObject>
+    <Yaml.Entry name="description" value="description"/>
+    <Yaml.Entry name={'content'} value={
+      <Yaml.YObject>
+        {bodies.map(body => (
+          <Yaml.Entry name={body.contentType} value={
+            <Yaml.YObject>
+              <Yaml.Entry name={'schema'} value={schemaToSwaggerYaml(body.schema.asJsonSchema)} />
+            </Yaml.YObject>
+          }/>
+        ))}
+    </Yaml.YObject>}/>
+  </Yaml.YObject>)
+
+  const responses = (<Yaml.YObject>
+    {endpoint.responses.map(response => {
+
+      const bodies = response.bodies
+
+      return <Yaml.Entry name={`'${response.statusCode}'`} value={
+        <Yaml.YObject>
+          <Yaml.Entry name="description" value="description"/>
+          <Yaml.Entry name={'content'} value={
+            <Yaml.YObject>
+              {bodies.map(body => (
+                <Yaml.Entry name={body.contentType} value={
+                  <Yaml.YObject>
+                    <Yaml.Entry name={'schema'} value={schemaToSwaggerYaml(body.schema.asJsonSchema)} />
+                  </Yaml.YObject>
+                }/>
+              ))}
+            </Yaml.YObject>}/>
+        </Yaml.YObject>
+      }/>
+    })}
+  </Yaml.YObject>)
+
+  return <Yaml.Entry key={endpoint.method} name={endpoint.method.toLowerCase()} value={
     <Yaml.YObject>
-      <Yaml.Entry name="consumes" value="consumes value"/>
-      <Yaml.Entry name="produces" value="consumes value"/>
+      {(swaggerParams.length) ? <Yaml.Entry name="parameters" value={parameters}/> : null}
+      {(bodies.length) ? <Yaml.Entry name="requestBody" value={requestBody}/> : null}
+      {(endpoint.responses) ? <Yaml.Entry name="responses" value={responses}/> : null}
+      {/*<Yaml.Entry name="produces" value="consumes value"/>*/}
     </Yaml.YObject>
   }/>;
 

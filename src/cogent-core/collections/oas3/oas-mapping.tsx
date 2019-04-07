@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import * as React from 'react';
+import * as Yaml from '../yaml';
 import * as collect from 'collect.js'
 import { IApiEndpoint, IApiRequestParameter } from '../../../cogent-engines/cogent-engine';
 
@@ -29,7 +30,48 @@ export interface IOASRequestParameter {
   required: boolean
 }
 
-export const toSwaggerParameter(parameter: IApiRequestParameter, location: string): IOASRequestParameter  =>  {
+export function schemaToSwaggerYaml(jsonSchema: object): ReactNode {
+  const entires = Object.entries(jsonSchema)
+
+  if (entires.length === 0) {
+    return '{}'
+  }
+
+  return <Yaml.YObject children={entires.map(entry => {
+
+    const value = (() => {
+
+      const v = entry[1]
+
+      if (typeof v === 'boolean') {
+        return (v) ? 'true' : 'false'
+      }
+
+      if (typeof v === 'number') {
+        return v.toString()
+      }
+
+      if (typeof v === 'object') {
+        return schemaToSwaggerYaml(v)
+      }
+
+      return v
+
+    })()
+
+    return <Yaml.Entry key={entry[0]} name={entry[0]} value={value}/>
+  })}/>
+}
+
+export function toSwaggerPath(path: string, pathParameters): string {
+  const allNames = pathParameters.map(i => i.name)
+
+  return allNames.reduce((currentPath: string, pathParam: string) => {
+    return currentPath.replace(`:${pathParam}`, `{${pathParam}}`)
+  }, path)
+}
+
+export function toSwaggerParameter(parameter: IApiRequestParameter, location: string): IOASRequestParameter {
   return {
     'in': location,
     name: parameter.name,

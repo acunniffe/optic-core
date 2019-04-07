@@ -10,23 +10,33 @@ describe('Yaml', function() {
 
   describe('Array Root', () => {
 
-    it.only('can render an array properly', function() {
+    it('can render an array properly', function() {
       const Component = () => {
         return (
           <Yaml.File name={'test.yml'}>
             <Yaml.YArray>
               <Yaml.ArrayItem>Hello</Yaml.ArrayItem>
               <Yaml.ArrayItem>I AM AIDAN</Yaml.ArrayItem>
-              {/*<Yaml.ArrayItem children={"second"}/>*/}
-              {/*<Yaml.ArrayItem children={"third"}/>*/}
+              <Yaml.ArrayItem>
+                <Yaml.YObject>
+                  <Yaml.Entry name={"first"} value={"1"}/>
+                  <Yaml.Entry name={"second"} value={"2"}/>
+                  <Yaml.Entry name={"third"} value={
+                    <Yaml.YObject>
+                      <Yaml.Entry key={'uno'} name={"first"} value={"1"}/>
+                      <Yaml.Entry key={'dos'} name={"second"} value={"2"}/>
+                    </Yaml.YObject>
+                  }/>
+                </Yaml.YObject>
+              </Yaml.ArrayItem>
+
             </Yaml.YArray>
           </Yaml.File>
         );
       };
       const { result } = global.render(<Component />);
       const contents = result.files['test.yml'].contents.join('');
-      console.log(contents)
-      // expect(contents).toBe(equalToExample('basic-object'))
+      expect(contents).toBe(equalToExample('array-nested-objects'))
     })
 
 

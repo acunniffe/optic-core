@@ -1,8 +1,7 @@
 import { ReactNode } from 'react';
 import * as React from 'react';
-import { Line } from '../markdown';
 
-const Indent = React.createContext({ indent: 0, indentString: '  ', inArray: false, indexInArray: undefined });
+const Indent = React.createContext({ indent: 0, indentString: '  ', inArray: false, firstInArray: false });
 
 interface IYamlRootProps {
   children: ReactNode,
@@ -28,15 +27,40 @@ interface IYamlObjectRoot {
 }
 
 function YObject({ children }: IYamlObjectRoot) {
+
   return (
     <source>
 
       <Indent.Consumer>
         {({ indent, indentString, inArray }) => {
+
+          const childrenAsArray = React.Children.toArray(children);
+
+          if (inArray) {
+
+            const first = childrenAsArray;
+            const remaining = childrenAsArray.splice(1);
+
+            return (
+              <React.Fragment>
+                <source>
+                  <Indent.Provider value={{ indent: indent, indentString, inArray: false, firstInArray: true }}>
+                    {first}
+                  </Indent.Provider>
+                </source>
+                <source>
+                  <Indent.Provider value={{ indent: indent + 1, indentString, inArray: false, firstInArray: false }}>
+                    {remaining}
+                  </Indent.Provider>
+                </source>
+              </React.Fragment>
+            );
+          }
+
           return (
             <source>
               <Indent.Provider value={{ indent: indent + 1, indentString, inArray: false }}>
-                {children}
+                {childrenAsArray}
               </Indent.Provider>
             </source>
           );
@@ -54,35 +78,23 @@ function YArray({ children }: IYamlArrayRoot) {
   return (
     <source>
       <Indent.Consumer>
-        {({ indent, indentString }) =>
-          <React.Fragment>
-            {children.map((child, index) => {
-              return (<Indent.Provider key={index.toString()}
-                                       value={{ indent, indentString, inArray: true, indexInArray: index }}>
-                ABCDEFG
-                {/*{child}*/}
-              </Indent.Provider>);
-            })}
-          </React.Fragment>
-        }
+        {({ indent, indentString, inArray }) => {
+          return (
+            <source>
+              <Indent.Provider value={{ indent: indent + 1, indentString, inArray: true }}>
+                {children}
+              </Indent.Provider>
+            </source>
+          );
+        }}
       </Indent.Consumer>
-      {/*<Indent.Consumer>*/}
-      {/*  {({ indent, indentString }) => {*/}
-      {/*    return children.map((child: ReactNode, index: number) => (*/}
-      {/*        <Indent.Provider key={index}*/}
-      {/*                         value={{ indent: indent + 1, indentString, inArray: true, indexInArray: index }}>*/}
-      {/*          {child}*/}
-      {/*        </Indent.Provider>*/}
-      {/*    ));*/}
-      {/*  }}*/}
-      {/*</Indent.Consumer>*/}
     </source>
   );
 }
 
 interface IYamlObjectEntry {
   name: string,
-  value: ReactNode
+  value: ReactNode,
 }
 
 function Entry({ name, value }: IYamlObjectEntry) {
@@ -92,9 +104,13 @@ function Entry({ name, value }: IYamlObjectEntry) {
   return (
     <line key={name}>
       <Indent.Consumer>
-        {({ indent, indentString, inArray }) => {
+        {({indentString, indent, firstInArray}) => {
           const pad = indentString.repeat(indent);
-          return (<source>{pad}{name}: {wrappedValue}</source>);
+          if (firstInArray) {
+            return (<source>{name}: {wrappedValue}</source>);
+          } else {
+            return (<source>{pad}{name}: {wrappedValue}</source>);
+          }
         }}
       </Indent.Consumer>
     </line>
@@ -110,10 +126,16 @@ function ArrayItem({ children }: IYamlArrayItem) {
   return (
     <line>
       <Indent.Consumer>
-        {({ indent, indentString, inArray, indexInArray }) => {
+        {({ indent, indentString, inArray }) => {
           const pad = indentString.repeat(indent);
 
-          return (<source>abcdefg</source>);
+          if (children.type && children.type.name === 'YObject') {
+            return (<Indent.Provider value={{ indent: indent, indentString, inArray: true }}>
+              <source>{pad}- {children}</source>
+            </Indent.Provider>);
+          }
+
+          return (<source>{pad}- {children}</source>);
         }}
       </Indent.Consumer>
     </line>
