@@ -27,7 +27,7 @@ export function documentConfigPostProcessor(input: any): IDocumentConfig {
   //for now throw out the extra method info
   const tempProcessedPaths = processedPaths.map(i => i.path)
 
-  const distinct = (array: object) =>
+  const distinct = (array: any[]) =>
     array.filter((value, index, self) => self.indexOf(value) === index)
 
   return {

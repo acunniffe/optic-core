@@ -1,8 +1,6 @@
 import * as Joi from 'joi';
-import { IOpticInternalConfig } from '../optic-config';
 import { consumeConfig, consumeConfigPostProcessor, IApiDependencyConfig } from './consume-config';
 import { documentConfig, documentConfigPostProcessor, IDocumentConfig } from './document-config';
-
 
 export const OpticYamlConfigSchema = Joi.object({
   document: documentConfig.optional(),
@@ -10,6 +8,13 @@ export const OpticYamlConfigSchema = Joi.object({
   optic: Joi.object().optional()
 }).optional().default({})
 
+
+export interface IOpticInternalConfig {
+  version: string
+  apiBaseUrl: string
+  baseUrl: string
+  segmentWriteKey: string
+}
 
 export interface IOpticYamlConfig {
   document?: IDocumentConfig,
@@ -27,16 +32,19 @@ export function parseOpticYaml(input: object): IOpticYamlConfigParseTry  {
 
   const {error, value} = Joi.validate(input, OpticYamlConfigSchema)
 
+
   if (error) {
     return {isSuccess: false, error: error.toString()}
   }
+
+  const parseValue = <any> value
 
   try {
     return {
       isSuccess: true,
       config: {
-        document: documentConfigPostProcessor(value.document),
-        dependencies: consumeConfigPostProcessor(value.consume),
+        document: documentConfigPostProcessor(parseValue.document),
+        dependencies: consumeConfigPostProcessor(parseValue.consume),
       }
     }
   } catch (e) {

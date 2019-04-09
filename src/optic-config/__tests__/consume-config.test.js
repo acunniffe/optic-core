@@ -2,7 +2,7 @@ import { documentConfig, documentConfigPostProcessor } from '../document-config'
 import Joi from 'joi';
 import { consumeConfig, consumeConfigPostProcessor } from '../consume-config';
 
-describe.only('consume config', () => {
+describe('consume config', () => {
 
   describe('shape validation', () => {
     it('passes when all fields set with valid inputs', () => {
@@ -57,6 +57,8 @@ describe.only('consume config', () => {
 
       const value = consumeConfigPostProcessor(validExample);
 
+      // console.log(value)
+      //
       expect(value).toEqual([{
           api: { org: 'optic', id: 'optic-backend' },
           version: '1.0.0',

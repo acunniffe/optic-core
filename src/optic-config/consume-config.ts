@@ -17,11 +17,23 @@ export interface IApiDependencyConfig {
   outputDirectory: string
 }
 
-export function consumeConfigPostProcessor(input: any): IApiDependencyConfig[] {
 
-  const dependenciesByApi = Object.entries(input).map(entry => {
-    const apiId = apiIdProcessor(entry[0])
-    const {version, generate} = entry[1]
+interface IIntermediateDependencyInfo {
+  version: string,
+  generate: {[key: string]: string}
+}
+interface IntermediateApiDependency {
+  [key: string]: IIntermediateDependencyInfo
+}
+
+export function consumeConfigPostProcessor(input: IntermediateApiDependency): IApiDependencyConfig[] {
+
+
+
+  const dependenciesByApi: IApiDependencyConfig[][] = Object.entries(input).map( (entry) => {
+    const apiId: IApiId = apiIdProcessor(entry[0])
+    const generate = entry[1].generate
+    const version: string = entry[1].version
 
     if (!semverRegex.test(version)) {
 
@@ -33,7 +45,7 @@ export function consumeConfigPostProcessor(input: any): IApiDependencyConfig[] {
 
     return Object.entries(generate).map(target => {
       const cogentId = target[0]
-      const outputDirectory = target[1]
+      const outputDirectory: string = target[1]
 
       if (!isValidPath(outputDirectory)) {
         throw new Error(`Output directory '${outputDirectory}' for '${cogentId}' is not a valid file path.`)
