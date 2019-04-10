@@ -1,18 +1,24 @@
 import * as Joi from 'joi';
+import { IBaseSecurity } from '../session-manager';
 import { apiIdProcessor, IApiId, pathProcessor, semverRegex } from './regexes';
+import { securityConfigType } from './security-config.js';
 
 export const documentConfig = Joi.object().keys({
   id: Joi.string().required(),
   version: Joi.string().optional(),
   run_tests: Joi.string().required(),
   paths: Joi.array().items(Joi.string()).optional().default([]),
+  security: securityConfigType.optional(),
+  har: Joi.string().optional()
 });
 
 export interface IDocumentConfig {
   api: IApiId
   version?: string
   run_tests: string
-  paths: string[]
+  paths: string[],
+  security?: IBaseSecurity,
+  har?: string
 }
 
 export function documentConfigPostProcessor(input: any): IDocumentConfig {
@@ -34,6 +40,8 @@ export function documentConfigPostProcessor(input: any): IDocumentConfig {
     api: apiId,
     version: input.version,
     run_tests: input.run_tests,
-    paths: distinct(tempProcessedPaths)
+    paths: distinct(tempProcessedPaths),
+    security: input.security,
+    har: input.har
   }
 }

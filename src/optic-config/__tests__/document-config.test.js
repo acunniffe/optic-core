@@ -20,6 +20,70 @@ describe('Document config', () => {
       expect(error).toBeNull();
     });
 
+    it('accepts security type bearer', () => {
+      expect(1).toBe(1);
+      const { error, value } = Joi.validate({
+        id: 'optic/test-id',
+        version: '2.0.0',
+        security: [{type: 'bearer'}],
+        run_tests: 'npm run test',
+        paths: [
+          'get /hello/world/:id',
+          'post /next/one',
+        ],
+      }, documentConfig);
+
+      expect(error).toBeNull();
+    });
+
+    it('accepts security type basic', () => {
+      expect(1).toBe(1);
+      const { error, value } = Joi.validate({
+        id: 'optic/test-id',
+        version: '2.0.0',
+        security: [{type: 'basic'}],
+        run_tests: 'npm run test',
+        paths: [
+          'get /hello/world/:id',
+          'post /next/one',
+        ],
+      }, documentConfig);
+
+      expect(error).toBeNull();
+    });
+
+    it('accepts security type apiKey', () => {
+      expect(1).toBe(1);
+      const { error, value } = Joi.validate({
+        id: 'optic/test-id',
+        version: '2.0.0',
+        security: [{type: 'apiKey', in: 'query', name: 'token'}],
+        run_tests: 'npm run test',
+        paths: [
+          'get /hello/world/:id',
+          'post /next/one',
+        ],
+      }, documentConfig);
+
+      expect(error).toBeNull();
+    });
+
+    it('allows users to specify a har file', () => {
+      expect(1).toBe(1);
+      const { error, value } = Joi.validate({
+        id: 'optic/test-id',
+        version: '2.0.0',
+        run_tests: 'npm run test',
+        har: 'reddit.har',
+        paths: [
+          'get /hello/world/:id',
+          'post /next/one',
+        ],
+      }, documentConfig);
+
+      expect(error).toBeNull();
+    });
+
     it('sets paths to empty array if not specified', () => {
       expect(1).toBe(1);
       const { error, value } = Joi.validate({
