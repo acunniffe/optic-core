@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import { IBaseSecurity } from '../session-manager';
+import { ISecurityConfig } from '../session-manager';
 import { apiIdProcessor, IApiId, pathProcessor, semverRegex } from './regexes';
 import { securityConfigType } from './security-config.js';
 
@@ -8,7 +8,7 @@ export const documentConfig = Joi.object().keys({
   version: Joi.string().optional(),
   run_tests: Joi.string().required(),
   paths: Joi.array().items(Joi.string()).optional().default([]),
-  security: securityConfigType.optional(),
+  security: securityConfigType.optional().default([]),
   har: Joi.string().optional()
 });
 
@@ -17,7 +17,7 @@ export interface IDocumentConfig {
   version?: string
   run_tests: string
   paths: string[],
-  security?: IBaseSecurity,
+  security?: ISecurityConfig[],
   har?: string
 }
 

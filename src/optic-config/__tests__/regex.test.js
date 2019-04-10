@@ -7,7 +7,7 @@ import {
   apiIdWithTeamRegex,
   semverRegex,
   pathProcessor,
-  apiIdProcessor, apiIdForKeyRegex,
+  apiIdProcessor, apiIdForKeyRegex, semverOrLatestRegex,
 } from '../regexes';
 
 describe('Regexes', () => {
@@ -64,6 +64,15 @@ describe('Regexes', () => {
     expect(semverRegex.test('me-them')).toBeFalsy();
     expect(semverRegex.test('random string')).toBeFalsy();
   });
+
+  it('matches valid semantic versions + latest', () => {
+    expect(semverOrLatestRegex.test('1.0.0')).toBeTruthy();
+    expect(semverOrLatestRegex.test('latest')).toBeTruthy();
+
+    expect(semverOrLatestRegex.test('me-them')).toBeFalsy();
+    expect(semverOrLatestRegex.test('random string')).toBeFalsy();
+  });
+
 });
 
 describe('extractors', () => {

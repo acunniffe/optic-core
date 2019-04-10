@@ -26,6 +26,40 @@ describe('optic yml interpretation', () => {
 
   })
 
+  it('accepts just document', () => {
+
+    const example = {
+      document: {
+        id: 'optic',
+        version: '1.0.0',
+        run_tests: 'npm run tests',
+        paths: ['/my/path', '/api/path']
+      }
+    }
+
+    const parseTry = parseOpticYaml(example)
+    expect(parseTry.isSuccess).toBeTruthy()
+
+  })
+
+  it('accepts just consume', () => {
+
+    const example = {
+      consume: {
+        'other-api': {
+          version: '1.0.0',
+          generate: {
+            'scala-client': 'src/managed'
+          }
+        }
+      }
+    }
+
+    const parseTry = parseOpticYaml(example)
+    expect(parseTry.isSuccess).toBeTruthy()
+
+  })
+
   it('throws if document post process fails in some way', () => {
 
     const example = {
@@ -64,7 +98,7 @@ describe('optic yml interpretation', () => {
 
     const parseTry = parseOpticYaml(example)
     expect(parseTry.isSuccess).toBeFalsy()
-    expect(parseTry.error).toBe('Invalid version for other-api: "not-real". Must be a semantic version ie 1.0.1')
+    expect(parseTry.error).toBe("Invalid version for other-api: \"not-real\". Must be a semantic version ie '1.0.1' or 'latest'")
 
   })
 

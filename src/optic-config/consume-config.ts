@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import { apiIdForKeyRegex, apiIdProcessor, cogentIdRegex, IApiId, semverRegex } from './regexes';
+import { apiIdForKeyRegex, apiIdProcessor, cogentIdRegex, IApiId, semverOrLatestRegex, semverRegex } from './regexes';
 import * as isValidPath from 'is-valid-path'
 
 export const consumeConfig = Joi.object().pattern(apiIdForKeyRegex, Joi.object({
@@ -35,11 +35,11 @@ export function consumeConfigPostProcessor(input: IntermediateApiDependency): IA
     const generate = entry[1].generate
     const version: string = entry[1].version
 
-    if (!semverRegex.test(version)) {
+    if (!semverOrLatestRegex.test(version)) {
 
       const idForError = `${(apiId.org ? apiId.org + '/' : '')}${apiId.id}`
 
-      throw new Error(`Invalid version for ${idForError}: "${version}". Must be a semantic version ie 1.0.1`)
+      throw new Error(`Invalid version for ${idForError}: "${version}". Must be a semantic version ie '1.0.1' or 'latest'`)
     }
 
 

@@ -100,7 +100,7 @@ describe('consume config', () => {
             swift: 'valid/path/to/file',
           }
         },
-      })).toThrow('Invalid version for example-api: \"not-real\". Must be a semantic version ie 1.0.1')
+      })).toThrow()
     })
   });
 
