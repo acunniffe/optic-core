@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import { apiIdForKeyRegex, apiIdProcessor, cogentIdRegex, IApiId, semverOrLatestRegex, semverRegex } from './regexes';
+import { apiIdForKeyRegex, apiIdProcessor, cogentIdRegex, IApiId, semverOrLatestRegex } from './regexes';
 import * as isValidPath from 'is-valid-path'
 
 export const consumeConfig = Joi.object().pattern(apiIdForKeyRegex, Joi.object({

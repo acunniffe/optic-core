@@ -6,7 +6,7 @@ import { securityConfigType } from './security-config.js';
 export const documentConfig = Joi.object().keys({
   id: Joi.string().required(),
   version: Joi.string().optional(),
-  run_tests: Joi.string().required(),
+  run_tests: Joi.string().optional(),
   paths: Joi.array().items(Joi.string()).optional().default([]),
   security: securityConfigType.optional().default([]),
   har: Joi.string().optional()
@@ -15,7 +15,7 @@ export const documentConfig = Joi.object().keys({
 export interface IDocumentConfig {
   api: IApiId
   version?: string
-  run_tests: string
+  run_tests?: string
   paths: string[],
   security?: ISecurityConfig[],
   har?: string
