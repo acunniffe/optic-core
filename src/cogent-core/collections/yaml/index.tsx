@@ -60,7 +60,7 @@ function YObject({ children }: IYamlObjectRoot) {
 
           return (
             <source>
-              <Indent.Provider value={{ indent: indent + 1, indentString, inArray: false }}>
+              <Indent.Provider value={{ indent: indent + 1, indentString, inArray: false, firstInArray: false }}>
                 {childrenAsArray}
               </Indent.Provider>
             </source>
@@ -82,7 +82,7 @@ function YArray({ children }: IYamlArrayRoot) {
         {({ indent, indentString }) => {
           return (
             <source>
-              <Indent.Provider value={{ indent: indent + 1, indentString, inArray: true }}>
+              <Indent.Provider value={{ indent: indent + 1, indentString, inArray: true, firstInArray: false }}>
                 {children}
               </Indent.Provider>
             </source>
@@ -127,11 +127,12 @@ function ArrayItem({ children }: IYamlArrayItem) {
   return (
     <line>
       <Indent.Consumer>
-        {({ indent, indentString, inArray }) => {
+        {({ indent, indentString }) => {
           const pad = indentString.repeat(indent);
 
+          // @ts-ignore
           if (children.type && children.type.name === 'YObject') {
-            return (<Indent.Provider value={{ indent: indent, indentString, inArray: true }}>
+            return (<Indent.Provider value={{ indent: indent, indentString, inArray: true, firstInArray: false }}>
               <source>{pad}- {children}</source>
             </Indent.Provider>);
           }
