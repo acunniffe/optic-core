@@ -79,12 +79,16 @@ export interface IParameterMapping {
   [key: string]: string
 }
 
+export interface IMultiParameterMapping {
+  [key: string]: string | string[]
+}
+
 export interface IRequestMetadata {
   url: string,
   method: string
   headers: IHeaders
   cookies: IParameterMapping
-  queryParameters: IParameterMapping
+  queryParameters: IMultiParameterMapping
   body?: object
 }
 
