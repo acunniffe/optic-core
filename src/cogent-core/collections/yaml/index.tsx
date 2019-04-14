@@ -13,11 +13,7 @@ interface IYamlRootProps {
 function File({ children, indentString = '  ', name }: IYamlRootProps) {
   return (
     <file name={name}>
-      <source>
-        <Indent.Provider value={{ indent: -1, indentString, inArray: false, firstInArray: false }}>
-          {children}
-        </Indent.Provider>
-      </source>
+      <source><Indent.Provider value={{ indent: -1, indentString, inArray: false, firstInArray: false }}>{children}</Indent.Provider></source>
     </file>
   );
 }
@@ -30,9 +26,7 @@ interface IYamlObjectRoot {
 function YObject({ children }: IYamlObjectRoot) {
 
   return (
-    <source>
-
-      <Indent.Consumer>
+    <source><Indent.Consumer>
         {({ indent, indentString, inArray }) => {
 
           const childrenAsArray = React.Children.toArray(children);
@@ -44,26 +38,14 @@ function YObject({ children }: IYamlObjectRoot) {
 
             return (
               <React.Fragment>
-                <source>
-                  <Indent.Provider value={{ indent: indent, indentString, inArray: false, firstInArray: true }}>
-                    {first}
-                  </Indent.Provider>
-                </source>
-                <source>
-                  <Indent.Provider value={{ indent: indent + 1, indentString, inArray: false, firstInArray: false }}>
-                    {remaining}
-                  </Indent.Provider>
-                </source>
+                <source><Indent.Provider value={{ indent: indent, indentString, inArray: false, firstInArray: true }}>{first}</Indent.Provider></source>
+                <source><Indent.Provider value={{ indent: indent + 1, indentString, inArray: false, firstInArray: false }}>{remaining}</Indent.Provider></source>
               </React.Fragment>
             );
           }
 
           return (
-            <source>
-              <Indent.Provider value={{ indent: indent + 1, indentString, inArray: false, firstInArray: false }}>
-                {childrenAsArray}
-              </Indent.Provider>
-            </source>
+            <source><Indent.Provider value={{ indent: indent + 1, indentString, inArray: false, firstInArray: false }}>{childrenAsArray}</Indent.Provider></source>
           );
         }}
       </Indent.Consumer>
@@ -77,18 +59,11 @@ interface IYamlArrayRoot {
 
 function YArray({ children }: IYamlArrayRoot) {
   return (
-    <source>
-      <Indent.Consumer>
-        {({ indent, indentString }) => {
+    <source><Indent.Consumer>{({ indent, indentString }) => {
           return (
-            <source>
-              <Indent.Provider value={{ indent: indent + 1, indentString, inArray: true, firstInArray: false }}>
-                {children}
-              </Indent.Provider>
+            <source><Indent.Provider value={{ indent: indent + 1, indentString, inArray: true, firstInArray: false }}>{children}</Indent.Provider>
             </source>
-          );
-        }}
-      </Indent.Consumer>
+          );}}</Indent.Consumer>
     </source>
   );
 }

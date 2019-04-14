@@ -20,7 +20,7 @@ describe('OAS 3', function() {
 
     const { result } = global.render(<Component/>);
     const contents = result.files['oas.yml'].contents.join('');
-    // console.log(contents)
+    console.log(contents)
     // fs.writeFileSync(path.join(__dirname, 'oas.yml'), contents)
   });
 

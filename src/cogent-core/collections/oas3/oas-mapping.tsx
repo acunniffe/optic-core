@@ -11,13 +11,19 @@ export function collectPaths(endpoints: IApiEndpoint[]) {
 }
 
 export function schemaToSwaggerYaml(jsonSchema: any) {
-  const entires = Object.entries(jsonSchema)
+  let entries = Object.entries(jsonSchema)
 
-  if (entires.length === 0) {
+  if (entries.length === 0) {
     return '{}'
   }
 
-  return <Yaml.YObject children={entires.map((entry:any) => {
+  const containsType: boolean = !!entries.find((i:any) => i[0] === 'type')
+
+  if (containsType) {
+    entries = entries.filter((i:any) => i[0] !== 'title')
+  }
+
+  return <Yaml.YObject children={entries.map((entry:any) => {
 
     if (entry[0] === 'oneOf' || entry[0] === 'anyOf') {
 

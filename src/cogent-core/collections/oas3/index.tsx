@@ -46,7 +46,7 @@ function OASRoot({ endpoints, api }: IOASRoot) {
 
             return <Yaml.Entry key={swaggerPath} name={swaggerPath} value={
               <Yaml.YObject>
-                {groupedEndpoints[path].map( (endpoint:IApiEndpoint) => <OASEndpoint endpoint={endpoint} />)}
+                {groupedEndpoints[path].map( (endpoint:IApiEndpoint) => <OASEndpoint key={endpoint.method + endpoint.path} endpoint={endpoint} />)}
               </Yaml.YObject>
             }/>;
           })}
@@ -79,8 +79,8 @@ function OASEndpoint({ endpoint }: IOASRootEndpoint) {
   }
 
   // @ts-ignore
-  const parameters = (<Yaml.YArray>{swaggerParams.map(i => {
-      return <Yaml.ArrayItem children={schemaToSwaggerYaml(i)}/>
+  const parameters = (<Yaml.YArray key={endpoint.path+endpoint.method}>{swaggerParams.map(i => {
+      return <Yaml.ArrayItem key={endpoint.path+endpoint.method} children={schemaToSwaggerYaml(i)}/>
     })}
   </Yaml.YArray>)
 
@@ -88,13 +88,13 @@ function OASEndpoint({ endpoint }: IOASRootEndpoint) {
   const bodies: IApiRequestBody[] = niceTry(() => endpoint.request.bodies) || []
 
   const requestBody = (<Yaml.YObject>
-    <Yaml.Entry name="description" value="description"/>
-    <Yaml.Entry name={'content'} value={
+    <Yaml.Entry key={'desc'} name="description" value="description"/>
+    <Yaml.Entry key={'content'} name={'content'} value={
       <Yaml.YObject>
         {bodies.map((body: IApiRequestBody) => (
-          <Yaml.Entry name={body.contentType} value={
+          <Yaml.Entry key={body.contentType} name={body.contentType} value={
             <Yaml.YObject>
-              <Yaml.Entry name={'schema'} value={schemaToSwaggerYaml(body.schema.asJsonSchema)} />
+              <Yaml.Entry key={'schema'} name={'schema'} value={schemaToSwaggerYaml(body.schema.asJsonSchema)} />
             </Yaml.YObject>
           }/>
         ))}
@@ -112,7 +112,7 @@ function OASEndpoint({ endpoint }: IOASRootEndpoint) {
           <Yaml.Entry name={'content'} value={
             <Yaml.YObject>
               {bodies.map((body: IApiResponseBody) => (
-                <Yaml.Entry name={body.contentType} value={
+                <Yaml.Entry key={body.contentType} name={body.contentType} value={
                   <Yaml.YObject>
                     <Yaml.Entry name={'schema'} value={schemaToSwaggerYaml(body.schema.asJsonSchema)} />
                   </Yaml.YObject>

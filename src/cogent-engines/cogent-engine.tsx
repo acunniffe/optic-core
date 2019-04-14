@@ -5,7 +5,7 @@ import {
   IFileSystemRendererFolder,
 } from '../cogent-core/react/file-system-renderer';
 import { IApiKeySecurity, IBasicAuthSecurity, IBearerTokenSecurity } from '../session-manager';
-import { JavascriptApiClient } from './javascript-api-client';
+import { cogentComponentRegistry } from './cogent-component-registry';
 
 
 export interface ICogentOptions {
@@ -93,8 +93,14 @@ export interface ICogentEngineProps {
 class CogentEngine {
   public run(config: ICogentEngineConfig) {
     const renderer = new FileSystemRenderer();
+
+    const TargetComponent = cogentComponentRegistry[config.options.artifact.id]
+    if (!TargetComponent) {
+      throw new Error(`No generator found for '${config.options.artifact.id}'. Request one here https://calendly.com/optic-onboarding/optic-request-a-new-generated`)
+    }
+
     renderer.renderSync(
-      <JavascriptApiClient
+      <TargetComponent
         data={config.data}
         api={config.options.api}
         artifact={config.options.artifact}
