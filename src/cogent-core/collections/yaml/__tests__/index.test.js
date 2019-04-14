@@ -1,7 +1,7 @@
 import React from 'react';
-import * as Yaml from '../index';
-import * as fs from 'fs'
-import * as path from 'path'
+import Yaml from '../index';
+import fs from 'fs'
+import path from 'path'
 
 const equalToExampleFile = (baseDir) => (file) => fs.readFileSync(path.join(baseDir, file)).toString()
 const equalToExample = equalToExampleFile(__dirname)

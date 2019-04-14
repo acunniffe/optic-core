@@ -1,8 +1,8 @@
 import React from 'react';
 import { collectPaths, endpointConsumes, endpointProduces, schemaToSwaggerYaml, toSwaggerPath } from '../oas-mapping';
-import { OASRoot } from '../index';
 import * as fs from "fs";
 import * as path from "path";
+import { OASRoot } from '../index';
 
 const equalToExampleFile = (baseDir) => (file) => fs.readFileSync(path.join(baseDir, file)).toString()
 const equalToExample = equalToExampleFile(__dirname)
@@ -10,7 +10,7 @@ const equalToExample = equalToExampleFile(__dirname)
 describe('OAS 3', function() {
   const exampleApi = require('../../../__tests__/sample-api.json');
 
-  it.only('can create OAS 3', () => {
+  it('can create OAS 3', () => {
 
     const Component = () => {
       return (
@@ -20,8 +20,8 @@ describe('OAS 3', function() {
 
     const { result } = global.render(<Component/>);
     const contents = result.files['oas.yml'].contents.join('');
-
-    console.log(contents);
+    console.log(contents)
+    // fs.writeFileSync(path.join(__dirname, 'oas.yml'), contents)
   });
 
   describe('mappings', () => {

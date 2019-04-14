@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
-import * as React from 'react';
+import React from 'react';
 import { IApiEndpoint } from '../../../../build/src/cogent-engines/cogent-engine';
 import { YArray } from '../yaml';
-import * as Yaml from '../yaml';
-import * as collect from 'collect.js'
+import Yaml from '../yaml';
+import collect from 'collect.js'
 import {
   collectPaths,
   IOASRequestParameter,
@@ -11,13 +11,9 @@ import {
   toSwaggerParameter,
   toSwaggerPath,
 } from './oas-mapping';
-import * as niceTry from 'nice-try'
+import niceTry from 'nice-try'
 
-interface IOASRoot {
-  endpoints: IApiEndpoint[],
-}
-
-function OASRoot({ endpoints }: IOASRoot) {
+export function OASRoot({ endpoints }) {
 
   const groupedEndpoints = collectPaths(endpoints);
   const allPaths = Object.keys(groupedEndpoints).sort();
@@ -38,7 +34,6 @@ function OASRoot({ endpoints }: IOASRoot) {
       <Yaml.Entry key={"paths"} name="paths" value={
         <Yaml.YObject>
           {allPaths.map((path) => {
-
             const allPathParameters =
               collect(groupedEndpoints[path].map(i => (i.request) ? i.request.pathParameters : []))
                 .collapse().all()
@@ -50,7 +45,7 @@ function OASRoot({ endpoints }: IOASRoot) {
                 {groupedEndpoints[path].map(endpoint => <OASEndpoint endpoint={endpoint} />)}
               </Yaml.YObject>
             }/>;
-          }}
+          })}
         </Yaml.YObject>
       }/>
     </Yaml.YObject>
@@ -58,13 +53,9 @@ function OASRoot({ endpoints }: IOASRoot) {
 
 }
 
-interface IOASRootEndpoint {
-  endpoint: IApiEndpoint,
-}
+function OASEndpoint({ endpoint }) {
 
-function OASEndpoint({ endpoint }: IOASRootEndpoint) {
-
-  let swaggerParams: IOASRequestParameter[] = []
+  let swaggerParams = []
 
   try {
     const pathParams = endpoint.request.pathParameters.map(i => toSwaggerParameter(i, 'path'))
@@ -133,7 +124,3 @@ function OASEndpoint({ endpoint }: IOASRootEndpoint) {
   }/>;
 
 }
-
-export {
-  OASRoot,
-};

@@ -1,36 +1,17 @@
 import { ReactNode } from 'react';
-import * as React from 'react';
-import * as Yaml from '../yaml';
-import * as collect from 'collect.js'
+import React from 'react';
+import Yaml from '../yaml';
+import collect from 'collect.js'
 import { IApiEndpoint, IApiRequestParameter } from '../../../cogent-engines/cogent-engine';
 
 //helpers
-const distinct = (array: any[]) => Array.from(new Set(array))
+const distinct = (array) => Array.from(new Set(array))
 
-
-export function collectPaths(endpoints: IApiEndpoint[]): {[key: string]: IApiEndpoint[]} {
+export function collectPaths(endpoints) {
   return collect(endpoints).groupBy('path').all()
 }
 
-export const endpointConsumes = (endpoint: IApiEndpoint) =>
-  distinct(endpoint.request.bodies.map(i => i.contentType))
-
-export const endpointProduces = (endpoint: IApiEndpoint) =>
-  distinct(collect(endpoint.responses)
-    .flatMap(i => i.bodies
-      .map(b => b.contentType))
-    .all())
-
-
-
-export interface IOASRequestParameter {
-  'in': 'query' | 'header' | 'cookie' | 'path',
-  name: string,
-  schema: object,
-  required: boolean
-}
-
-export function schemaToSwaggerYaml(jsonSchema: object): ReactNode {
+export function schemaToSwaggerYaml(jsonSchema) {
   const entires = Object.entries(jsonSchema)
 
   if (entires.length === 0) {
@@ -38,6 +19,23 @@ export function schemaToSwaggerYaml(jsonSchema: object): ReactNode {
   }
 
   return <Yaml.YObject children={entires.map(entry => {
+
+    if (entry[0] === 'oneOf' || entry[0] === 'anyOf') {
+
+      const types = entry[1].filter(i => i.type !== 'null')
+
+      if (types.length === 1) {
+        return schemaToSwaggerYaml(types[0])
+      } else {
+        return <Yaml.Entry key={entry[0]} name={entry[0]} value={
+          <Yaml.YArray>
+            {entry[1].map((entryValue, index) => {
+              return <Yaml.ArrayItem key={index}>{schemaToSwaggerYaml(entryValue)}</Yaml.ArrayItem>
+            })}
+          </Yaml.YArray>
+        }/>
+      }
+    }
 
     const value = (() => {
 
@@ -63,15 +61,15 @@ export function schemaToSwaggerYaml(jsonSchema: object): ReactNode {
   })}/>
 }
 
-export function toSwaggerPath(path: string, pathParameters): string {
+export function toSwaggerPath(path, pathParameters) {
   const allNames = pathParameters.map(i => i.name)
 
-  return allNames.reduce((currentPath: string, pathParam: string) => {
+  return allNames.reduce((currentPath, pathParam) => {
     return currentPath.replace(`:${pathParam}`, `{${pathParam}}`)
   }, path)
 }
 
-export function toSwaggerParameter(parameter: IApiRequestParameter, location: string): IOASRequestParameter {
+export function toSwaggerParameter(parameter, location) {
   return {
     'in': location,
     name: parameter.name,
