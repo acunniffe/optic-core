@@ -68,6 +68,7 @@
     "react-is": "^16.8.3",
     "short-hash": "^1.0.0",
     "tree-kill": "^1.2.1",
-    "tslib": "~1.9.3"
+    "tslib": "~1.9.3",
+    "nice-try": "latest"
   }
 }

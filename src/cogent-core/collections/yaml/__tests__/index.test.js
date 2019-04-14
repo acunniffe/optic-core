@@ -1,5 +1,5 @@
 import React from 'react';
-import Yaml from '../index';
+import * as Yaml from '../index';
 import fs from 'fs'
 import path from 'path'
 

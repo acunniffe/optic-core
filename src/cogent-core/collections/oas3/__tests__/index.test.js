@@ -1,5 +1,5 @@
 import React from 'react';
-import { collectPaths, endpointConsumes, endpointProduces, schemaToSwaggerYaml, toSwaggerPath } from '../oas-mapping';
+import { collectPaths, schemaToSwaggerYaml, toSwaggerPath } from '../oas-mapping';
 import * as fs from "fs";
 import * as path from "path";
 import { OASRoot } from '../index';
@@ -14,13 +14,13 @@ describe('OAS 3', function() {
 
     const Component = () => {
       return (
-        <OASRoot endpoints={exampleApi.snapshot.endpoints}/>
+        <OASRoot endpoints={exampleApi.snapshot.endpoints} api={{org: 'test', id: 'orgId'}}/>
       );
     };
 
     const { result } = global.render(<Component/>);
     const contents = result.files['oas.yml'].contents.join('');
-    console.log(contents)
+    // console.log(contents)
     // fs.writeFileSync(path.join(__dirname, 'oas.yml'), contents)
   });
 
@@ -40,25 +40,6 @@ describe('OAS 3', function() {
       const paths = collectPaths(exampleApi.snapshot.endpoints);
       expect(paths['/self/api-tokens'].items.length).toBe(2);
       expect(paths['/teams/:teamSlug/invite/accept'].items.length).toBe(1);
-    });
-
-    it('endpoint to consumes', () => {
-      const testEndpoint = exampleApi.snapshot.endpoints
-        .find(i => i.path === '/teams/:teamSlug/invite/accept');
-
-      expect(endpointConsumes(testEndpoint)).toEqual([
-        'application/json',
-      ]);
-
-    });
-
-    it('endpoint to produces', () => {
-      const testEndpoint = exampleApi.snapshot.endpoints
-        .find(i => i.path === '/teams/:teamSlug/invite/accept');
-
-      expect(endpointProduces(testEndpoint)).toEqual([
-        'text/plain; charset=UTF-8',
-      ]);
     });
 
     describe('maps json schemas to yaml nodes', () => {
