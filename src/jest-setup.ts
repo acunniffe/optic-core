@@ -6,6 +6,10 @@ function render(component: JSX.Element) {
   renderer.renderSync(component, { callback });
   const [err, result] = callback.mock.calls[0];
 
+  if (err) {
+    throw new Error(err)
+  }
+
   return {
     callback,
     err,

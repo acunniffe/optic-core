@@ -50,6 +50,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "change-case": "^3.1.0",
+    "collect.js": "^4.6.5",
     "cookie": "^0.3.1",
     "cookie-parser": "^1.4.3",
     "debug": "^4.1.1",
