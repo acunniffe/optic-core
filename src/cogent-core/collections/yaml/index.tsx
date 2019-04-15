@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
-import * as ReactIs from 'react-is';
+import { ReactElement, ReactNode } from 'react';
+
+const ParentContext = React.createContext([]);
 
 const Indent = React.createContext({
   indent: 0,
   indentString: '  ',
-  inArray: false,
-  isFirstItem: false,
-  isLastItem: false,
+  isFirstEntry: false,
 });
 
 interface IYamlRootProps {
@@ -20,13 +19,15 @@ function File({ children, indentString = '  ', name }: IYamlRootProps) {
   return (
     <file name={name}>
       <source>
-        <Indent.Provider value={{
-          indent: -1,
-          indentString,
-          inArray: false,
-          isFirstItem: false,
-          isLastItem: false,
-        }}>{children}</Indent.Provider>
+        <ParentContext.Provider value={[]}>
+          <source>
+            <Indent.Provider value={{
+              indent: -1,
+              indentString,
+              isFirstEntry: false,
+            }}>{children}</Indent.Provider>
+          </source>
+        </ParentContext.Provider>
       </source>
     </file>
   );
@@ -34,70 +35,97 @@ function File({ children, indentString = '  ', name }: IYamlRootProps) {
 
 
 interface IYamlObjectRoot {
-  children: ReactNode
+  children: ReactNode,
+  parents: ParentContextType[]
 }
 
-function YObject({ children }: IYamlObjectRoot) {
+enum ParentContextType {
+  'object' = 'object',
+  'array' = 'array'
+}
 
-  return (
-    <source>
-      <Indent.Consumer>
-        {({ indent, indentString, inArray }) => {
+type HOC<T> = (w: any) => (ReactElement<T>)
 
-          const childrenAsArray = React.Children.toArray(children);
-
-          const lastIndex = childrenAsArray.length - 1;
-
-          return <source>{
-            childrenAsArray.map((child, index) => {
-              const isFirstItem = index === 0;
-              const isLastItem = index === lastIndex;
-              const childIndent = inArray && isFirstItem ? indent : indent + 1;
-
-              return (
-                <Indent.Provider
-                  value={{
-                    indent: childIndent,
-                    indentString,
-                    inArray: false,
-                    isFirstItem,
-                    isLastItem,
-                  }}>{child}</Indent.Provider>
-              );
-            })
-          }</source>;
+function withParentContext<T>(Wrapped: any): HOC<T> {
+  return function(props: T) {
+    return (
+      <ParentContext.Consumer>
+        {(parents: any) => {
+          return <Wrapped {...props} parents={parents}/>;
         }}
-      </Indent.Consumer>
-    </source>
-  );
+      </ParentContext.Consumer>
+    );
+  };
 }
+
+const YObject = withParentContext<IYamlObjectRoot>(
+  function YObjectInternal({ children, parents }: IYamlObjectRoot) {
+
+    return (
+      <source>
+        <Indent.Consumer>
+          {({ indent, indentString }) => {
+
+            const childrenAsArray = React.Children.toArray(children);
+
+
+            return <source>{
+              childrenAsArray.map((child, index) => {
+                const isFirstEntry = index === 0;
+
+                return (
+                  <ParentContext.Provider value={[...parents, ParentContextType.object]}>
+                    <source>
+                      <Indent.Provider
+                        value={{
+                          indent: indent + 1,
+                          indentString,
+                          isFirstEntry,
+                        }}>{child}</Indent.Provider>
+                    </source>
+                  </ParentContext.Provider>
+                );
+              })
+            }</source>;
+          }}
+        </Indent.Consumer>
+      </source>
+    );
+  },
+);
+
 
 interface IYamlArrayRoot {
-  children: ReactNode
+  children: ReactNode,
+  parents: ParentContextType[]
 }
 
-function YArray({ children }: IYamlArrayRoot) {
-  return (
-    <source>
-      <Indent.Consumer>{
-        ({ indent, indentString }) => {
-          return (
-            <source>
-              <Indent.Provider
-                value={{
-                  indent: indent + 1,
-                  indentString,
-                  inArray: true,
-                  isFirstItem: false,
-                  isLastItem: false,
-                }}>{children}</Indent.Provider>
-            </source>
-          );
-        }}
-      </Indent.Consumer>
-    </source>
-  );
-}
+const YArray = withParentContext<IYamlArrayRoot>(
+  function YArrayInternal({ children, parents }: IYamlArrayRoot) {
+    return (
+      <source>
+        <ParentContext.Provider value={[...parents, ParentContextType.array]}>
+          <source>
+            <Indent.Consumer>{
+              ({ indent, indentString }) => {
+                return (
+                  <source>
+                    <Indent.Provider
+                      value={{
+                        indent: indent + 1,
+                        indentString,
+                        isFirstEntry: false,
+                      }}>{children}</Indent.Provider>
+                  </source>
+                );
+              }}
+            </Indent.Consumer>
+          </source>
+        </ParentContext.Provider>
+      </source>
+    );
+  },
+);
 
 interface IYamlObjectEntry {
   name: string,
@@ -108,21 +136,30 @@ function Entry({ name, value }: IYamlObjectEntry) {
 
   return (
     <source key={name}>
-      <Indent.Consumer>
-        {({ indentString, indent, isFirstItem, isLastItem }) => {
-          const contextualNewline = '\n';
-          const pad = indentString.repeat(indent);
-          if (isLastItem && isFirstItem) {
-            return (<source>{contextualNewline}{pad}{name}: {value}</source>);
-          } else if (isLastItem) {
-            return (<source>{contextualNewline}{pad}{name}: {value}</source>);
-          } else if (isFirstItem) {
-            return (<source>{name}: {value}</source>);
-          } else {
-            return (<source>{contextualNewline}{pad}{name}: {value}</source>);
-          }
+      <ParentContext.Consumer>
+        {(parents) => {
+
+          return (
+            <source><Indent.Consumer>
+              {({ indentString, indent, isFirstEntry }) => {
+
+                let shouldBeOnNewLine = true;
+                if (parents.length >= 2) {
+                  const lastTwoParents = parents.slice(-2);
+                  const [grandparent] = lastTwoParents;
+                  if (grandparent === ParentContextType.array) {
+                    shouldBeOnNewLine = !isFirstEntry;
+                  }
+                }
+                const contextualNewline = shouldBeOnNewLine ? '\n' : '';
+                const pad = shouldBeOnNewLine ? indentString.repeat(indent) : '';
+
+                return (<source>{contextualNewline}{pad}{name}: {value}</source>);
+              }}
+            </Indent.Consumer></source>
+          );
         }}
-      </Indent.Consumer>
+      </ParentContext.Consumer>
     </source>
   );
 }
@@ -139,21 +176,10 @@ function ArrayItem({ children }: IYamlArrayItem) {
         {({ indent, indentString }) => {
           const pad = indentString.repeat(indent);
           const child = React.Children.only(children);
-          if (ReactIs.isElement(child) && child.type === YObject) {
-            return (
-              <Indent.Provider
-                value={{
-                  indent: indent,
-                  indentString,
-                  inArray: true,
-                  isFirstItem: true, isLastItem: false,
-                }}>
-                <source>{'\n'}{pad}- {child}</source>
-              </Indent.Provider>
-            );
-          }
 
-          return (<source>{'\n'}{pad}- {child}</source>);
+          return (
+            <source>{'\n'}{pad}- {child}</source>
+          );
         }}
       </Indent.Consumer>
     </source>

@@ -62,30 +62,6 @@ function OASRoot({ endpoints, api }: IOASRoot) {
 
 }
 
-/*
-replace null above (near line 38) with:
-<Yaml.YObject>
-            {allPaths.map((path: string) => {
-
-              // @ts-ignore
-              const allPathParameters = collect(groupedEndpoints[path].map((i: any) => (i.request) ? i.request.pathParameters : []))
-                .collapse().all();
-
-              const swaggerPath = toSwaggerPath(path, allPathParameters);
-
-              return (
-                <Yaml.Entry key={swaggerPath} name={swaggerPath} value={
-                  <Yaml.YObject>
-                    {groupedEndpoints[path]
-                      .map((endpoint: IApiEndpoint) => (
-                        <OASEndpoint key={`${endpoint.method}${endpoint.path}`} endpoint={endpoint}/>
-                      ))}
-                  </Yaml.YObject>
-                }/>
-              );
-            })}
-          </Yaml.YObject>
- */
 interface IOASRootEndpoint {
   endpoint: IApiEndpoint,
 }

@@ -1,84 +1,90 @@
 import * as React from 'react';
 import { IApiEndpoint } from '../../../cogent-engines/cogent-engine';
 import * as Yaml from '../yaml';
-import * as collect from 'collect.js'
+import * as collect from 'collect.js';
 
 //helpers
 
 export function collectPaths(endpoints: IApiEndpoint[]) {
   // @ts-ignore
-  return collect(endpoints).groupBy('path').all()
+  return collect(endpoints).groupBy('path').all();
 }
 
 export function schemaToSwaggerYaml(jsonSchema: any) {
-  let entries = Object.entries(jsonSchema)
+  let entries = Object.entries(jsonSchema);
 
   if (entries.length === 0) {
-    return '{}'
+    return '{}';
   }
 
-  const containsType: boolean = !!entries.find((i:any) => i[0] === 'type')
+  const containsType: boolean = !!entries.find((i: any) => i[0] === 'type');
 
   if (containsType) {
-    entries = entries.filter((i:any) => i[0] !== 'title')
+    entries = entries.filter((i: any) => i[0] !== 'title');
   }
 
-  return <Yaml.YObject children={entries.map((entry:any) => {
+  entries = entries.filter(([_k, v]: any) => !v.type || v.type !== 'null');
 
-    if (entry[0] === 'oneOf' || entry[0] === 'anyOf') {
+  return (
+    <Yaml.YObject>
+      {entries.map(([k, v]) => {
 
-      const types = entry[1].filter((i:any) => i.type !== 'null')
+        if (k === 'oneOf' || k === 'anyOf') {
 
-      if (types.length === 1) {
-        return schemaToSwaggerYaml(types[0])
-      } else {
-        return <Yaml.Entry key={entry[0]} name={entry[0]} value={
-          <Yaml.YArray>
-            {entry[1].map((entryValue: any, index: number) => {
-              return <Yaml.ArrayItem key={index}>{schemaToSwaggerYaml(entryValue)}</Yaml.ArrayItem>
-            })}
-          </Yaml.YArray>
-        }/>
-      }
-    }
+          const types = (v as any[]).filter((i: any) => i.type !== 'null');
 
-    const value = (() => {
+          if (types.length === 1) {
+            return schemaToSwaggerYaml(types[0]);
+          } else {
+            return (
+              <Yaml.Entry key={k} name={k} value={
+                <Yaml.YArray>
+                  {(v as any[]).map((entryValue: any, index: number) => {
+                    return <Yaml.ArrayItem key={index}>{schemaToSwaggerYaml(entryValue)}</Yaml.ArrayItem>;
+                  })}
+                </Yaml.YArray>
+              }/>
+            );
+          }
+        }
 
-      const v = entry[1]
+        const value = (() => {
 
-      if (typeof v === 'boolean') {
-        return (v) ? 'true' : 'false'
-      }
+          if (typeof v === 'boolean') {
+            return (v) ? 'true' : 'false';
+          }
 
-      if (typeof v === 'number') {
-        return v.toString()
-      }
+          if (typeof v === 'number') {
+            return v.toString();
+          }
 
-      if (typeof v === 'object') {
-        return schemaToSwaggerYaml(v)
-      }
+          if (typeof v === 'object') {
+            return schemaToSwaggerYaml(v);
+          }
 
-      return v
+          return v;
 
-    })()
+        })();
 
-    return <Yaml.Entry key={entry[0]} name={entry[0]} value={value}/>
-  })}/>
+        return <Yaml.Entry key={k} name={k} value={value}/>;
+      })}
+    </Yaml.YObject>
+  );
 }
 
 export function toSwaggerPath(path: string, pathParameters: any[]) {
-  const allNames = pathParameters.map(i => i.name)
+  const allNames = pathParameters.map(i => i.name);
 
-  return allNames.reduce((currentPath:string, pathParam: any) => {
-    return currentPath.replace(`:${pathParam}`, `{${pathParam}}`)
-  }, path)
+  return allNames.reduce((currentPath: string, pathParam: any) => {
+    return currentPath.replace(`:${pathParam}`, `{${pathParam}}`);
+  }, path);
 }
 
-export function toSwaggerParameter(parameter:any, location: string) {
+export function toSwaggerParameter(parameter: any, location: string) {
   return {
     'in': location,
     name: parameter.name,
     schema: parameter.schema.asJsonSchema,
-    required: parameter.required || true
-  }
+    required: parameter.required || true,
+  };
 }

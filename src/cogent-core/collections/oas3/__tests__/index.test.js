@@ -1,11 +1,11 @@
 import React from 'react';
 import { collectPaths, schemaToSwaggerYaml, toSwaggerPath } from '../oas-mapping';
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from 'fs';
+import * as path from 'path';
 import { OASRoot } from '../index';
 
-const equalToExampleFile = (baseDir) => (file) => fs.readFileSync(path.join(baseDir, file)).toString()
-const equalToExample = equalToExampleFile(__dirname)
+const equalToExampleFile = (baseDir) => (file) => fs.readFileSync(path.join(baseDir, file)).toString();
+const equalToExample = equalToExampleFile(__dirname);
 
 describe('OAS 3', function() {
   const exampleApi = require('../../../__tests__/sample-api.json');
@@ -14,23 +14,23 @@ describe('OAS 3', function() {
 
     const Component = () => {
       return (
-        <OASRoot endpoints={exampleApi.snapshot.endpoints} api={{org: 'test', id: 'orgId'}}/>
+        <OASRoot endpoints={exampleApi.snapshot.endpoints} api={{ org: 'test', id: 'orgId' }}/>
       );
     };
 
     const { result } = global.render(<Component/>);
     const contents = result.files['oas.yml'].contents.join('');
-    // fs.writeFileSync(path.join(__dirname, 'oas.yml'), contents)
+    fs.writeFileSync(path.join(__dirname, 'oas.yml'), contents);
   });
 
   describe('mappings', () => {
 
     it('optic paths to swagger paths', () => {
-      const testPath = 'me/apis/:apiSlug/versions/:versionNumber'
-      const pathPrams = [{name: 'apiSlug'}, {name: 'versionNumber'}]
+      const testPath = 'me/apis/:apiSlug/versions/:versionNumber';
+      const pathPrams = [{ name: 'apiSlug' }, { name: 'versionNumber' }];
 
 
-      expect(toSwaggerPath(testPath, pathPrams)).toBe('me/apis/{apiSlug}/versions/{versionNumber}')
+      expect(toSwaggerPath(testPath, pathPrams)).toBe('me/apis/{apiSlug}/versions/{versionNumber}');
 
     });
 
@@ -50,15 +50,18 @@ describe('OAS 3', function() {
           properties: {
             first: { type: 'string' },
             second: { type: 'number' },
+            third: { type: 'null' },
           },
         };
 
         const component = schemaToSwaggerYaml(exampleSchema);
 
-        const { result } = global.render(<file name='example.yml'>{component}<source>{'\n'}</source></file>);
+        const { result } = global.render(<file name='example.yml'>{component}
+          <source>{'\n'}</source>
+        </file>);
 
         const contents = result.files['example.yml'].contents.join('');
-        expect(contents).toBe(equalToExample('basic-schema'))
+        expect(contents).toBe(equalToExample('basic-schema'));
 
       });
 
