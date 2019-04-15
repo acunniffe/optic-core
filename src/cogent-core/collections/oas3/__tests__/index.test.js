@@ -20,7 +20,6 @@ describe('OAS 3', function() {
 
     const { result } = global.render(<Component/>);
     const contents = result.files['oas.yml'].contents.join('');
-    console.log(contents)
     // fs.writeFileSync(path.join(__dirname, 'oas.yml'), contents)
   });
 
@@ -56,7 +55,7 @@ describe('OAS 3', function() {
 
         const component = schemaToSwaggerYaml(exampleSchema);
 
-        const { result } = global.render(<file name='example.yml'>{component}</file>);
+        const { result } = global.render(<file name='example.yml'>{component}<source>{'\n'}</source></file>);
 
         const contents = result.files['example.yml'].contents.join('');
         expect(contents).toBe(equalToExample('basic-schema'))
