@@ -27,20 +27,20 @@ export function schemaToSwaggerYaml(jsonSchema: any) {
 
   return (
     <Yaml.YObject>
-      {entries.map(([k, v]) => {
+      {entries.map(([k, v], entryIndex: number) => {
 
         if (k === 'oneOf' || k === 'anyOf') {
 
           const types = (v as any[]).filter((i: any) => i.type !== 'null');
 
           if (types.length === 1) {
-            return schemaToSwaggerYaml(types[0]);
+            return <React.Fragment key={entryIndex}>{schemaToSwaggerYaml(types[0])}</React.Fragment>;
           } else {
             return (
-              <Yaml.Entry key={k} name={k} value={
+              <Yaml.Entry key={entryIndex} name={k} value={
                 <Yaml.YArray>
-                  {(v as any[]).map((entryValue: any, index: number) => {
-                    return <Yaml.ArrayItem key={index}>{schemaToSwaggerYaml(entryValue)}</Yaml.ArrayItem>;
+                  {(v as any[]).map((entryValue: any, subSchemaIndex: number) => {
+                    return <Yaml.ArrayItem key={subSchemaIndex}>{schemaToSwaggerYaml(entryValue)}</Yaml.ArrayItem>;
                   })}
                 </Yaml.YArray>
               }/>
@@ -66,7 +66,7 @@ export function schemaToSwaggerYaml(jsonSchema: any) {
 
         })();
 
-        return <Yaml.Entry key={k} name={k} value={value}/>;
+        return <Yaml.Entry key={entryIndex} name={k} value={value}/>;
       })}
     </Yaml.YObject>
   );

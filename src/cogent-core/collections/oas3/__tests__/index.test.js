@@ -20,7 +20,7 @@ describe('OAS 3', function() {
 
     const { result } = global.render(<Component/>);
     const contents = result.files['oas.yml'].contents.join('');
-    fs.writeFileSync(path.join(__dirname, 'oas.yml'), contents);
+    //fs.writeFileSync(path.join(__dirname, 'oas.yml'), contents);
   });
 
   describe('mappings', () => {
@@ -41,7 +41,7 @@ describe('OAS 3', function() {
       expect(paths['/teams/:teamSlug/invite/accept'].items.length).toBe(1);
     });
 
-    describe.only('maps json schemas to yaml nodes', () => {
+    describe('maps json schemas to yaml nodes', () => {
 
       it('basic schema', () => {
 

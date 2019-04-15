@@ -47,7 +47,7 @@ enum ParentContextType {
 type HOC<T> = (w: any) => (ReactElement<T>)
 
 function withParentContext<T>(Wrapped: any): HOC<T> {
-  return function(props: T) {
+  return function Wrapper(props: T) {
     return (
       <ParentContext.Consumer>
         {(parents: any) => {
@@ -74,7 +74,7 @@ const YObject = withParentContext<IYamlObjectRoot>(
                 const isFirstEntry = index === 0;
 
                 return (
-                  <ParentContext.Provider value={[...parents, ParentContextType.object]}>
+                  <ParentContext.Provider key={index} value={[...parents, ParentContextType.object]}>
                     <source>
                       <Indent.Provider
                         value={{
@@ -135,28 +135,30 @@ interface IYamlObjectEntry {
 function Entry({ name, value }: IYamlObjectEntry) {
 
   return (
-    <source key={name}>
+    <source>
       <ParentContext.Consumer>
         {(parents) => {
 
           return (
-            <source><Indent.Consumer>
-              {({ indentString, indent, isFirstEntry }) => {
+            <source>
+              <Indent.Consumer>
+                {({ indentString, indent, isFirstEntry }) => {
 
-                let shouldBeOnNewLine = true;
-                if (parents.length >= 2) {
-                  const lastTwoParents = parents.slice(-2);
-                  const [grandparent] = lastTwoParents;
-                  if (grandparent === ParentContextType.array) {
-                    shouldBeOnNewLine = !isFirstEntry;
+                  let shouldBeOnNewLine = true;
+                  if (parents.length >= 2) {
+                    const lastTwoParents = parents.slice(-2);
+                    const [grandparent] = lastTwoParents;
+                    if (grandparent === ParentContextType.array) {
+                      shouldBeOnNewLine = !isFirstEntry;
+                    }
                   }
-                }
-                const contextualNewline = shouldBeOnNewLine ? '\n' : '';
-                const pad = shouldBeOnNewLine ? indentString.repeat(indent) : '';
+                  const contextualNewline = shouldBeOnNewLine ? '\n' : '';
+                  const pad = shouldBeOnNewLine ? indentString.repeat(indent) : '';
 
-                return (<source>{contextualNewline}{pad}{name}: {value}</source>);
-              }}
-            </Indent.Consumer></source>
+                  return (<source>{contextualNewline}{pad}{name}: {value}</source>);
+                }}
+              </Indent.Consumer>
+            </source>
           );
         }}
       </ParentContext.Consumer>
