@@ -15,8 +15,8 @@ describe('Yaml', function() {
         return (
           <Yaml.File name={'test.yml'}>
             <Yaml.YArray>
-              <Yaml.ArrayItem>Hello</Yaml.ArrayItem>
-              <Yaml.ArrayItem>I AM AIDAN</Yaml.ArrayItem>
+              <Yaml.ArrayItem><source>Hello</source></Yaml.ArrayItem>
+              <Yaml.ArrayItem><source>I AM AIDAN</source></Yaml.ArrayItem>
               <Yaml.ArrayItem>
                 <Yaml.YObject>
                   <Yaml.Entry name={"first"} value={"1"}/>
@@ -29,8 +29,8 @@ describe('Yaml', function() {
                   }/>
                 </Yaml.YObject>
               </Yaml.ArrayItem>
-
             </Yaml.YArray>
+            <source>{'\n'}</source>
           </Yaml.File>
         );
       };
@@ -51,6 +51,7 @@ describe('Yaml', function() {
               <Yaml.Entry name={"hello"} value={"world"}/>
               <Yaml.Entry name={"one"} value={"two"}/>
             </Yaml.YObject>
+            <source>{'\n'}</source>
           </Yaml.File>
         );
       };
