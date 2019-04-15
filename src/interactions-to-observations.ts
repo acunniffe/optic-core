@@ -335,7 +335,7 @@ class InteractionsToObservations {
     // response cookies
     const responseCookie = responseHeaders['set-cookie'];
     if (responseCookie) {
-      const parsedCookie = parse((responseCookie as string[]).join(';'));
+      const parsedCookie = Array.isArray(responseCookie) ? parse((responseCookie as string[]).join(';')) : parse(responseCookie);
       Object.keys(parsedCookie)
         .forEach((cookieKey: string) => {
           const cookieValue = parsedCookie[cookieKey];
