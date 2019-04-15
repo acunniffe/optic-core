@@ -41,7 +41,7 @@ describe('OAS 3', function() {
       expect(paths['/teams/:teamSlug/invite/accept'].items.length).toBe(1);
     });
 
-    describe('maps json schemas to yaml nodes', () => {
+    describe.only('maps json schemas to yaml nodes', () => {
 
       it('basic schema', () => {
 
@@ -51,6 +51,17 @@ describe('OAS 3', function() {
             first: { type: 'string' },
             second: { type: 'number' },
             third: { type: 'null' },
+            fourth: {
+              type: 'object',
+              properties: {
+                fifth: {
+                  oneOf: [
+                    { type: 'string' },
+                    { type: 'number' },
+                  ],
+                },
+              },
+            },
           },
         };
 

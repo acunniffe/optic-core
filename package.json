@@ -45,7 +45,7 @@
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "postversion": "npm test",
-    "prepublish": "npm test"
+    "prepublish": "npm run build && npm test"
   },
   "dependencies": {
     "body-parser": "^1.18.3",

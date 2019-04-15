@@ -5,3 +5,10 @@
       type: string
     second: 
       type: number
+    fourth: 
+      type: object
+      properties: 
+        fifth: 
+          oneOf: 
+            - type: string
+            - type: number
