@@ -10,20 +10,21 @@ export function collectPaths(endpoints: IApiEndpoint[]) {
   return collect(endpoints).groupBy('path').all();
 }
 
-export function schemaToSwaggerYaml(jsonSchema: any) {
+export function schemaToSwaggerYaml(jsonSchema: object) {
   let entries = Object.entries(jsonSchema);
+
+
+  const containsType: boolean = !!entries.find(([k]) => k === 'type');
+
+  if (containsType) {
+    entries = entries.filter(([k]) => k !== 'title');
+  }
+
+  entries = entries.filter(([_k, v]: any) => !v.type || v.type !== 'null');
 
   if (entries.length === 0) {
     return '{}';
   }
-
-  const containsType: boolean = !!entries.find((i: any) => i[0] === 'type');
-
-  if (containsType) {
-    entries = entries.filter((i: any) => i[0] !== 'title');
-  }
-
-  entries = entries.filter(([_k, v]: any) => !v.type || v.type !== 'null');
 
   return (
     <Yaml.YObject>
@@ -49,7 +50,6 @@ export function schemaToSwaggerYaml(jsonSchema: any) {
         }
 
         const value = (() => {
-
           if (typeof v === 'boolean') {
             return (v) ? 'true' : 'false';
           }

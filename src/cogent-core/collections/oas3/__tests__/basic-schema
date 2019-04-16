@@ -12,3 +12,6 @@
           oneOf: 
             - type: string
             - type: number
+    sixth: 
+      type: object
+      properties: {}

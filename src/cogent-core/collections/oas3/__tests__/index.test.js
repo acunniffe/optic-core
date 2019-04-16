@@ -62,6 +62,12 @@ describe('OAS 3', function() {
                 },
               },
             },
+            sixth: {
+              type: 'object',
+              properties: {
+                subscription: { type: 'null' },
+              },
+            },
           },
         };
 
