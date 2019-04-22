@@ -3,8 +3,9 @@ import * as cookieParser from 'cookie-parser';
 import { Express } from 'express';
 
 export function addBodyParsers(app: Express) {
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(bodyParser.text({ type: '*/*' }));
+  const limit = '100mb';
+  app.use(bodyParser.json({ limit }));
+  app.use(bodyParser.urlencoded({ limit, extended: true }));
+  app.use(bodyParser.text({ limit, type: '*/*' }));
   app.use(cookieParser());
 }

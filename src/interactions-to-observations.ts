@@ -60,6 +60,30 @@ const headerBlacklist = new Set([
   'www-authenticate',
 ].map(x => x.toLowerCase()));
 
+class ObservationSet {
+  private readonly observations: Map<string, number> = new Map();
+
+  public addObservation(observation: Observation) {
+    const key = JSON.stringify(observation);
+    this.observations.set(key, (this.observations.get(key) || 0) + 1);
+  }
+
+  public addObservations(...observations: Observation[]) {
+    observations.forEach((observation: Observation) => {
+      this.addObservation(observation);
+    });
+  }
+
+  public getObservationsWithCounts() {
+    return [...this.observations].map(([key, count]) => {
+      const value: any = JSON.parse(key);
+      value.count = count;
+
+      return value;
+    });
+  }
+}
+
 export type DataShape = IFlattenedJsValueItem[];
 
 export interface IBaseObservation {
@@ -154,13 +178,13 @@ export interface IObserverConfig {
 
 class InteractionsToObservations {
   public static getObservations(interactions: IApiInteraction[], config: IObserverConfig): Observation[] {
-    const observations = [];
+    const observations = new ObservationSet();
     for (const interaction of interactions) {
       const observationsForSample = InteractionsToObservations.getObservationsForInteraction(interaction, config);
-      observations.push(...observationsForSample);
+      observations.addObservations(...observationsForSample);
     }
 
-    return observations;
+    return observations.getObservationsWithCounts();
   }
 
   public static getObservationsForInteraction(interaction: IApiInteraction, config: IObserverConfig) {
@@ -172,7 +196,7 @@ class InteractionsToObservations {
       const observation: IUnrecognizedUrlObserved = {
         type: 'UnrecognizedUrlObserved',
         url: request.url,
-        responseStatusCode: response.statusCode
+        responseStatusCode: response.statusCode,
       };
       observations.push(observation);
 

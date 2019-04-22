@@ -7,7 +7,7 @@ import * as collect from 'collect.js';
 
 export function collectPaths(endpoints: IApiEndpoint[]) {
   // @ts-ignore
-  return collect(endpoints).groupBy('path').all();
+  return collect(endpoints.filter(x => !!x.request)).groupBy('path').all();
 }
 
 export function schemaToSwaggerYaml(jsonSchema: object) {

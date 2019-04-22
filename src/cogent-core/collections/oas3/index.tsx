@@ -40,8 +40,10 @@ function OASRoot({ endpoints, api }: IOASRoot) {
             {allPaths.map((path: string, index: number) => {
 
               // @ts-ignore
-              const allPathParameters = collect(groupedEndpoints[path]
-                .map((i: any) => (i.request) ? i.request.pathParameters : []))
+              const allPathParameters = collect(
+                groupedEndpoints[path]
+                .map((i: any) => (i.request) ? i.request.pathParameters : [])
+              )
                 .collapse().all();
 
               const swaggerPath = toSwaggerPath(path, allPathParameters);
@@ -70,6 +72,9 @@ interface IOASRootEndpoint {
 }
 
 function OASEndpoint({ endpoint }: IOASRootEndpoint) {
+  if (!endpoint.request) {
+    return null;
+  }
 
   let swaggerParams: any[] = [];
 
@@ -121,17 +126,19 @@ function OASEndpoint({ endpoint }: IOASRootEndpoint) {
         return <Yaml.Entry key={responseIndex} name={`'${response.statusCode}'`} value={
           <Yaml.YObject>
             <Yaml.Entry name="description" value="description"/>
-            <Yaml.Entry name={'content'} value={
-              <Yaml.YObject>
-                {bodies.map((body: IApiResponseBody, bodyIndex: number) => (
-                  <Yaml.Entry key={bodyIndex} name={body.contentType} value={
-                    <Yaml.YObject>
-                      <Yaml.Entry name={'schema'} value={schemaToSwaggerYaml(body.schema.asJsonSchema)}/>
-                    </Yaml.YObject>
-                  }/>
-                ))}
-              </Yaml.YObject>
-            }/>
+            {bodies.length > 0 && (
+              <Yaml.Entry name={'content'} value={
+                <Yaml.YObject>
+                  {bodies.map((body: IApiResponseBody, bodyIndex: number) => (
+                    <Yaml.Entry key={bodyIndex} name={body.contentType} value={
+                      <Yaml.YObject>
+                        <Yaml.Entry name={'schema'} value={schemaToSwaggerYaml(body.schema.asJsonSchema)}/>
+                      </Yaml.YObject>
+                    }/>
+                  ))}
+                </Yaml.YObject>
+              }/>
+            )}
           </Yaml.YObject>
         }/>;
       })}
