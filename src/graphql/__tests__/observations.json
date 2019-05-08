@@ -1,0 +1,744 @@
+[
+  {
+    "type": "PathObserved",
+    "path": "/users"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/users",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/users",
+    "method": "POST",
+    "statusCode": 200
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/users",
+    "statusCode": 200,
+    "contentType": "application/json",
+    "bodyShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "object"
+      },
+      {
+        "key": "username",
+        "path": "username",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "string"
+      },
+      {
+        "key": "password",
+        "path": "password",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "string"
+      },
+      {
+        "key": "email",
+        "path": "email",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "string"
+      }
+    ]
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/users",
+    "statusCode": 200,
+    "contentType": "application/json; charset=utf-8",
+    "bodyShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "object"
+      },
+      {
+        "key": "username",
+        "path": "username",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "string"
+      },
+      {
+        "key": "email",
+        "path": "email",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "string"
+      },
+      {
+        "key": "__id",
+        "path": "__id",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "string"
+      },
+      {
+        "key": "followsCount",
+        "path": "followsCount",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "number"
+      }
+    ]
+  },
+  {
+    "type": "PathObserved",
+    "path": "/users"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/users",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/users",
+    "method": "POST",
+    "statusCode": 400
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/users",
+    "statusCode": 400,
+    "contentType": "application/json",
+    "bodyShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "object"
+      },
+      {
+        "key": "email",
+        "path": "email",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "string"
+      }
+    ]
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/users",
+    "statusCode": 400,
+    "contentType": "text/html; charset=utf-8",
+    "bodyShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "string"
+      }
+    ]
+  },
+  {
+    "type": "PathObserved",
+    "path": "/users"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/users",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/users",
+    "method": "POST",
+    "statusCode": 200
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/users",
+    "statusCode": 200,
+    "contentType": "application/json",
+    "bodyShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "object"
+      },
+      {
+        "key": "username",
+        "path": "username",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "string"
+      },
+      {
+        "key": "password",
+        "path": "password",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "string"
+      },
+      {
+        "key": "email",
+        "path": "email",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "string"
+      }
+    ]
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/users",
+    "statusCode": 200,
+    "contentType": "application/json; charset=utf-8",
+    "bodyShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "object"
+      },
+      {
+        "key": "username",
+        "path": "username",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "string"
+      },
+      {
+        "key": "email",
+        "path": "email",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "string"
+      },
+      {
+        "key": "__id",
+        "path": "__id",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "string"
+      },
+      {
+        "key": "followsCount",
+        "path": "followsCount",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "number"
+      }
+    ]
+  },
+  {
+    "type": "PathObserved",
+    "path": "/users"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/users",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/users",
+    "method": "POST",
+    "statusCode": 400
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/users",
+    "statusCode": 400,
+    "contentType": "application/json",
+    "bodyShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "object"
+      },
+      {
+        "key": "username",
+        "path": "username",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "string"
+      },
+      {
+        "key": "password",
+        "path": "password",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "string"
+      },
+      {
+        "key": "email",
+        "path": "email",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "string"
+      }
+    ]
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/users",
+    "statusCode": 400,
+    "contentType": "text/plain; charset=utf-8",
+    "bodyShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "string"
+      }
+    ]
+  },
+  {
+    "type": "PathObserved",
+    "path": "/users/login"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/users/login",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/users/login",
+    "method": "POST",
+    "statusCode": 200
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/users/login",
+    "statusCode": 200,
+    "contentType": "application/json",
+    "bodyShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "object"
+      },
+      {
+        "key": "username",
+        "path": "username",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "string"
+      },
+      {
+        "key": "password",
+        "path": "password",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "string"
+      }
+    ]
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/users/login",
+    "statusCode": 200,
+    "contentType": "application/json; charset=utf-8",
+    "bodyShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "object"
+      },
+      {
+        "key": "userId",
+        "path": "userId",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "string"
+      },
+      {
+        "key": "jwt",
+        "path": "jwt",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "string"
+      }
+    ]
+  },
+  {
+    "type": "PathObserved",
+    "path": "/users/login"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/users/login",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/users/login",
+    "method": "POST",
+    "statusCode": 401
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/users/login",
+    "statusCode": 401,
+    "contentType": "application/json",
+    "bodyShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "object"
+      },
+      {
+        "key": "username",
+        "path": "username",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "string"
+      },
+      {
+        "key": "password",
+        "path": "password",
+        "depth": 1,
+        "parentPath": "",
+        "jsonSchemaType": "string"
+      }
+    ]
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/users/login",
+    "statusCode": 401,
+    "contentType": "text/plain; charset=utf-8",
+    "bodyShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "string"
+      }
+    ]
+  },
+  {
+    "type": "PathObserved",
+    "path": "/users/:userId/followers"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/users/:userId/followers",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/users/:userId/followers",
+    "method": "POST",
+    "statusCode": 200
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/users/:userId/followers",
+    "statusCode": 200,
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "POST",
+    "path": "/users/:userId/followers",
+    "statusCode": 200,
+    "name": "userId",
+    "source": "path",
+    "valueShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "string"
+      }
+    ]
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/users/:userId/followers",
+    "statusCode": 200,
+    "contentType": "application/json",
+    "bodyShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "object"
+      }
+    ]
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/users/:userId/followers",
+    "statusCode": 200,
+    "contentType": "text/plain; charset=utf-8",
+    "bodyShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "string"
+      }
+    ]
+  },
+  {
+    "type": "PathObserved",
+    "path": "/users/:userId/followers"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/users/:userId/followers",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/users/:userId/followers",
+    "method": "POST",
+    "statusCode": 404
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/users/:userId/followers",
+    "statusCode": 404,
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "POST",
+    "path": "/users/:userId/followers",
+    "statusCode": 404,
+    "name": "userId",
+    "source": "path",
+    "valueShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "string"
+      }
+    ]
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/users/:userId/followers",
+    "statusCode": 404,
+    "contentType": "application/json",
+    "bodyShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "object"
+      }
+    ]
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/users/:userId/followers",
+    "statusCode": 404,
+    "contentType": "text/plain; charset=utf-8",
+    "bodyShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "string"
+      }
+    ]
+  },
+  {
+    "type": "PathObserved",
+    "path": "/users/:userId/followers"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/users/:userId/followers",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/users/:userId/followers",
+    "method": "POST",
+    "statusCode": 200
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/users/:userId/followers",
+    "statusCode": 200,
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "POST",
+    "path": "/users/:userId/followers",
+    "statusCode": 200,
+    "name": "userId",
+    "source": "path",
+    "valueShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "string"
+      }
+    ]
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/users/:userId/followers",
+    "statusCode": 200,
+    "contentType": "application/json",
+    "bodyShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "object"
+      }
+    ]
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/users/:userId/followers",
+    "statusCode": 200,
+    "contentType": "text/plain; charset=utf-8",
+    "bodyShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "string"
+      }
+    ]
+  },
+  {
+    "type": "PathObserved",
+    "path": "/users/:userId/followers"
+  },
+  {
+    "type": "MethodObserved",
+    "path": "/users/:userId/followers",
+    "method": "POST"
+  },
+  {
+    "type": "StatusObserved",
+    "path": "/users/:userId/followers",
+    "method": "POST",
+    "statusCode": 404
+  },
+  {
+    "type": "SecurityObserved",
+    "method": "POST",
+    "path": "/users/:userId/followers",
+    "statusCode": 404,
+    "security": {
+      "type": "bearer"
+    }
+  },
+  {
+    "type": "RequestParameterObserved",
+    "method": "POST",
+    "path": "/users/:userId/followers",
+    "statusCode": 404,
+    "name": "userId",
+    "source": "path",
+    "valueShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "string"
+      }
+    ]
+  },
+  {
+    "type": "RequestBodyObserved",
+    "method": "POST",
+    "path": "/users/:userId/followers",
+    "statusCode": 404,
+    "contentType": "application/json",
+    "bodyShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "object"
+      }
+    ]
+  },
+  {
+    "type": "ResponseBodyObserved",
+    "method": "POST",
+    "path": "/users/:userId/followers",
+    "statusCode": 404,
+    "contentType": "text/plain; charset=utf-8",
+    "bodyShape": [
+      {
+        "key": "",
+        "parentPath": null,
+        "path": "",
+        "depth": 0,
+        "jsonSchemaType": "string"
+      }
+    ]
+  }
+]

@@ -57,10 +57,14 @@
     "deepdash": "^1.9.5",
     "express": "^4.16.4",
     "express-http-proxy": "^1.5.1",
+    "graphql": "^14.3.0",
+    "graphql-tools": "^4.0.4",
+    "graphql-type-json": "^0.3.0",
     "http-proxy": "^1.17.0",
     "is-valid-path": "^0.1.1",
     "joi": "^14.3.1",
     "lodash": "^4.17.11",
+    "nice-try": "^2.0.0",
     "path-match": "^1.2.4",
     "path-to-regexp": "^3.0.0",
     "pluralize": "^7.0.0",
@@ -68,7 +72,6 @@
     "react-is": "^16.8.3",
     "short-hash": "^1.0.0",
     "tree-kill": "^1.2.1",
-    "tslib": "~1.9.3",
-    "nice-try": "latest"
+    "tslib": "~1.9.3"
   }
 }

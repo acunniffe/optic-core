@@ -28,7 +28,19 @@ const singleRequestBody = (body) => [
   },
 ];
 
+const singleResponseBody = (body) => [
+  {
+    type: 'ResponseBodyObserved',
+    method: 'POST',
+    path: '/',
+    statusCode: '200',
+    contentType: 'application/json',
+    bodyShape: flattenJavascriptValueToList(body),
+  },
+];
+
 module.exports = {
   singleRequestBody,
+  singleResponseBody,
   pathObservations,
 };

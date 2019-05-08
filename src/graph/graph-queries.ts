@@ -28,7 +28,7 @@ class GraphQueries {
 
 class NodeQueries {
   public readonly node: Node;
-  private graphQueries: GraphQueries;
+  public readonly graphQueries: GraphQueries;
 
   constructor(graphQueries: GraphQueries, node: Node) {
     this.graphQueries = graphQueries;

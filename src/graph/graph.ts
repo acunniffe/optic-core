@@ -55,20 +55,20 @@ class Graph {
     return id;
   }
 
-  public tryAddNode(node: IGraphNode) {
-    const id: NodeId = this.nodeIdGenerator.next().value.toString();
-    if (this.nodes.has(id)) {
-      return null;
-    }
-
+  public tryAddNode(node: IGraphNode): [NodeId, boolean] {
     const hash = node.hashCode();
     if (this.nodesHashes.has(hash)) {
-      return null;
+      return [this.nodesHashes.get(hash).id, false];
+    }
+
+    const id: NodeId = this.nodeIdGenerator.next().value.toString();
+    if (this.nodes.has(id)) {
+      throw new Error(`graph already has node with id ${id}`);
     }
 
     this.unsafeAddNode(id, node);
 
-    return id;
+    return [id, true];
   }
 
   //@TODO move this to a separate class?

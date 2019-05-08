@@ -1,0 +1,273 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Schema Snapshots should resolve everything 1`] = `
+Object {
+  "snapshot": Object {
+    "endpoints": Array [
+      Object {
+        "method": "POST",
+        "nameKey": "baa42339",
+        "path": "/users",
+        "request": Object {
+          "bodies": Array [
+            Object {
+              "contentType": "application/json",
+              "nameKey": "c4dd46b7",
+              "schema": Object {
+                "asJsonSchema": Object {
+                  "properties": Object {
+                    "email": Object {
+                      "title": "4e8bf1a6",
+                      "type": "string",
+                    },
+                    "password": Object {
+                      "title": "b7b61732",
+                      "type": "string",
+                    },
+                    "username": Object {
+                      "title": "c1aaaeb",
+                      "type": "string",
+                    },
+                  },
+                  "title": "c66be88",
+                  "type": "object",
+                },
+              },
+            },
+          ],
+          "headerParameters": Array [],
+          "nameKey": "6365cf6a",
+          "pathParameters": Array [],
+          "queryParameters": Array [],
+        },
+        "responses": Array [
+          Object {
+            "bodies": Array [
+              Object {
+                "contentType": "application/json; charset=utf-8",
+                "nameKey": "838e1970",
+                "schema": Object {
+                  "asJsonSchema": Object {
+                    "properties": Object {
+                      "__id": Object {
+                        "title": "e5b386c",
+                        "type": "string",
+                      },
+                      "email": Object {
+                        "title": "9047848f",
+                        "type": "string",
+                      },
+                      "followsCount": Object {
+                        "title": "37812878",
+                        "type": "number",
+                      },
+                      "username": Object {
+                        "title": "71f380aa",
+                        "type": "string",
+                      },
+                    },
+                    "title": "a9983a0e",
+                    "type": "object",
+                  },
+                },
+              },
+            ],
+            "nameKey": "a5713fb8",
+            "statusCode": 200,
+          },
+          Object {
+            "bodies": Array [
+              Object {
+                "contentType": "text/html; charset=utf-8",
+                "nameKey": "327578d5",
+                "schema": Object {
+                  "asJsonSchema": Object {
+                    "title": "65846e9d",
+                    "type": "string",
+                  },
+                },
+              },
+              Object {
+                "contentType": "text/plain; charset=utf-8",
+                "nameKey": "4e85da32",
+                "schema": Object {
+                  "asJsonSchema": Object {
+                    "title": "4a193370",
+                    "type": "string",
+                  },
+                },
+              },
+            ],
+            "nameKey": "2350913e",
+            "statusCode": 400,
+          },
+        ],
+        "securityDefinitions": Array [],
+      },
+      Object {
+        "method": "POST",
+        "nameKey": "4dda8315",
+        "path": "/users/login",
+        "request": Object {
+          "bodies": Array [
+            Object {
+              "contentType": "application/json",
+              "nameKey": "10d8076b",
+              "schema": Object {
+                "asJsonSchema": Object {
+                  "properties": Object {
+                    "password": Object {
+                      "title": "e3e38d4",
+                      "type": "string",
+                    },
+                    "username": Object {
+                      "title": "4f9e82e5",
+                      "type": "string",
+                    },
+                  },
+                  "title": "5c5a9e83",
+                  "type": "object",
+                },
+              },
+            },
+          ],
+          "headerParameters": Array [],
+          "nameKey": "8ceecec6",
+          "pathParameters": Array [],
+          "queryParameters": Array [],
+        },
+        "responses": Array [
+          Object {
+            "bodies": Array [
+              Object {
+                "contentType": "application/json; charset=utf-8",
+                "nameKey": "29da7692",
+                "schema": Object {
+                  "asJsonSchema": Object {
+                    "properties": Object {
+                      "jwt": Object {
+                        "title": "374331e8",
+                        "type": "string",
+                      },
+                      "userId": Object {
+                        "title": "3c47135c",
+                        "type": "string",
+                      },
+                    },
+                    "title": "cbc7e99c",
+                    "type": "object",
+                  },
+                },
+              },
+            ],
+            "nameKey": "d451c8d4",
+            "statusCode": 200,
+          },
+          Object {
+            "bodies": Array [
+              Object {
+                "contentType": "text/plain; charset=utf-8",
+                "nameKey": "eabb55b",
+                "schema": Object {
+                  "asJsonSchema": Object {
+                    "title": "2f0e4d6e",
+                    "type": "string",
+                  },
+                },
+              },
+            ],
+            "nameKey": "6f968253",
+            "statusCode": 401,
+          },
+        ],
+        "securityDefinitions": Array [],
+      },
+      Object {
+        "method": "POST",
+        "nameKey": "be75a9aa",
+        "path": "/users/:userId/followers",
+        "request": Object {
+          "bodies": Array [
+            Object {
+              "contentType": "application/json",
+              "nameKey": "e162f95a",
+              "schema": Object {
+                "asJsonSchema": Object {
+                  "properties": Object {},
+                  "title": "f1fc4b68",
+                  "type": "object",
+                },
+              },
+            },
+          ],
+          "headerParameters": Array [],
+          "nameKey": "7f16f4d9",
+          "pathParameters": Array [
+            Object {
+              "name": "userId",
+              "nameKey": "d88eda5b",
+              "schema": Object {
+                "asJsonSchema": Object {
+                  "title": "9fc80355",
+                  "type": "string",
+                },
+              },
+            },
+          ],
+          "queryParameters": Array [],
+        },
+        "responses": Array [
+          Object {
+            "bodies": Array [
+              Object {
+                "contentType": "text/plain; charset=utf-8",
+                "nameKey": "34225c3d",
+                "schema": Object {
+                  "asJsonSchema": Object {
+                    "title": "e47b9ddb",
+                    "type": "string",
+                  },
+                },
+              },
+            ],
+            "nameKey": "5b5d4dab",
+            "statusCode": 200,
+          },
+          Object {
+            "bodies": Array [
+              Object {
+                "contentType": "text/plain; charset=utf-8",
+                "nameKey": "122de9f2",
+                "schema": Object {
+                  "asJsonSchema": Object {
+                    "title": "3aadfd61",
+                    "type": "string",
+                  },
+                },
+              },
+            ],
+            "nameKey": "ed6de4a9",
+            "statusCode": 404,
+          },
+        ],
+        "securityDefinitions": Array [
+          Object {
+            "definition": Object {
+              "type": "bearer",
+            },
+            "nameKey": "f1bb0a5",
+          },
+        ],
+      },
+    ],
+    "securityDefinitions": Array [
+      Object {
+        "definition": Object {
+          "type": "bearer",
+        },
+        "nameKey": "f1bb0a5",
+      },
+    ],
+  },
+}
+`;

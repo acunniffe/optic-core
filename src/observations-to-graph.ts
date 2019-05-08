@@ -1,5 +1,4 @@
-import { Graph, NodeId } from './graph/graph';
-import { ApiRootNode } from './graph/nodes/api-root-node';
+import { Graph } from './graph/graph';
 import { ApiBodyNode } from './graph/nodes/api-body-node';
 import { ApiMethodNode } from './graph/nodes/api-method-node';
 import { ApiObjectPropertyNode } from './graph/nodes/api-object-property-node';
@@ -10,6 +9,7 @@ import { ApiResponseCookieNode } from './graph/nodes/api-response-cookie-node';
 import { ApiResponseHeaderNode } from './graph/nodes/api-response-header-node';
 import { ApiResponseNode } from './graph/nodes/api-response-node';
 import { ApiResponseStatusCodeNode } from './graph/nodes/api-response-status-code-node';
+import { ApiRootNode } from './graph/nodes/api-root-node';
 import { ApiSchemaLeafNode } from './graph/nodes/api-schema-leaf-node';
 import { ApiSchemaParentNode } from './graph/nodes/api-schema-parent-node';
 import { ApiSchemaRootNode } from './graph/nodes/api-schema-root-node';
@@ -17,13 +17,25 @@ import { ApiSecurityDefinitionNode } from './graph/nodes/api-security-definition
 import { Observation } from './interactions-to-observations';
 import { IFlattenedJsValueItem } from './value-to-shape';
 
+class ObservationsToGraphBuilder {
+  public static fromEmptyGraph() {
+    const graph = new Graph();
+    const root = new ApiRootNode();
+    graph.addNode(root);
+
+    return new ObservationsToGraph(graph);
+  }
+
+  public static fromExistingGraph(graph: Graph) {
+    return new ObservationsToGraph(graph);
+  }
+}
+
 class ObservationsToGraph {
   public readonly graph: Graph;
 
-  constructor() {
-    this.graph = new Graph();
-    const root = new ApiRootNode();
-    this.graph.addNode(root);
+  constructor(graph: Graph) {
+    this.graph = graph;
   }
 
   public interpretObservations(observations: Observation[]) {
@@ -31,42 +43,44 @@ class ObservationsToGraph {
       if (observation.type === 'PathObserved') {
         const { path } = observation;
         const node = new ApiPathNode(path);
-        const nodeId = this.graph.tryAddNode(node);
-        if (nodeId) {
-          const rootNodeId = this.graph.idFromHash(new ApiRootNode());
+        const [nodeId, added] = this.graph.tryAddNode(node);
+        const [rootNodeId] = this.graph.tryAddNode(new ApiRootNode());
+        if (added) {
           this.graph.addEdge(nodeId, rootNodeId);
         }
       } else if (observation.type === 'MethodObserved') {
         const { path, method } = observation;
         const node = new ApiMethodNode(path, method);
-        const nodeId = this.graph.tryAddNode(node);
-        if (nodeId) {
-          const parentPathId = this.graph.idFromHash(new ApiPathNode(path));
+        const [nodeId, added] = this.graph.tryAddNode(node);
+        const parentPathId = this.graph.idFromHash(new ApiPathNode(path));
+        if (added) {
           this.graph.addEdge(nodeId, parentPathId);
         }
       } else if (observation.type === 'StatusObserved') {
         const { path, method, statusCode } = observation;
         const node = new ApiResponseStatusCodeNode(path, method, statusCode);
-        const nodeId = this.graph.tryAddNode(node);
-        if (nodeId) {
-          const parentMethodId = this.graph.idFromHash(new ApiMethodNode(path, method));
+        const [nodeId, added] = this.graph.tryAddNode(node);
+        const parentMethodId = this.graph.idFromHash(new ApiMethodNode(path, method));
+        if (added) {
           this.graph.addEdge(nodeId, parentMethodId);
-          const requestNode = new ApiRequestNode(path, method, statusCode);
-          const requestNodeId = this.graph.addNode(requestNode);
+        }
+        const requestNode = new ApiRequestNode(path, method, statusCode);
+        const [requestNodeId] = this.graph.tryAddNode(requestNode);
+        if (added) {
           this.graph.addEdge(requestNodeId, nodeId);
-          const responseNode = new ApiResponseNode(path, method, statusCode);
-          const responseNodeId = this.graph.addNode(responseNode);
+        }
+        const responseNode = new ApiResponseNode(path, method, statusCode);
+        const [responseNodeId] = this.graph.tryAddNode(responseNode);
+        if (added) {
           this.graph.addEdge(responseNodeId, nodeId);
         }
       } else if (observation.type === 'SecurityObserved') {
         const { path, method, statusCode, security } = observation;
         const node = new ApiSecurityDefinitionNode(security);
-        let nodeId = this.graph.tryAddNode(node);
-        if (nodeId) {
-          const rootNodeId = this.graph.idFromHash(new ApiRootNode());
+        const [nodeId, added] = this.graph.tryAddNode(node);
+        const [rootNodeId] = this.graph.tryAddNode(new ApiRootNode());
+        if (added) {
           this.graph.addEdge(nodeId, rootNodeId);
-        } else {
-          nodeId = this.graph.idFromHash(node);
         }
         const requestNode = new ApiRequestNode(path, method, statusCode);
         const requestNodeId = this.graph.idFromHash(requestNode);
@@ -74,27 +88,31 @@ class ObservationsToGraph {
       } else if (observation.type === 'RequestParameterObserved') {
         const { path, method, statusCode, source, name, valueShape } = observation;
         const node = new ApiRequestParameterNode(path, method, statusCode, source, name);
-        const nodeId = this.graph.tryAddNode(node);
+        const [nodeId, added] = this.graph.tryAddNode(node);
         const schemaRootNode = new ApiSchemaRootNode(node.hashCode());
-        if (nodeId) {
-          const requestNodeId = this.graph.idFromHash(new ApiRequestNode(path, method, statusCode));
+        const requestNodeId = this.graph.idFromHash(new ApiRequestNode(path, method, statusCode));
+        if (added) {
           this.graph.addEdge(nodeId, requestNodeId);
+        }
 
-          const schemaRootNodeId = this.graph.addNode(schemaRootNode);
+        const [schemaRootNodeId] = this.graph.tryAddNode(schemaRootNode);
+        if (added) {
           this.graph.addEdge(schemaRootNodeId, nodeId);
         }
+
         this.mergeSchema(schemaRootNode, valueShape);
       } else if (observation.type === 'RequestBodyObserved') {
         const { path, method, statusCode, contentType, bodyShape } = observation;
         const requestNode = new ApiRequestNode(path, method, statusCode);
         const requestNodeId = this.graph.idFromHash(requestNode);
         const node = new ApiBodyNode(requestNode.hashCode(), contentType);
-        const nodeId = this.graph.tryAddNode(node);
+        const [nodeId, added] = this.graph.tryAddNode(node);
         const schemaRootNode = new ApiSchemaRootNode(node.hashCode());
-        if (nodeId) {
+        if (added) {
           this.graph.addEdge(nodeId, requestNodeId);
-
-          const schemaRootNodeId = this.graph.addNode(schemaRootNode);
+        }
+        const [schemaRootNodeId] = this.graph.tryAddNode(schemaRootNode);
+        if (added) {
           this.graph.addEdge(schemaRootNodeId, nodeId);
         }
         this.mergeSchema(schemaRootNode, bodyShape);
@@ -103,12 +121,13 @@ class ObservationsToGraph {
         const responseNode = new ApiResponseNode(path, method, statusCode);
         const responseNodeId = this.graph.idFromHash(responseNode);
         const node = new ApiBodyNode(responseNode.hashCode(), contentType);
-        const nodeId = this.graph.tryAddNode(node);
+        const [nodeId, added] = this.graph.tryAddNode(node);
         const schemaRootNode = new ApiSchemaRootNode(node.hashCode());
-        if (nodeId) {
+        if (added) {
           this.graph.addEdge(nodeId, responseNodeId);
-
-          const schemaRootNodeId = this.graph.addNode(schemaRootNode);
+        }
+        const [schemaRootNodeId] = this.graph.tryAddNode(schemaRootNode);
+        if (added) {
           this.graph.addEdge(schemaRootNodeId, nodeId);
         }
         this.mergeSchema(schemaRootNode, bodyShape);
@@ -117,12 +136,13 @@ class ObservationsToGraph {
         const responseNode = new ApiResponseNode(path, method, statusCode);
         const responseNodeId = this.graph.idFromHash(responseNode);
         const node = new ApiResponseHeaderNode(responseNode.hashCode(), name);
-        const nodeId = this.graph.tryAddNode(node);
+        const [nodeId, added] = this.graph.tryAddNode(node);
         const schemaRootNode = new ApiSchemaRootNode(node.hashCode());
-        if (nodeId) {
+        if (added) {
           this.graph.addEdge(nodeId, responseNodeId);
-
-          const schemaRootNodeId = this.graph.addNode(schemaRootNode);
+        }
+        const [schemaRootNodeId] = this.graph.tryAddNode(schemaRootNode);
+        if (added) {
           this.graph.addEdge(schemaRootNodeId, nodeId);
         }
         this.mergeSchema(schemaRootNode, valueShape);
@@ -131,12 +151,14 @@ class ObservationsToGraph {
         const responseNode = new ApiResponseNode(path, method, statusCode);
         const responseNodeId = this.graph.idFromHash(responseNode);
         const node = new ApiResponseCookieNode(responseNode.hashCode(), name);
-        const nodeId = this.graph.tryAddNode(node);
+        const [nodeId, added] = this.graph.tryAddNode(node);
         const schemaRootNode = new ApiSchemaRootNode(node.hashCode());
-        if (nodeId) {
+        if (added) {
           this.graph.addEdge(nodeId, responseNodeId);
+        }
 
-          const schemaRootNodeId = this.graph.addNode(schemaRootNode);
+        const [schemaRootNodeId] = this.graph.tryAddNode(schemaRootNode);
+        if (added) {
           this.graph.addEdge(schemaRootNodeId, nodeId);
         }
         this.mergeSchema(schemaRootNode, valueShape);
@@ -154,15 +176,14 @@ class ObservationsToGraph {
       }
 
       let node: ApiSchemaRelatedNode;
-      let nodeId: NodeId;
       let currentParentId = this.graph.idFromHash(currentParent);
 
       const isParentAnObject = currentParent instanceof ApiSchemaParentNode && currentParent.jsonSchemaType === 'object';
 
       if (isParentAnObject) {
         const propertyNode = new ApiObjectPropertyNode(currentParent.hashCode(), item.key);
-        const propertyNodeId = this.graph.tryAddNode(propertyNode);
-        if (propertyNodeId) {
+        const [propertyNodeId, added] = this.graph.tryAddNode(propertyNode);
+        if (added) {
           this.graph.addEdge(propertyNodeId, currentParentId);
         }
         currentParent = propertyNode;
@@ -170,15 +191,15 @@ class ObservationsToGraph {
       }
       if (item.jsonSchemaType !== 'array' && item.jsonSchemaType !== 'object') {
         node = new ApiSchemaLeafNode(currentParent.hashCode(), item.jsonSchemaType);
-        nodeId = this.graph.tryAddNode(node);
-        if (nodeId) {
-          this.graph.addEdge(nodeId, currentParentId);
+        const [leafNodeId, added] = this.graph.tryAddNode(node);
+        if (added) {
+          this.graph.addEdge(leafNodeId, currentParentId);
         }
       } else {
         node = new ApiSchemaParentNode(currentParent.hashCode(), item.jsonSchemaType);
-        nodeId = this.graph.tryAddNode(node);
-        if (nodeId) {
-          this.graph.addEdge(nodeId, currentParentId);
+        const [parentNodeId, added] = this.graph.tryAddNode(node);
+        if (added) {
+          this.graph.addEdge(parentNodeId, currentParentId);
         }
       }
       nodesByPath.set(item.path, node);
@@ -190,4 +211,5 @@ export type ApiSchemaRelatedNode = ApiSchemaRootNode | ApiSchemaParentNode | Api
 
 export {
   ObservationsToGraph,
+  ObservationsToGraphBuilder,
 };

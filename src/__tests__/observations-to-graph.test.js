@@ -2,14 +2,14 @@
 
 const { GraphQueries } = require('../graph/graph-queries');
 
-const { ObservationsToGraph } = require('../observations-to-graph');
+const { ObservationsToGraphBuilder } = require('../observations-to-graph');
 const { pathObservations, singleRequestBody } = require('./optic-observations.fixture.js');
 const {toMatchSnapshot} = require('jest-snapshot');
 expect.extend({toMatchSnapshot});
 
 describe('ObservationsToGraph', function() {
   describe('simple API', function() {
-    const observationsToGraph = new ObservationsToGraph();
+    const observationsToGraph = ObservationsToGraphBuilder.fromEmptyGraph()
     observationsToGraph.interpretObservations(pathObservations);
 
     it('should understand the request body format', function() {

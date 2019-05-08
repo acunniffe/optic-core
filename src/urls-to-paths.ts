@@ -89,10 +89,8 @@ class UrlsToPaths {
         parentNodeId = matchingCousinNode.node.id;
       } else {
         const node: PathComponentNode = new PathComponentNode(prefix, component, isTerminal);
-        let nodeId = this.graph.tryAddNode(node);
-        if (nodeId === null) {
-          nodeId = this.graph.idFromHash(node);
-        }
+        const [nodeId] = this.graph.tryAddNode(node);
+
         this.graph.ensureEdgeExistsBetween(nodeId, parentNodeId);
 
         parentNodeId = nodeId;
@@ -126,7 +124,7 @@ class UrlsToPaths {
           return [output, ...p];
         });
       })
-      .reduce((acc: PathComponents[], values: PathComponents[]) => [...acc, ...values], [])
+      .reduce((acc: PathComponents[], values: PathComponents[]) => [...acc, ...values], []);
   }
 }
 
