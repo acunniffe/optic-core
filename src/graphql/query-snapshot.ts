@@ -65,12 +65,13 @@ function defaultQuery(snapshotId: string) {
             `;
 }
 
-function observationsToGqlResponse(observations, query) {
-
-  const snapshotRepository = {
+const defaultSnapshotRepository = function(observations) {
+  return {
     findById: () => Promise.resolve({ observations }),
   };
+};
 
+function observationsToGqlResponse(snapshotRepository, query) {
   const promise = execute(schema, parse(query), {}, { snapshotRepository });
 
   return promise;
@@ -78,5 +79,6 @@ function observationsToGqlResponse(observations, query) {
 
 export {
   defaultQuery,
+  defaultSnapshotRepository,
   observationsToGqlResponse,
 };

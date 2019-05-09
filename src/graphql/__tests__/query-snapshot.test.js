@@ -1,7 +1,5 @@
-import { defaultQuery } from '../query-snapshot';
+import { defaultQuery, defaultSnapshotRepository, observationsToGqlResponse } from '../query-snapshot';
 
-const { schema } = require('../schema');
-const { parse, execute } = require('graphql');
 const observations = require('./observations.json');
 const { toMatchSnapshot } = require('jest-snapshot');
 expect.extend({ toMatchSnapshot });
@@ -11,16 +9,7 @@ describe('Schema', function() {
     it('should resolve everything', function(done) {
 
       const snapshotId = 'iii';
-      const query = defaultQuery(snapshotId);
-      const snapshotRepository = {
-        findById: jest.fn(),
-      };
-
-      snapshotRepository.findById.mockImplementationOnce((id) => {
-        expect(id).toEqual('iii');
-        return Promise.resolve({ observations });
-      });
-      const promise = execute(schema, parse(query), {}, { snapshotRepository });
+      const promise = observationsToGqlResponse(defaultSnapshotRepository(observations), defaultQuery(snapshotId))
       promise
         .then(({ data, errors }) => {
           //require('fs').writeFileSync('./tmp/query-results.json', JSON.stringify(data, null, 2));
