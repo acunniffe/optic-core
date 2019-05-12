@@ -4,7 +4,7 @@ import { IApiInteraction, passThrough } from './common';
 import { LoggingServer } from './logging-server';
 import { ProxyServer } from './proxy-server';
 import * as kill from 'tree-kill';
-import * as EventEmitter from 'events'
+import * as EventEmitter from 'events';
 
 export interface IBaseSecurity {
   type: string
@@ -54,7 +54,8 @@ export interface ISessionManagerOptions {
 const logCli = debug('optic:cli');
 const debugCliVerbose = debug('optic-debug:cli');
 
-class SessionManagerEmitter extends EventEmitter {}
+class SessionManagerEmitter extends EventEmitter {
+}
 
 class SessionManager {
   public samples: IApiInteraction[];
@@ -63,7 +64,7 @@ class SessionManager {
 
   private events: SessionManagerEmitter = new SessionManagerEmitter();
 
-  private stopHandler: () => void
+  private stopHandler: () => void;
 
   constructor(options: ISessionManagerOptions) {
     this.options = options;
@@ -76,7 +77,7 @@ class SessionManager {
   }
 
   public onSample(callback: (sample: IApiInteraction) => void) {
-    this.events.on('sample', callback)
+    this.events.on('sample', callback);
   }
 
   public useProxyServer(config: IProxyDocumentationConfig) {
@@ -88,8 +89,7 @@ class SessionManager {
     return proxy
       .start({
         proxyPort: 30333,
-        targetHost,
-        targetPort,
+        target: `http://${targetHost}:${targetPort}`,
       })
       .then(() => {
         return this.runCommand(config.commandToRun);
@@ -101,7 +101,7 @@ class SessionManager {
 
   public stop() {
     if (this.stopHandler) {
-      this.stopHandler()
+      this.stopHandler();
     }
   }
 
@@ -120,13 +120,13 @@ class SessionManager {
       logCli(`in ${taskOptions.cwd}`);
       const child = spawn(command, taskOptions);
 
-      let killed = false
+      let killed = false;
 
       this.stopHandler = () => {
-        kill(child.pid)
-        killed = true
-        resolve(true)
-      }
+        kill(child.pid);
+        killed = true;
+        resolve(true);
+      };
 
       child.stdout.on('data', function(data) {
         process.stdout.write(data);

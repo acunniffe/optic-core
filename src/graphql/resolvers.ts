@@ -14,6 +14,9 @@ function nameKey(nodeQueries) {
 
 const resolvers = {
   Query: {
+    snapshotFromGraphContext: (_, _args, context) => {
+      return new GraphQueries(context.graph);
+    },
     snapshot: (_, args, context) => {
       const { snapshotId } = args;
       const { snapshotRepository } = context;

@@ -10,8 +10,7 @@ import * as EventEmitter from 'events';
 
 interface IProxyServerOptions {
   proxyPort: number,
-  targetHost: string
-  targetPort: number
+  target: string
 }
 
 const debugProxyServerVerbose = debug('optic-debug:server:proxy-server');
@@ -21,12 +20,10 @@ class ProxyServer extends EventEmitter {
   private httpInstance: http.Server;
 
   public start(options: IProxyServerOptions) {
-    const target = `http://${options.targetHost}:${options.targetPort}`;
 
     const server = express();
     addBodyParsers(server);
-
-    const proxyMiddleware = expressHttpProxy(target, {
+    const proxyMiddleware = expressHttpProxy(options.target, {
       userResDecorator: (proxyRes: any, proxyResData: Buffer, userReq: Request) => {
         let responseBody = proxyResData.toString('utf8');
         try {
@@ -59,7 +56,7 @@ class ProxyServer extends EventEmitter {
       this.httpInstance = server
         .listen(options.proxyPort, () => {
           debugProxyServer(`proxy listening on port ${options.proxyPort}`);
-          debugProxyServer(`proxy forwarding requests to ${options.targetHost}:${options.targetPort}`);
+          debugProxyServer(`proxy forwarding requests to ${options.target}`);
           resolve();
         })
         .on('error', reject);

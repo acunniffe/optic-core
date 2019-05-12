@@ -84,6 +84,7 @@ const typeDefs = `
 
   type Query {
     snapshot(snapshotId: ID): Snapshot
+    snapshotFromGraphContext: Snapshot
   }
 `;
 

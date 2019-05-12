@@ -1,3 +1,4 @@
+import { graphToGqlResponse } from '../graphql/query-snapshot';
 import { idGeneratorFactory } from '../logging-server';
 
 export type NodeId = string;
@@ -141,6 +142,11 @@ digraph G {
 rankdir=RL
 ${output.join('\n')}
 }`;
+  }
+
+  public async toGql() {
+    const {data} = await graphToGqlResponse(this);
+    return data;
   }
 }
 
